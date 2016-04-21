@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule l/([0-9a-f]+)/(u[0-9]+_[0-9a-f]{5})\.png img.php?server=local&folder=$1&file=$2 [L]
+RewriteRule ([0-9a-f]+)/(u[0-9]+_[0-9a-f]{5})\.png img.php?folder=$1&file=$2 [L]

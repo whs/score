@@ -1,0 +1,20 @@
+@font-face {
+	font-family: 'thaisans';
+	font-weight: normal; /* 400 */
+	src: url('thaisansneue-regular-webfont.eot');src: url('thaisansneue-regular-webfont.eot?#iefix') format('embedded-opentype'),url('thaisansneue-regular-webfont.woff') format('woff'),url('thaisansneue-regular-webfont.ttf') format('truetype'),url('thaisansneue-regular-webfont.svg#thaisans_neueregular') format('svg');
+}
+@font-face{
+	font-family: 'thaisans';
+	font-weight: 500;
+	src: url('thaisansneue-semibold-webfont.eot');src: url('thaisansneue-semibold-webfont.eot?#iefix') format('embedded-opentype'),url('thaisansneue-semibold-webfont.woff') format('woff'),url('thaisansneue-semibold-webfont.ttf') format('truetype'),url('thaisansneue-semibold-webfont.svg#thaisans_neue_sembdregular') format('svg');
+}
+@font-face {
+	font-family: 'thaisans';
+	font-weight: 300;
+	src: url('thaisansneue-light-webfont.eot');src: url('thaisansneue-light-webfont.eot?#iefix') format('embedded-opentype'),url('thaisansneue-light-webfont.woff') format('woff'),url('thaisansneue-light-webfont.ttf') format('truetype'),url('thaisansneue-light-webfont.svg#thaisans_neue_lightregular') format('svg');
+}
+@font-face {
+	font-family: 'thaisans';
+	font-weight: 100;
+	src: url('thaisansneue-ultralight-webfont.eot');src: url('thaisansneue-ultralight-webfont.eot?#iefix') format('embedded-opentype'),url('thaisansneue-ultralight-webfont.woff') format('woff'),url('thaisansneue-ultralight-webfont.ttf') format('truetype'),url('thaisansneue-ultralight-webfont.svg#thaisans_neue_ultltregular') format('svg');
+}

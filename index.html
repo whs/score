@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!--
+Score announcement system
+All rights reserved (C) 2013 Manatsawin Hanmongkolchai.
+Bodindecha (Sing Singseni) 2 #18 (Class of 2013)
+-->
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>ระบบประกาศผลคะแนนสอบ</title>
+	<link rel="stylesheet" href="total.css">
+	<link rel="stylesheet" href="Aristo/Aristo.css">
+</head>
+<body>
+<a href="fastscore.php" id="light">Lightweight version</a>
+<form id="login" method="post">
+	<div class="header">
+		<img src="logo.mini.gif" class="logo">
+		<div class="infotxt">
+			<div class="appname">ระบบประกาศผลคะแนนสอบ</div>
+			<div class="sitename">โรงเรียนบดินทรเดชา​ (สิงห์ สิงหเสนี) ๒</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+	<div class="error">ไม่พบข้อมูล</div>
+	<label class="input">
+		เลขประจำตัว
+		<input type="text" name="u" required autofocus>
+	</label>
+	<label class="input">
+		รหัสผ่าน
+		<input type="password" name="p" required>
+	</label>
+	<div id="files">กำลังเรียกข้อมูล...</div>
+	<input type="submit" value="แสดง">
+	<p>โดย งานทะเบียนวัดผล &amp; งานสื่อนวัตกรรมและเทคโนโลยี</p>
+	<div id="loadscrim"><div class="innertext">Loading...</div></div>
+</form>
+<a id="credit" href="http://www.whs.in.th">whs.in.th</a>
+<div id="result" class="result hide">
+	<div class="social">
+		<a href="https://twitter.com/share" class="tweet">Tweet</a>
+		<a href="#" class="fbshare">Share</a>
+		<a href="#" class="imgshare" target="_blank">ภาพ</a>
+	</div>
+	<div class="name"></div>
+	<div class="filename"></div>
+	<table>
+		<thead>
+			<tr><th style="width: 50%">วิชา</th><th>คะแนน</th><th>%</th><th>z</th><th>อันดับที่</th></tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+	<div class="subjinfo">คลิกที่ชื่อวิชาเพื่อดูสถิติ</div>
+	<div class="stats hide">
+		<table>
+			<thead>
+				<tr><th></th><th>สูงสุด</th><th>ต่ำสุด</th><th>ต่ำสุดอันดับ 2</th><th>ฐานนิยม</th><th>เฉลี่ย</th><th>S.D.</th><th>ผู้สอบ</th></tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+	<div class="graph"></div>
+</div>
+<div id="sharewarning" class="hide">
+	<p>ลิงก์ที่ถูกแชร์สามารถเข้าถึงคะแนนในหน้านี้ได้ โดยจะมีการแสดงทั้งผลคะแนนและชื่อจริง</p>
+	<p>หากไม่ต้องการเปิดเผยชื่อควรลบลิงก์ออก หรือตั้งค่าความเป็นส่วนตัวของข้อความให้เหมาะสม</p>
+	<p>ตัวอย่างลิงก์ที่ถูกแชร์ (เปิดในหน้าใหม่): <a href="" id="sharelink" target="_blank"></a></p>
+	<button type="button" data-act="confirm">ยึนยันการแชร์</button>
+	<button type="button" data-act="stop">ยกเลิก</button>
+</div>
+<script src="shared.min.js"></script>
+<script src="desktop.min.js"></script>
+</body>
+</html>
