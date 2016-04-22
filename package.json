@@ -1,0 +1,13 @@
+{
+  "name": "score",
+  "version": "3.0.2",
+  "description": "bd2 scoreapp",
+  "main": "Gruntfile.js",
+  "author": "Manatsawin Hanmongkolchai",
+  "license": "(C) 2013 All rights reserved",
+  "devDependencies": {
+      "grunt": "*",
+      "grunt-contrib-uglify": "*",
+      "grunt-contrib-cssmin": "*"
+  }
+}
