@@ -80,7 +80,7 @@ gulp.task('build-frontend-js', ['build-asmcrypto'], function(){
 			filename: 'app.js',
 		},
 		plugins: [
-			// new webpackModule.optimize.UglifyJsPlugin()
+			new webpackModule.optimize.UglifyJsPlugin()
 		],
 		resolve: {
 			alias: {
