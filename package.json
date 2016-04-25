@@ -12,7 +12,8 @@
     "cssnano": "^3.5.2",
     "postcss-import": "^8.1.0",
     "postcss-url": "^5.1.1",
-    "gulp-concat": "^2.6.0"
+    "gulp-concat": "^2.6.0",
+    "gulp-preprocess": "^2.0.0"
   },
   "dependencies": {
     "jquery-ui": "^1.10.5",

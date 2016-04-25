@@ -1,4 +1,6 @@
+// @if useCdn=false
 @import url(normalize.css/normalize.css);
+// @endif
 @import url(Aristo/Aristo.css);
 @import url(thaisans/fontface.css);
 body{
