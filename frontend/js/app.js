@@ -29,7 +29,7 @@ var fetch_list = function(){
 var load_data = function(i,u,p){
 	$("#loadscrim").show();
 	$("#login").find("input[type=text],input[type=password]").attr("disabled", true);
-	
+
 	ScoreApp.load_data(i,u,p, function(data, stats, pass){
 		$("#loadscrim").hide();
 		$("#login").find("input[type=text],input[type=password]").attr("disabled", false);
@@ -165,7 +165,7 @@ $(function(){
 		for(var i = 0; i < stat.histogram.length; i++){
 			labels.push(i);
 			if(i === stat.my_score){
-				graphcolor.push(ScoreApp.percentColor(i));
+				graphcolor.push(ScoreApp.percentColor((i/stat.max)*100));
 			}else{
 				graphcolor.push('#cccccc');
 			}
