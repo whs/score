@@ -1,22 +1,25 @@
 <?php
-class IOException extends Exception{}
+$datafile = "../data/".$_GET["f"].".json";
+$datafile = realpath($datafile);
+$allowedpath = str_replace("\\", "/", realpath("../data"));
 
-if($_GET['server'] == "local"){
-	$server = "http://bd2.in.th/score/";
-}else{
-	$server = "http://www.bodin2.ac.th/test/";
+if(empty($datafile) || empty($allowedpath) || strpos($datafile, $allowedpath) !== 0){
+	die("Data file not found");
 }
 
-$datafile = $server."/data/".$_GET['folder']."/".$_GET['file'].".json";
 @$data = file_get_contents($datafile);
 if(!$data){
-	throw new IOException("Cannot load data from remote server");
+	die("Cannot load data");
 }
 $data = json_decode($data, true);
 if($data === null && json_last_error() != JSON_ERROR_NONE){
-	throw new Exception("JSON Error ".json_last_error_msg());
+	die("JSON Error ".json_last_error_msg());
 }
-@$statfile = file_get_contents($server.'/data/'.$_GET['folder'].'/stats.json');
+@$statfile = file_get_contents(dirname($datafile)."/stats.json");
+if(!$statfile){
+	die("Cannot load data");
+}
+
 $stat = json_decode($statfile, true);
 
 $size = 80; // header

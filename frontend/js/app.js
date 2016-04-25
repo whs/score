@@ -33,6 +33,10 @@ var load_data = function(i,u,p){
 		var dialog = $("#result").clone().attr("id", null).removeClass("hide");
 		dialog.find(".name").text(data['_name']);
 		dialog.find(".filename").text(data['_fname']);
+		dialog.find(".imgshare").attr(
+			'href', 'scoreshare/?f='
+			+ encodeURIComponent(ScoreApp.get_url(i, u, p))
+		);
 		var scoreTable = dialog.find("table:first tbody");
 		var graphdata=[], graphsubjects=[];
 		$.each(data, function(k,v){
@@ -72,7 +76,7 @@ var load_data = function(i,u,p){
 			row.appendTo(scoreTable);
 		});
 		if(u !== undefined){
-			window.location.hash = i+"/u"+u+"_"+pass;
+			window.location.hash = i+"/u"+u+"_"+ScoreApp.get_password(i,u,p);
 		}
 		dialog.appendTo("body").dialog({
 			width: 500,

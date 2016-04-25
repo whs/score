@@ -10,8 +10,7 @@ var ScoreApp = module.exports = {
 	get_password: function(i,u,p){
 		return asmcrypto.SHA1.hex(u+p+i).substr(0, 5);
 	},
-	load_data: function(i,u,p, success, error){
-		var url;
+	get_url: function(i, u, p){
 		if(u !== undefined){
 			var pass = ScoreApp.get_password(i,u,p);
 			$("#loadscrim").show();
@@ -19,17 +18,25 @@ var ScoreApp = module.exports = {
 			if(!i.match(/^[0-9a-f]+$/) || !u.match(/^[0-9a-z]+$/i)){
 				return false;
 			}
-			url = "data/"+i+"/u"+u+"_"+pass+".json";
+			return i+"/u"+u+"_"+pass;
 		}else{
 			if(!i.match(/^[0-9a-f]+\/u[0-9a-z]+_[0-9a-f]{5}$/)){
 				return false;
 			}
-			url = "data/"+i+".json";
+			return i;
+		}
+	},
+	load_data: function(i,u,p, success, error){
+		var url = ScoreApp.get_url(i, u, p);
+		var pass = ScoreApp.get_password(i,u,p);
+
+		if(u === undefined){
 			i = i.match(/^([^\/]+)/)[1];
 		}
+
 		$.ajax({
 			dataType: "json",
-			url: url,
+			url: "data/" + url + ".json",
 			success: function(data){
 				$.getJSON("data/"+i+"/stats.json", function(stats){
 					success(data, stats, pass);

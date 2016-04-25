@@ -7,10 +7,11 @@ var postcss_import = require('postcss-import');
 var postcss_url = require('postcss-url');
 var concat = require('gulp-concat');
 
-gulp.task('default', ['copy-frontend', 'copy-backend', 'build-frontend-js', 'build-frontend-css']);
+gulp.task('default', ['copy-frontend', 'copy-backend', 'copy-scoreshare', 'build-frontend-js', 'build-frontend-css']);
 
 gulp.task('copy-frontend', function(){
 	return gulp.src([
+		'frontend/.htaccess',
 		'frontend/**/*',
 		'!frontend/js/**/*',
 		'!frontend/js',
@@ -24,6 +25,14 @@ gulp.task('copy-frontend', function(){
 gulp.task('copy-backend', function(){
 	return gulp.src('backend/**/*', {base: 'backend'})
 		.pipe(gulp.dest('dist/'));
+});
+
+gulp.task('copy-scoreshare', function(){
+	return gulp.src([
+		'scoreshare/.htaccess',
+		'scoreshare/**/*',
+	])
+		.pipe(gulp.dest('dist/scoreshare/'));
 });
 
 gulp.task('build-asmcrypto', function(){
