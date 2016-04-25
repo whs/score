@@ -86,7 +86,7 @@ gulp.task('build-frontend-js', ['build-asmcrypto'], function(){
 			alias: {
 				asmcrypto: __dirname + '/dist/js/asmcrypto.js'
 			}
-		}
+		},
 	};
 
 	if(config.useCdn){
@@ -96,6 +96,7 @@ gulp.task('build-frontend-js', ['build-asmcrypto'], function(){
 			'jquery-ui/button': 'jQuery',
 			'jquery-ui/effect-clip': 'jQuery',
 			'jquery-ui/mouse': 'jQuery',
+			'chart.js': 'Chart',
 		};
 	}
 

@@ -6,6 +6,7 @@ require("jquery-ui/button");
 require("jquery-ui/effect-clip");
 require("./jquery.ui.touch-punch");
 var ScoreApp = require("./shared");
+var Chart = require("./chart.js");
 
 var fetch_list = function(){
 	ScoreApp.fetch_list(function(o){
@@ -38,34 +39,34 @@ var load_data = function(i,u,p){
 			+ encodeURIComponent(ScoreApp.get_url(i, u, p))
 		);
 		var scoreTable = dialog.find("table:first tbody");
-		var graphdata=[], graphsubjects=[];
+		var graphdata=[], graphsubjects=[], graphcolor=[];
 		$.each(data, function(k,v){
 			if(k.charAt(0) == "_"){
 				return;
 			}
 			var row = $('<tr></tr>');
 			if(v.rank){
+				var color = ScoreApp.percentColor(v.percent);
+
 				$('<td><a class="viewstat" href="#"></a></td>').appendTo(row).find('a').text(k);
 				$('<td></td>').appendTo(row).text(v.score);
 				var percent=$('<td class="percent"></td>');
 				percent.appendTo(row).text(v.percent.toFixed(2));
-				percent.css("background-color", ScoreApp.percentColor(v.percent));
+				percent.css("background-color", color);
 
 				if(v.percent == 100){
 					percent.addClass("fullscore");
 				}
-				
+
 				$('<td></td>').appendTo(row).text(v.standard.toFixed(2));
 				$('<td></td>').appendTo(row).text(v.rank);
 
 				if(stats[k]){
-					stats[k].histogram[v.score] = {
-						y: stats[k].histogram[v.score],
-						color: ScoreApp.percentColor(v.percent)
-					};
+					stats[k].my_score = v.score;
 				}
 
-				graphdata.push({name: k, color: ScoreApp.percentColor(v.percent), y: v.percent});
+				graphdata.push(v.percent);
+				graphcolor.push(color);
 				graphsubjects.push(k.replace(/\([0-9]+\)$/, ''));
 			}else{
 				$('<td></td>').appendTo(row).text(k);
@@ -85,24 +86,34 @@ var load_data = function(i,u,p){
 				duration: 500
 			}
 		}).data("stats", stats);
-		// new Highcharts.Chart({
-		// 	chart: {
-		// 		renderTo: dialog.find(".graph").get(0),
-		// 		type: "column",
-		// 		height: 200,
-		// 		animation: {
-		// 			duration: 1000,
-		// 			easing: "swing"
-		// 		}
-		// 	},
-		// 	title: {"text": null},
-		// 	series: [{"data": graphdata, "name": "ร้อยละ"}],
-		// 	xAxis: {"categories": graphsubjects},
-		// 	yAxis: {"title": {text: null}, max:100, min: 0},
-		// 	legend: {enabled: false},
-		// 	credits:{enabled:false},
-		// 	exporting:{enabled:false}
-		// });
+
+		var canvas = dialog.find(".graph canvas");
+		var chart = new Chart(canvas.get(0), {
+			type: "bar",
+			data: {
+				labels: graphsubjects,
+				datasets: [
+					{
+						data: graphdata,
+						backgroundColor: graphcolor,
+					}
+				]
+			},
+
+			options: {
+				maintainAspectRatio: false,
+				legend: {display: false},
+				scales: {
+					yAxes: [{
+						ticks: {
+							suggestedMin: 0,
+							suggestedMax: 100,
+						},
+					}]
+				}
+			},
+		});
+		canvas.data('chart', chart);
 	}, function(err){
 		$("#loadscrim").hide();
 		$("#login").find("input[type=text],input[type=password]").attr("disabled", false);
@@ -125,7 +136,6 @@ $(function(){
 	$("body").delegate(".viewstat", "click", function(){
 		var dialog = $(this).closest(".result");
 		dialog.find(".active").removeClass("active");
-		dialog.find(".graph").empty();
 		var subj = $(this).addClass("active").text();
 		var stat = dialog.data("stats")[subj];
 		dialog.find(".subjinfo").text(subj);
@@ -146,29 +156,52 @@ $(function(){
 		$('<td></td>').text(stat.lowscore2_cnt).appendTo(personTr);
 		$('<td></td>').text(stat.mode_cnt).appendTo(personTr);
 
-		// new Highcharts.Chart({
-		// 	chart: {
-		// 		renderTo: dialog.find(".graph").get(0),
-		// 		type: "column",
-		// 		height: 200
-		// 	},
-		// 	title: {"text": "Histogram"},
-		// 	series: [{"data": stat.histogram, "name": "จำนวน"}],
-		// 	yAxis: {"title": {text: null}},
-		// 	legend: {enabled: false},
-		// 	plotOptions: {
-		// 		column: {
-		// 			shadow: false,
-		// 			pointPadding: 0,
-		// 			groupPadding: 0,
-		// 			borderWidth:.5,
-		// 			borderColor:'#666',
-		// 			color: 'rgba(204,204,204,.85)'
-		// 		}
-		// 	},
-		// 	credits:{enabled:false},
-		// 	exporting:{enabled:false}
-		// });
+		var graphcolor = [];
+		var labels = [];
+
+		for(var i = 0; i < stat.histogram.length; i++){
+			labels.push(i);
+			if(i === stat.my_score){
+				graphcolor.push(ScoreApp.percentColor(i));
+			}else{
+				graphcolor.push('#cccccc');
+			}
+		}
+
+		var canvas = dialog.find(".graph canvas");
+		canvas.data('chart').destroy();
+		var chart = new Chart(canvas.get(0), {
+			type: "bar",
+			data: {
+				labels: labels,
+				datasets: [
+					{
+						label: 'จำนวนคน',
+						data: stat.histogram,
+						backgroundColor: graphcolor,
+						borderWidth: 1,
+					}
+				]
+			},
+
+			options: {
+				maintainAspectRatio: false,
+				legend: {display: false},
+				title: {display: true, text: "Histogram"},
+				scales: {
+					xAxes: [{
+						gridLines: {display: false},
+						ticks: {autoSkip: true, maxTicksLimit: 11},
+						barPercentage: 0.95,
+						categoryPercentage: 1.0,
+					}],
+					yAxes: [{
+						min: 0,
+					}]
+				},
+			},
+		});
+		canvas.data("chart", chart);
 
 		dialog.find(".stats").show();
 		return false;
