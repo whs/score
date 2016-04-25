@@ -3,5 +3,6 @@
 	"branding": "โรงเรียนบดินทรเดชา (สิงห์ สิงหเสนี) ๒",
 	"password": "asdf",
 	"encryptionKey": "default",
-	"useCdn": true
+	"useCdn": true,
+	"nyanCat": true
 }

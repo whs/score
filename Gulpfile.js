@@ -15,33 +15,36 @@ gulp.task('default', [
 	'build-frontend-js', 'build-frontend-css'
 ]);
 
+var frontendList = [
+	'frontend/.htaccess',
+	'frontend/**/*',
+	'!frontend/index.html',
+	'!frontend/js/**/*',
+	'!frontend/js',
+	'!frontend/css/**/*.css',
+];
 gulp.task('copy-frontend', function(){
-	return gulp.src([
-		'frontend/.htaccess',
-		'frontend/**/*',
-		'!frontend/index.html',
-		'!frontend/js/**/*',
-		'!frontend/js',
-		'!frontend/css/**/*.css',
-	], {
+	return gulp.src(frontendList, {
 		base: 'frontend',
 	})
 		.pipe(gulp.dest('dist/'));
 });
 
+var backendList = [
+	'backend/**/*',
+	'!backend/config.php'
+];
 gulp.task('copy-backend', function(){
-	return gulp.src([
-		'backend/**/*',
-		'!backend/config.php'
-	], {base: 'backend'})
+	return gulp.src(backendList, {base: 'backend'})
 		.pipe(gulp.dest('dist/'));
 });
 
+var scoreshareList = [
+	'scoreshare/.htaccess',
+	'scoreshare/**/*',
+];
 gulp.task('copy-scoreshare', function(){
-	return gulp.src([
-		'scoreshare/.htaccess',
-		'scoreshare/**/*',
-	])
+	return gulp.src(scoreshareList)
 		.pipe(gulp.dest('dist/scoreshare/'));
 });
 
@@ -101,6 +104,7 @@ gulp.task('build-frontend-js', ['build-asmcrypto'], function(){
 		.pipe(gulp.dest('dist/js/'));
 });
 
+
 gulp.task('build-frontend-css', function(){
 	return gulp.src('frontend/css/style.css')
 		.pipe(preprocess({context: config}))
@@ -110,4 +114,14 @@ gulp.task('build-frontend-css', function(){
 			cssnano(),
 		]))
         .pipe(gulp.dest('dist/css/'));
+});
+
+gulp.task('watch', function(){
+	gulp.watch(frontendList, ['copy-frontend']);
+	gulp.watch(backendList, ['copy-backend']);
+	gulp.watch(scoreshareList, ['copy-scoreshare']);
+	gulp.watch('frontend/index.html', ['build-html']);
+	gulp.watch('backend/config.php', ['build-config']);
+	gulp.watch('frontend/js/**/*.js', ['build-frontend-js']);
+	gulp.watch('frontend/css/**/*.css', ['build-frontend-css']);
 });

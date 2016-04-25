@@ -49,14 +49,12 @@ var load_data = function(i,u,p){
 				$('<td></td>').appendTo(row).text(v.score);
 				var percent=$('<td class="percent"></td>');
 				percent.appendTo(row).text(v.percent.toFixed(2));
+				percent.css("background-color", ScoreApp.percentColor(v.percent));
+
 				if(v.percent == 100){
-					percent.css({
-						"background": "url("+require('./nyancat.txt')+") no-repeat #0f397c",
-						"background-position": "-2px -2px"
-					});
-				}else{
-					percent.css("background-color", ScoreApp.percentColor(v.percent));
+					percent.addClass("fullscore");
 				}
+				
 				$('<td></td>').appendTo(row).text(v.standard.toFixed(2));
 				$('<td></td>').appendTo(row).text(v.rank);
 
