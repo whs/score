@@ -13,8 +13,6 @@ var ScoreApp = module.exports = {
 	get_url: function(i, u, p){
 		if(u !== undefined){
 			var pass = ScoreApp.get_password(i,u,p);
-			$("#loadscrim").show();
-			$("#login").find("input[type=text],input[type=password]").attr("disabled", true);
 			if(!i.match(/^[0-9a-f]+$/) || !u.match(/^[0-9a-z]+$/i)){
 				return false;
 			}

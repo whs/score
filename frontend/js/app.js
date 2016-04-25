@@ -27,6 +27,9 @@ var fetch_list = function(){
 };
 
 var load_data = function(i,u,p){
+	$("#loadscrim").show();
+	$("#login").find("input[type=text],input[type=password]").attr("disabled", true);
+	
 	ScoreApp.load_data(i,u,p, function(data, stats, pass){
 		$("#loadscrim").hide();
 		$("#login").find("input[type=text],input[type=password]").attr("disabled", false);
