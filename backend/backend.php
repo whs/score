@@ -130,6 +130,5 @@ Upload file: <input type="file" name="upload">
 <?php
 }
 ?>
-<script src="js/jquery.js"></script>
 </body>
 </html>

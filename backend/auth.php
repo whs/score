@@ -1,9 +1,12 @@
 <?php
 session_start();
 error_reporting(0);
-$password = "";
+require_once 'config.php';
 $loggedIn = false;
-$tries = 3;
+
+if(empty($password)){
+	die('No password set! Please edit auth.php');
+}
 
 if($_SESSION['password'] == $password){
 	$loggedIn = true;
