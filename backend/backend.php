@@ -40,7 +40,6 @@ if(check_login()){
 		foreach(glob("data/".$_POST['delete']."/*") as $f){
 			unlink($f);
 		}
-		unlink("input/".$_POST['delete'].".csv");
 		rmdir("data/".$_POST['delete']);
 		write_data($data);
 	}else if(isset($_FILES['upload'])){
@@ -78,7 +77,8 @@ if(check_login()){
 		if(!$found){
 			print "ไม่พบไฟล์ที่เลือกไว้";
 		}else{
-			$sp = new ScoreProcessor("input/".$_GET['file'].".csv", "data/".$_GET['file']."/", $_GET['file'], $found['name']);
+			$filename = "input/".$_GET['file'].".csv";
+			$sp = new ScoreProcessor($filename, "data/".$_GET['file']."/", $_GET['file'], $found['name']);
 			if(in_array($_GET['step'], array("1", "2", "3"))){
 				$sp->{"step".$_GET['step']}();
 				$step = $_GET['step'] + 1;
@@ -87,6 +87,7 @@ if(check_login()){
 				print "<script>setTimeout(function(){ window.location='backend.php?step=".$step."&file=".$item['id']."'; }, 1500);</script>";
 				die();
 			}else if($_GET['step'] == "4"){
+				unlink($filename);
 				print "<script>window.location='backend.php'</script>";
 			}
 		}

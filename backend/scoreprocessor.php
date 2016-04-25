@@ -204,7 +204,6 @@ class ScoreProcessor{
 			}
 		}
 		fclose($this->file);
-		unlink($this->filename);
 		print "\nบันทึกข้อมูลเรียบร้อย พร้อมประกาศผล";
 		print "</pre>";
 	}
