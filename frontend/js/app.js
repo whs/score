@@ -183,6 +183,7 @@ $(function(){
 						data: stat.histogram,
 						backgroundColor: graphcolor,
 						borderWidth: 1,
+						borderColor: '#666'
 					}
 				]
 			},
@@ -195,7 +196,7 @@ $(function(){
 					xAxes: [{
 						gridLines: {display: false},
 						ticks: {autoSkip: true, maxTicksLimit: 11},
-						barPercentage: 0.95,
+						barPercentage: 1.0,
 						categoryPercentage: 1.0,
 					}],
 					yAxes: [{
