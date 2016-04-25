@@ -96,7 +96,7 @@ gulp.task('build-frontend-js', ['build-asmcrypto'], function(){
 			'jquery-ui/button': 'jQuery',
 			'jquery-ui/effect-clip': 'jQuery',
 			'jquery-ui/mouse': 'jQuery',
-			'chart.js': 'Chart',
+			'./chart.js': 'Chart',
 		};
 	}
 
