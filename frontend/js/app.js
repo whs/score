@@ -34,7 +34,7 @@ var load_data = function(i,u,p){
 		dialog.find(".name").text(data['_name']);
 		dialog.find(".filename").text(data['_fname']);
 		var scoreTable = dialog.find("table:first tbody");
-		var tweetText = [], shareData = {}, graphdata=[], graphsubjects=[];
+		var graphdata=[], graphsubjects=[];
 		$.each(data, function(k,v){
 			if(k.charAt(0) == "_"){
 				return;
@@ -63,11 +63,6 @@ var load_data = function(i,u,p){
 					};
 				}
 
-				var tweetSubj = k.match(/^([ก-ฮA-Z]+)/i)[1];
-				if(tweetSubj){
-					tweetText.push(tweetSubj+"-"+v.score);
-				}
-				shareData[k] = v.score;
 				graphdata.push({name: k, color: ScoreApp.percentColor(v.percent), y: v.percent});
 				graphsubjects.push(k.replace(/\([0-9]+\)$/, ''));
 			}else{
@@ -78,32 +73,6 @@ var load_data = function(i,u,p){
 		});
 		if(u !== undefined){
 			window.location.hash = i+"/u"+u+"_"+pass;
-		}
-		if(tweetText.length > 0){
-			var link = window.location.protocol + "//" + window.location.hostname + window.location.pathname + window.location.hash;
-			var piclink = "http://bd2.in.th/scoreshare/" + window.location.hash.substr(1) + ".png";
-			dialog.find(".tweet").attr("href", 'https://twitter.com/intent/tweet?'+$.param({
-				text: data['_fname']+" // "+tweetText.join(","),
-				hashtags: "bd2score",
-				url: piclink
-			})).data("link", link);
-			dialog.find(".fbshare").attr("href", 'https://www.facebook.com/dialog/feed?'+$.param({
-				app_id: "168068966547348",
-				link: piclink,
-				name: "คะแนนสอบ "+data['_fname'],
-				caption: link,
-				redirect_uri: "http://bd2.in.th/scoreshare/close.html",
-				display: "popup",
-				picture: piclink,
-				properties: JSON.stringify(shareData),
-				actions: JSON.stringify([{
-					name: 'ดูบนเว็บ',
-					link: link
-				}])
-			})).data("link", link);
-			dialog.find(".imgshare").attr("href", piclink);
-		}else{
-			dialog.find(".social").remove();
 		}
 		dialog.appendTo("body").dialog({
 			width: 500,
@@ -147,11 +116,7 @@ $(function(){
 		load_data(file.val(), $(this).find("input[name=u]").val(), $(this).find("input[name=p]").val());
 		return false;
 	});
-	$("input[type=submit],#sharewarning button").button();
-	$("#sharewarning button[data-act=stop]").click(function(){
-		$("#sharewarning").dialog("close");
-		return false;
-	});
+	$("input[type=submit]").button();
 	if(window.location.hash.length > 1){
 		load_data(window.location.hash.substr(1));
 	}
@@ -204,28 +169,6 @@ $(function(){
 		// });
 
 		dialog.find(".stats").show();
-		return false;
-	});
-	$("body").delegate(".tweet, .fbshare", "click", function(){
-		var displayWarn=true, self=$(this);
-		if(window.hasOwnProperty("localStorage")){
-			if(localStorage.displayWarn){
-				displayWarn = false;
-			}else{
-				localStorage.displayWarn = true;
-			}
-		}
-		if(displayWarn){
-			$("#sharelink").attr("href", $(this).data("link")).text($(this).data("link"));
-			$("#sharewarning button[data-act=confirm]").one("click", function(){
-				window.open(self.attr("href"), "tweet", "width=550,height=420,toolbars=no");
-				$("#sharewarning").dialog("close");
-				return false;
-			});
-			$("#sharewarning").dialog({modal:true, width: 500, title: "คำเตือน"});
-		}else{
-			window.open(self.attr("href"), "tweet", "width=550,height=420,toolbars=no");
-		}
 		return false;
 	});
 });
