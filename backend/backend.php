@@ -56,7 +56,7 @@ if(check_login()){
 			if($found){
 				$txt = file_get_contents($_FILES['upload']['tmp_name']);
 				$txt = iconv("TIS-620", "UTF-8", $txt);
-				file_put_contents("input/".$_POST['name'].".csv", $txt);
+				file_put_contents("input/".hash_hmac('sha256', $_POST['name'], $encryptionKey).".csv", $txt);
 				$found['uploaded'] = 1;
 				write_data($data);
 				print "<script>window.location='backend.php?step=1&file=".$item['id']."';</script>";
@@ -77,7 +77,7 @@ if(check_login()){
 		if(!$found){
 			print "ไม่พบไฟล์ที่เลือกไว้";
 		}else{
-			$filename = "input/".$_GET['file'].".csv";
+			$filename = "input/".hash_hmac('sha256', $_GET['file'], $encryptionKey).".csv";
 			$sp = new ScoreProcessor($filename, "data/".$_GET['file']."/", $_GET['file'], $found['name']);
 			if(in_array($_GET['step'], array("1", "2", "3"))){
 				$sp->{"step".$_GET['step']}();

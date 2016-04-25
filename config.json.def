@@ -1,7 +1,7 @@
 {
 	"system": "ระบบประกาศผลคะแนนสอบ",
 	"branding": "โรงเรียนบดินทรเดชา (สิงห์ สิงหเสนี) ๒",
-	"password": "asdf",
+	"password": "",
 	"encryptionKey": "default",
 	"useCdn": true,
 	"nyanCat": true
