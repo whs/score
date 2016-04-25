@@ -73,7 +73,6 @@ $files = json_decode(file_get_contents("data/files.json"), true);
 		<input type="submit" value="ตรวจ">
 	</form>
 	<hr>
-	<a href="http://www.whs.in.th">whs.in.th</a><br>
 	<a href="desktop.html">Desktop version</a>
 </body>
 </html>
