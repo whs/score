@@ -98,7 +98,10 @@ if(check_login()){
 <h1>Backend</h1>
 <?php
 if(!is_writable("data") || !is_writable("data/files.json") || !is_writable("input")){
-	print "<div style='color:red;'>Warning: Data is not writable.</div>";
+	print "<div style='color:red;'>Error: Data is not writable.</div>";
+}
+if($encryptionKey === "default"){
+	print "<div style='color:yellow;'>Warning: Encryption key set to to default</div>";
 }
 ?>
 <form action="backend.php" method="POST">

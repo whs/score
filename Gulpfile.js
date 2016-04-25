@@ -9,7 +9,11 @@ var concat = require('gulp-concat');
 var preprocess = require('gulp-preprocess');
 var config = require('./config.json');
 
-gulp.task('default', ['copy-frontend', 'copy-backend', 'copy-scoreshare', 'build-html', 'build-frontend-js', 'build-frontend-css']);
+gulp.task('default', [
+	'copy-frontend', 'copy-backend', 'copy-scoreshare',
+	'build-html', 'build-config',
+	'build-frontend-js', 'build-frontend-css'
+]);
 
 gulp.task('copy-frontend', function(){
 	return gulp.src([
@@ -26,7 +30,10 @@ gulp.task('copy-frontend', function(){
 });
 
 gulp.task('copy-backend', function(){
-	return gulp.src('backend/**/*', {base: 'backend'})
+	return gulp.src([
+		'backend/**/*',
+		'!backend/config.php'
+	], {base: 'backend'})
 		.pipe(gulp.dest('dist/'));
 });
 
@@ -40,6 +47,12 @@ gulp.task('copy-scoreshare', function(){
 
 gulp.task('build-html', function(){
 	return gulp.src('frontend/index.html', {base: 'frontend'})
+		.pipe(preprocess({context: config}))
+		.pipe(gulp.dest('dist/'));
+});
+
+gulp.task('build-config', function(){
+	return gulp.src('backend/config.php', {base: 'backend'})
 		.pipe(preprocess({context: config}))
 		.pipe(gulp.dest('dist/'));
 });

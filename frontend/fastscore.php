@@ -1,5 +1,6 @@
 <?php
 error_reporting(0);
+require_once "config.php";
 if(!empty($_POST['u']) && !empty($_POST['p']) && !empty($_POST['f'])){
 	//"u".$l[0]."_".substr(sha1($l[0].$l[1].$this->id), 0, 5).".json"
 	header("Location: fastscore.php?f=".$_POST['f']."/u".$_POST['u']."_".substr(sha1($_POST['u'].$_POST['p'].$_POST['f']), 0, 5));
@@ -33,15 +34,15 @@ if(isset($_GET['f'])){
 }
 $files = json_decode(file_get_contents("data/files.json"), true);
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
-	<title>ระบบประกาศผลคะแนนสอบ</title>
+	<title><?php echo $props['system']; ?></title>
 </head>
 <body>
-	<h1>ระบบประกาศผลคะแนนสอบ</h1>
-	<h2>โรงเรียนบดินทรเดชา (สิงห์ สิงหเสนี) ๒</h2>
+	<h1><?php echo $props['system']; ?></h1>
+	<h2><?php echo $props['branding']; ?></h2>
 	<?php
 	if($error){
 		print "<p>".$error."</p>";
@@ -72,7 +73,7 @@ $files = json_decode(file_get_contents("data/files.json"), true);
 		<input type="submit" value="ตรวจ">
 	</form>
 	<hr>
-	งานทะเบียนวัดผล &amp; งานสื่อนวัตกรรมและเทคโนโลยี | <a href="http://www.whs.in.th">whs.in.th</a><br>
+	<a href="http://www.whs.in.th">whs.in.th</a><br>
 	<a href="desktop.html">Desktop version</a>
 </body>
 </html>
