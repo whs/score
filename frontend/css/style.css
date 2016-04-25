@@ -1,3 +1,5 @@
+@import url(normalize.css/normalize.css)
+@import url(Aristo/Aristo.css);
 @import url(thaisans/fontface.css);
 body{
 	background: #004080;

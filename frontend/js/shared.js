@@ -1,9 +1,14 @@
-ScoreApp = {
+"use strict";
+
+var $ = require('jquery');
+var asmcrypto = require('asmcrypto');
+
+var ScoreApp = module.exports = {
 	fetch_list: function(cb){
 		$.getJSON("data/files.json?cache="+(new Date().getTime()), cb);
 	},
 	get_password: function(i,u,p){
-		return hex_sha1(u+p+i).substr(0, 5);
+		return asmcrypto.SHA1.hex(u+p+i).substr(0, 5);
 	},
 	load_data: function(i,u,p, success, error){
 		var url;
