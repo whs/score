@@ -28,11 +28,16 @@ if(check_login()){
 				break;
 			}
 		}
-		foreach(glob("data/".$_POST['delete']."/*") as $f){
-			unlink($f);
+		if($found === false){
+			$themeData['error'] = "ไม่พบไฟล์ที่เลือก";
+		}else{
+			// $_POST['delete'] is safe as it is validated
+			foreach(glob("data/".$_POST['delete']."/*") as $f){
+				unlink($f);
+			}
+			rmdir("data/".$_POST['delete']);
+			write_data($data);
 		}
-		rmdir("data/".$_POST['delete']);
-		write_data($data);
 	}else if(isset($_FILES['upload'])){
 		if(empty($_POST['name'])){
 			$themeData['error'] = "ยังไม่ได้เลือกไฟล์";
