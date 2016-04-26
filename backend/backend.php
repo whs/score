@@ -13,7 +13,7 @@ if(check_login()){
 	if(!empty($_POST['new'])){
 		$fileID = uniqid();
 		mkdir("data/".$fileID);
-		file_put_contents("data/".$fileID."/index.html", "<script>window.location='../../'</script>");
+		file_put_contents("data/".$fileID."/index.html", '<meta http-equiv="refresh" content="0;url=../../">');
 		$data[] = array(
 			"id" => $fileID,
 			"name" => $_POST['new']
@@ -50,14 +50,13 @@ if(check_login()){
 				file_put_contents("input/".hash_hmac('sha256', $_POST['name'], ENCRYPTION_KEY).".csv", $txt);
 				$found['uploaded'] = 1;
 				write_data($data);
-				print "<script>window.location='backend.php?step=1&file=".$item['id']."';</script>";
+				print '<meta http-equiv="refresh" content="0;url=backend.php?step=1&file='.$item['id'].'">';
 				die();
 			}else{
 				print "ไม่พบไฟล์ที่เลือกไว้";
 			}
 		}
 	}else if(isset($_GET['step'])){
-		require_once "scoreprocessor.php";
 		$found = false;
 		foreach($data as &$item){
 			if($item['id'] == $_GET['file']){
@@ -68,20 +67,23 @@ if(check_login()){
 		if(!$found){
 			print "ไม่พบไฟล์ที่เลือกไว้";
 		}else{
-			$filename = "input/".hash_hmac('sha256', $_GET['file'], $encryptionKey).".csv";
-			$sp = new ScoreProcessor($filename, "data/".$_GET['file']."/", $_GET['file'], $found['name']);
+			$filename = "input/".hash_hmac('sha256', $_GET['file'], ENCRYPTION_KEY).".csv";
 			if(in_array($_GET['step'], array("1", "2", "3"))){
+				require_once "scoreprocessor.php";
+
+				$sp = new ScoreProcessor($filename, "data/".$_GET['file']."/", $_GET['file'], $found['name']);
 				$sp->{"step".$_GET['step']}();
+
 				$step = $_GET['step'] + 1;
 				$found['uploaded'] = $step;
 				write_data($data);
-				print "<script>setTimeout(function(){ window.location='backend.php?step=".$step."&file=".$item['id']."'; }, 1500);</script>";
-				die();
+				print '<meta http-equiv="refresh" content="2;url=backend.php?step='.$step.'&file='.$item['id'].'">';
 			}else if($_GET['step'] == "4"){
 				unlink($filename);
-				print "<script>window.location='backend.php'</script>";
+				print '<meta http-equiv="refresh" content="0;url=backend.php">';
 			}
 		}
+		die();
 	}
 
 	$themeData['items'] = $data;
