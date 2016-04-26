@@ -39,6 +39,7 @@ $files = json_decode(file_get_contents("data/files.json"), true);
 <head>
 	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
 	<title><?php echo $props['system']; ?></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 	<h1><?php echo $props['system']; ?></h1>
@@ -68,11 +69,11 @@ $files = json_decode(file_get_contents("data/files.json"), true);
 					print '<option value="'.htmlspecialchars($f['id']).'">'.htmlspecialchars($f['name'])."</option>\n";
 				}
 				?>
-			</select><br>
-		</label>
+			</select>
+		</label><br><br>
 		<input type="submit" value="ตรวจ">
 	</form>
 	<hr>
-	<a href="desktop.html">Desktop version</a>
+	<a href=".">Desktop version</a>
 </body>
 </html>
