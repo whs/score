@@ -10,9 +10,21 @@ var preprocess = require('gulp-preprocess');
 var config = require('./config.json');
 
 gulp.task('default', [
-	'copy-frontend', 'copy-backend', 'copy-scoreshare',
-	'build-html', 'build-config',
-	'build-frontend-js', 'build-frontend-css'
+	'frontend', 'backend', 'scoreshare',
+]);
+
+gulp.task('frontend', [
+	'copy-frontend',
+	'build-html', 'build-frontend-js', 'build-frontend-css',
+]);
+
+gulp.task('backend', [
+	'copy-backend',
+	'build-config', 'build-backend-css'
+]);
+
+gulp.task('scoreshare', [
+	'copy-scoreshare',
 ]);
 
 var frontendList = [
@@ -32,7 +44,8 @@ gulp.task('copy-frontend', function(){
 
 var backendList = [
 	'backend/**/*',
-	'!backend/config.php'
+	'!backend/config.php',
+	'!backend/css/**/*',
 ];
 gulp.task('copy-backend', function(){
 	return gulp.src(backendList, {base: 'backend'})
@@ -117,6 +130,17 @@ gulp.task('build-frontend-css', function(){
         .pipe(gulp.dest('dist/css/'));
 });
 
+gulp.task('build-backend-css', function(){
+	return gulp.src('backend/css/backend.css')
+		.pipe(preprocess({context: config}))
+        .pipe(postcss([
+			postcss_import(),
+			postcss_url(),
+			cssnano(),
+		]))
+        .pipe(gulp.dest('dist/css/'));
+});
+
 gulp.task('watch', function(){
 	gulp.watch(frontendList, ['copy-frontend']);
 	gulp.watch(backendList, ['copy-backend']);
@@ -125,4 +149,5 @@ gulp.task('watch', function(){
 	gulp.watch('backend/config.php', ['build-config']);
 	gulp.watch('frontend/js/**/*.js', ['build-frontend-js']);
 	gulp.watch('frontend/css/**/*.css', ['build-frontend-css']);
+	gulp.watch('backend/css/**/*.css', ['build-backend-css']);
 });

@@ -2,47 +2,44 @@
 session_start();
 error_reporting(0);
 require_once 'config.php';
-$loggedIn = false;
 
 if(empty(PASSWORD)){
-	die('No password set! Please edit config.php');
+	die('ไม่ได้กำหนดรหัสผ่าน! กรุณาแก้ไข config.php');
 }
 
-if($_SESSION['password'] == PASSWORD){
-	$loggedIn = true;
+if($_SESSION['password'] == hash('sha512', PASSWORD)){
+	define('LOGGED_IN', true);
 	error_reporting(E_ALL);
 }
 
+function get_tries_left(){
+	return TRIES-$_SESSION['wrongcount'] + 1;
+}
+
 function page_login(){
-	$left = TRIES-$_SESSION['wrongcount'];
-	if($left > 0):
-?>
-<form action="backend.php" method="POST">
-<?php if(isset($_SESSION['wrongcount'])): ?>
-	<p>Wrong password! You have <?php print $left ?> tries left.</p>
-<?php endif; ?>
-	Enter password: <input type="password" name="password">
-	<input type="submit" value="Submit">
-</form>
-<?php
-	else:
-	print "Too many incorrect password tries. Form locked.";
-	endif;
+	$left = get_tries_left();
+	if($left > 0){
+		require_once 'templates/login.php';
+		login_theme($left);
+	}else{
+		require_once 'templates/locked.php';
+		locked_theme();
+	}
 }
 
 function check_login(){
-	global $loggedIn, $tries, $password;
+	global $loggedIn;
 	if(!empty($_POST['password'])){
-		$left = TRIES-$_SESSION['wrongcount'];
-		if($_POST['password'] == $password && $left > 0){
-			$_SESSION['password'] = $password;
+		$left = get_tries_left();
+		if($_POST['password'] == PASSWORD && $left > 0){
+			$_SESSION['password'] = hash('sha512', PASSWORD);
+			$_SESSION['wrongcount'] = 0;
 			return true;
 		}else{
 			$_SESSION['wrongcount']++;
 		}
 	}
-	if(!$loggedIn){
-		page_login();
+	if(!defined('LOGGED_IN')){
 		return false;
 	}
 	error_reporting(E_ERROR | E_WARNING);

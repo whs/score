@@ -18,4 +18,5 @@ define("TRIES", 3);
 $props = array(
     "branding" => "/* @echo branding */",
     "system" => "/* @echo system */",
+    "useCdn" => /* @echo useCdn */,
 );

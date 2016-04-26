@@ -1,22 +1,13 @@
 <?php
 ob_start();
 require "auth.php";
-?>
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>Backend | ระบบผลคะแนนสอบ</title>
-	<style>
-input, input[type=submit]{
-	font-size: 14pt;
-}
-	</style>
-</head>
-<body>
-<?php
 if(check_login()){
 	$data = parse_data();
+
+	$themeData = array(
+		"warn_unwritable" => !is_writable("data") || !is_writable("data/files.json") || !is_writable("input"),
+		"warn_encryption_insecure" => ENCRYPTION_KEY === "default" || empty(ENCRYPTION_KEY),
+	);
 
 	// create new file
 	if(!empty($_POST['new'])){
@@ -93,46 +84,11 @@ if(check_login()){
 		}
 	}
 
+	$themeData['items'] = $data;
 
-?>
-<h1>Backend</h1>
-<?php
-if(!is_writable("data") || !is_writable("data/files.json") || !is_writable("input")){
-	print "<div style='color:red;'>Error: Data is not writable.</div>";
+	require_once "templates/list.php";
+	list_theme($themeData);
+
+}else{
+	page_login();
 }
-if(ENCRYPTION_KEY === "default" || empty(ENCRYPTION_KEY)){
-	print "<div style='color:yellow;'>Warning: Encryption key set to to default</div>";
-}
-?>
-<form action="backend.php" method="POST">
-	<input type="text" name="new" size="100"><input type="submit" value="เพิ่มไฟล์">
-</form>
-<form action="backend.php" method="POST" enctype="multipart/form-data">
-<table border="1">
-	<tr><th>Name</th><th>Upload</th><th>Delete</th></tr>
-<?php
-if(count($data) > 0){
-foreach($data as $item):
-?>
-	<tr><td><?php print htmlspecialchars($item['name']); ?></td>
-		<td><?php if(!isset($item['uploaded'])){ ?>
-		<input type="radio" name="name" value="<?php print $item['id'] ?>">
-		<?php }else if($item['uploaded'] < 4){
-			print "<a href='backend.php?step={$item['uploaded']}&file={$item['id']}'>ประมวลผลต่อ</a>";
-		}else{
-			print "ประกาศผลแล้ว";
-		} ?></td>
-		<td><button type="submit" name="delete" value="<?php print $item['id'] ?>" onclick="return confirm('Delete?')">Delete</button></td></tr>
-<?php
-endforeach;
-}
-?>
-</table>
-Upload file: <input type="file" name="upload">
-<input type="submit" value="Upload">
-</form>
-<?php
-}
-?>
-</body>
-</html>

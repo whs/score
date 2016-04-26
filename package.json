@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "asmcrypto.js": "^0.0.11",
+    "bootstrap": "^3.3.6",
     "chart.js": "^2.0.2",
     "jquery": "^2.2.3",
     "jquery-ui": "^1.10.5",
