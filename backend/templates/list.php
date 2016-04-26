@@ -24,6 +24,11 @@ function base_cb(){
 				<p>ศึกษาเพิ่มเติมจาก<a href="https://github.com/whs/score">เอกสารการติดตั้งโปรแกรม</a></p>
 			</div>
 			<?php endif; ?>
+			<?php if(isset($theme['error'])): ?>
+			<div class="alert alert-danger">
+				<?php echo htmlspecialchars($theme['error']); ?>
+			</div>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>

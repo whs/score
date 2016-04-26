@@ -35,7 +35,9 @@ if(check_login()){
 		write_data($data);
 	}else if(isset($_FILES['upload'])){
 		if(empty($_POST['name'])){
-			print "ยังไม่ได้เลือกไฟล์";
+			$themeData['error'] = "ยังไม่ได้เลือกไฟล์";
+		}else if($_FILES['upload']['error']){
+			$themeData['error'] = "อัพโหลดไฟล์ล้มเหลว";
 		}else{
 			$found = false;
 			foreach($data as &$item){
@@ -53,7 +55,7 @@ if(check_login()){
 				print '<meta http-equiv="refresh" content="0;url=backend.php?step=1&file='.$item['id'].'">';
 				die();
 			}else{
-				print "ไม่พบไฟล์ที่เลือกไว้";
+				$themeData['error'] = "ไม่พบไฟล์ที่เลือกไว้";
 			}
 		}
 	}else if(isset($_GET['step'])){
