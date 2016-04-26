@@ -4,18 +4,17 @@ error_reporting(0);
 require_once 'config.php';
 $loggedIn = false;
 
-if(empty($password)){
-	die('No password set! Please edit auth.php');
+if(empty(PASSWORD)){
+	die('No password set! Please edit config.php');
 }
 
-if($_SESSION['password'] == $password){
+if($_SESSION['password'] == PASSWORD){
 	$loggedIn = true;
 	error_reporting(E_ALL);
 }
 
 function page_login(){
-	global $tries, $password;
-	$left = $tries-$_SESSION['wrongcount'];
+	$left = TRIES-$_SESSION['wrongcount'];
 	if($left > 0):
 ?>
 <form action="backend.php" method="POST">
@@ -34,7 +33,7 @@ function page_login(){
 function check_login(){
 	global $loggedIn, $tries, $password;
 	if(!empty($_POST['password'])){
-		$left = $tries-$_SESSION['wrongcount'];
+		$left = TRIES-$_SESSION['wrongcount'];
 		if($_POST['password'] == $password && $left > 0){
 			$_SESSION['password'] = $password;
 			return true;
