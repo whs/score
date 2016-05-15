@@ -165,6 +165,11 @@ class ScoreProcessor{
 			// sha1(id + password + fileid)
 			$password = substr(sha1($l[0].sprintf("%04s", $l[1]).$this->id), 0, 5);
 
+			if(strpos($l[0], "/") !== false || strpos($l[0], "\\") !== false){
+				print htmlspecialchars($l[0])." มีตัวอักษรพิเศษ ข้ามไป\n";
+				continue;
+			}
+
 			$file = "u".$l[0]."_".$password.".json";
 
 			$out = array(
