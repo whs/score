@@ -28,7 +28,6 @@ function page_login(){
 }
 
 function check_login(){
-	global $loggedIn;
 	if(!empty($_POST['password'])){
 		$left = get_tries_left();
 		if($_POST['password'] == PASSWORD && $left > 0){
