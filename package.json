@@ -1,13 +1,20 @@
 {
   "name": "score",
   "version": "3.1.0",
-  "description": "bd2 scoreapp",
+  "description": "Score announcement app",
+  "homepage": "https://github.com/whs/score",
   "author": "Manatsawin Hanmongkolchai",
   "license": "Apache-2.0",
+  "bugs": "https://github.com/whs/score/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whs/score.git"
+  },
   "devDependencies": {
     "cssnano": "^3.5.2",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
+    "gulp-file": "^0.3.0",
     "gulp-postcss": "^6.1.0",
     "gulp-preprocess": "^2.0.0",
     "postcss-import": "^8.1.0",

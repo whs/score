@@ -7,7 +7,12 @@ var postcss_import = require('postcss-import');
 var postcss_url = require('postcss-url');
 var concat = require('gulp-concat');
 var preprocess = require('gulp-preprocess');
-var config = require('./config.json');
+var file = require('gulp-file');
+try{
+	var config = require('./config.json');
+}catch(e){
+	console.warn('Config file cannot be loaded. Copy config.json.def to config.json');
+}
 
 gulp.task('default', [
 	'frontend', 'backend', 'scoreshare',
@@ -139,6 +144,21 @@ gulp.task('build-backend-css', function(){
 			cssnano(),
 		]))
         .pipe(gulp.dest('dist/css/'));
+});
+
+gulp.task('generate-config', function(){
+	var crypto = require('crypto');
+	var key = crypto.randomBytes(64).toString('base64');
+	var config = {
+		system: process.env['SYSTEM'] || 'ระบบประกาศผลคะแนนสอบ',
+		branding: process.env['BRANDING'] || 'กำหนดค่า BRANDING',
+		password: process.env['PASSWORD'] || '',
+		encryptionKey: key,
+		useCdn: process.env['USE_CDN'] != 'false',
+		nyanCat: process.env['NYANCAT'] != 'false',
+	};
+	return file('config.json', JSON.stringify(config), {src: true})
+		.pipe(gulp.dest('.'));
 });
 
 gulp.task('watch', function(){
