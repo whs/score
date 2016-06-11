@@ -1,4 +1,5 @@
 <?php
+require_once "../config.php";
 $datafile = "../data/".$_GET["f"].".json";
 $datafile = realpath($datafile);
 $allowedpath = str_replace("\\", "/", realpath("../data"));
@@ -143,7 +144,7 @@ $size += 30;
 $draw->setFontSize(18);
 $draw->setFont($font['r']);
 $draw->setFillColor('#1782ff');
-$draw->annotation(5, $curY+5, 'โรงเรียนบดินทรเดชา (สิงห์ สิงหเสนี) ๒');
+$draw->annotation(5, $curY+5, $props['branding']);
 
 $img->newImage(350, $size, 'white', 'png'); // png8 is better? check aliasing?
 $img->drawImage($draw);
