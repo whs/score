@@ -13,6 +13,7 @@ if [ "$BRANDING" = "" -o "$PASSWORD" = "" ]; then
 	echo "- BRANDING: Your name (subtitle) REQUIRED"
 	echo "- PASSWORD: Admin password REQUIRED"
 	echo "- USE_CDN: Set to false to use local JavaScript file. Defaults to true (recommended)"
+	echo "- LOGO_URL: URL to logo. Defaults to img/logo.gif"
 	exit 1
 fi
 

@@ -4,5 +4,6 @@
 	"password": "",
 	"encryptionKey": "default",
 	"useCdn": true,
-	"nyanCat": true
+	"nyanCat": true,
+	"logoUrl": "img/logo.gif"
 }

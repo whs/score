@@ -156,6 +156,7 @@ gulp.task('generate-config', function(){
 		encryptionKey: key,
 		useCdn: process.env['USE_CDN'] != 'false',
 		nyanCat: process.env['NYANCAT'] != 'false',
+		logoUrl: process.env['LOGO_URL'] || 'img/logo.gif',
 	};
 	return file('config.json', JSON.stringify(config), {src: true})
 		.pipe(gulp.dest('.'));
