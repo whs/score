@@ -3,11 +3,17 @@ import {customElement, property} from 'lit/decorators.js'
 import {repeat} from 'lit/directives/repeat.js';
 import {until} from 'lit/directives/until.js';
 import {FileList, FileState} from "./schema.ts";
+import './score-error.ts'
 
 @customElement('score-form')
 export class ScoreForm extends LitElement {
 	@property()
-	fileList: Promise<FileList> = Promise.reject();
+	fileList: Promise<FileList> = new Promise(()=>{});
+
+	@property()
+	usernameInputMode: string = 'numeric'
+	@property()
+	passwordInputMode: string = 'numeric'
 
 	render() {
 		return html`
@@ -15,16 +21,16 @@ export class ScoreForm extends LitElement {
                 <slot name="header"></slot>
                 <label class="input">
                     <slot name="username">เลขประจำตัว</slot>
-                    <input type="text" name="username" inputmode="numeric" required autofocus>
+                    <input type="text" name="username" inputmode="${this.usernameInputMode}" required autofocus>
                 </label>
                 <label class="input">
                     <slot name="password">รหัสผ่าน</slot>
-                    <input type="password" name="password" inputmode="numeric" required>
+                    <input type="password" name="password" inputmode="${this.passwordInputMode}" required>
                 </label>
                 <slot name="beforefilelist"></slot>
                 <div class="files">${until(this.fileList.then(
-					(files) => html`${repeat(Object.values(files), file => html`<label><input type="radio" name="file" value="${file.id}" ?disabled=${file.uploaded !== FileState.COMPLETE} required>${file.name}</label>`)}`,
-						(e) => html`ไม่สามารถโหลดข้อมูลได้ เนื่องจาก <p><code>${e}</code></p>`
+					(files) => repeat(Object.values(files), file => html`<label><input type="radio" name="file" value="${file.id}" ?disabled=${file.uploaded !== FileState.COMPLETE} required>${file.name}</label>`),
+						() => html`<score-error>ไม่สามารถโหลดข้อมูลได้</score-error>`
 				), html`กำลังเรียกข้อมูล...`)}</div>
                 <slot name="beforesubmit"></slot>
                 <input type="submit" value="แสดง" ?disabled=${until(this.fileList.then(() => false), true)}>
@@ -38,11 +44,11 @@ export class ScoreForm extends LitElement {
 
 		let formData = new FormData(e.target as HTMLFormElement, e.submitter)
 
-		let event = new CustomEvent('submit', {
+		let event = new CustomEvent<ScoreFormSubmitEvent>('submit', {
 			detail: {
-				username: formData.get("username"),
-				password: formData.get("password"),
-				file: formData.get("file"),
+				username: formData.get("username") as string,
+				password: formData.get("password") as string,
+				file: formData.get("file") as string,
 			},
 		});
 
@@ -101,6 +107,12 @@ export class ScoreForm extends LitElement {
 			margin-bottom: 0.8rem;
         }
 	`
+}
+
+export interface ScoreFormSubmitEvent {
+	username: string,
+	password: string,
+	file: string,
 }
 
 declare global {
