@@ -1,0 +1,61 @@
+<!doctype html>
+<!--
+Score announcement system
+https://github.com/whs/score24
+-->
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>ระบบประกาศผลคะแนนสอบ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="node_modules/modern-normalize/modern-normalize.css">
+    <script type="module" src="src/entry.ts"></script>
+    <style>
+      body {
+        background: #004080;
+        font-family: helvetica, sans-serif;
+      }
+
+      .header {
+        display: flex;
+        margin-bottom: 16px;
+      }
+
+      .infotxt {
+        flex: 1;
+        padding-top: 10px;
+        font-family: thaisans, sans-serif;
+        margin-left: 10px;
+        font-size: 12pt;
+        font-weight: 100;
+        text-align: center;
+        text-shadow: white 0px 0px 10px;
+        line-height: 1.8em;
+      }
+
+      .appname {
+        font-weight: 500;
+        font-size: 16pt;
+      }
+
+      .footer {
+        text-align: center;
+        font-size: 10pt;
+      }
+    </style>
+  </head>
+  <body>
+    <whs-score>
+      <div slot="header" class="header">
+        <img src="logo.gif">
+        <div class="infotxt">
+          <div class="appname">ระบบประกาศผลคะแนนสอบ</div>
+          <div class="sitename">โรงเรียนบดินทรเดชา (สิงห์ สิงหเสนี) ๒</div>
+        </div>
+      </div>
+      <span slot="username">เลขประจำตัว</span>
+      <span slot="password">รหัสผ่าน</span>
+      <p class="footer" slot="footer">โดย งานทะเบียนวัดผล & งานสื่อนวัตกรรมและเทคโนโลยี</p>
+    </whs-score>
+  </body>
+</html>
