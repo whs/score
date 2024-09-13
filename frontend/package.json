@@ -1,18 +1,30 @@
 {
   "name": "score24",
-  "private": true,
-  "version": "0.0.0",
+  "version": "3.0.0",
   "type": "module",
+  "license": "Apache-2.0",
+  "author": "Manatsawin Hanmongkolchai <git-score@whs.in.th>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/whs/score.git"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prettier": "prettier -w src",
+    "locale-extract": "lit-localize extract",
+    "locale-build": "lit-localize build"
   },
   "dependencies": {
+    "@lit/localize": "^0.12.2",
+    "chart.js": "^4.4.4",
     "lit": "^3.2.0",
     "modern-normalize": "^3.0.1"
   },
   "devDependencies": {
+    "@lit/localize-tools": "^0.8.0",
+    "prettier": "^3.3.3",
     "rollup-plugin-license": "^3.5.2",
     "rollup-plugin-minify-html-literals": "^1.2.6",
     "typescript": "^5.5.4",

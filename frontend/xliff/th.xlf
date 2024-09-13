@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+<file target-language="th" source-language="en" original="lit-localize-inputs" datatype="plaintext">
+<body>
+<trans-unit id="s0fe711bc6138f6bd">
+  <source>Student ID</source>
+  <target>เลขประจำตัวนักเรียน</target>
+</trans-unit>
+<trans-unit id="sf6e1665c7022a1f8">
+  <source>Password</source>
+  <target>รหัสผ่าน</target>
+</trans-unit>
+<trans-unit id="s894569b024deae8b">
+  <source>Unable to load data</source>
+  <target>ไม่สามารถเรียกข้อมูลได้</target>
+</trans-unit>
+<trans-unit id="s49730f3d5751a433">
+  <source>Loading...</source>
+  <target>กำลังเรียกข้อมูล...</target>
+</trans-unit>
+<trans-unit id="s716a6024e3fe999c">
+  <source>Show</source>
+  <target>แสดง</target>
+</trans-unit>
+<trans-unit id="sbbc53e0e54d7946f">
+  <source>Subject</source>
+  <target>วิชา</target>
+</trans-unit>
+<trans-unit id="s7d684b6257284e55">
+  <source>Score</source>
+  <target>คะแนน</target>
+</trans-unit>
+<trans-unit id="saf63984c86017900">
+  <source>%</source>
+  <target>%</target>
+</trans-unit>
+<trans-unit id="saf63f74c86021a6d">
+  <source>z</source>
+  <target>z</target>
+</trans-unit>
+<trans-unit id="s9841212bd35bac27">
+  <source>Rank</source>
+  <target>อันดับที่</target>
+</trans-unit>
+<trans-unit id="s7ebf1d336b1c8af1">
+  <source>Click the subject names to view statistics</source>
+  <target>คลิกที่ชื่อวิชาเพื่อดูสถิติ</target>
+</trans-unit>
+<trans-unit id="s5e9ecdf1df38c3af">
+  <source>Highest</source>
+  <target>สูงสุด</target>
+</trans-unit>
+<trans-unit id="sbb4ed6daab9b9dfb">
+  <source>Lowest</source>
+  <target>ต่ำสุด</target>
+</trans-unit>
+<trans-unit id="s9d797a31ad307943">
+  <source>2nd Lowest</source>
+  <target>ต่ำสุดอันดับ 2</target>
+</trans-unit>
+<trans-unit id="s37cbecaec58e2192">
+  <source>Mode</source>
+  <target>ฐานนิยม</target>
+</trans-unit>
+<trans-unit id="s467b030b9a34b3c8">
+  <source>Average</source>
+  <target>เฉลี่ย</target>
+</trans-unit>
+<trans-unit id="s565d2923b21a7d2a">
+  <source>S.D.</source>
+  <target>S.D.</target>
+</trans-unit>
+<trans-unit id="s71a5c9f4b68ef4d4">
+  <source>Count</source>
+  <target>ผู้สอบ</target>
+</trans-unit>
+<trans-unit id="s9d3cc743fd463f86">
+  <source>By score</source>
+  <target>คะแนน</target>
+</trans-unit>
+<trans-unit id="sd70c44b5af704983">
+  <source>By count</source>
+  <target>จำนวนคน</target>
+</trans-unit>
+<trans-unit id="s3d3b53f5f9007f3b">
+  <source>This browser is not supported. Use Firefox 130 or later</source>
+  <target>ไม่รองรับเบราว์เซฮร์นี้ ใช้ Firefox 130 หรือใหม่กว่า</target>
+</trans-unit>
+<trans-unit id="sff8e44eafd2099bb">
+  <source>Unable to retrieve data</source>
+  <target>ไม่สามารถเรียกข้อมูลได้</target>
+</trans-unit>
+<trans-unit id="s4c94e000e989502a">
+  <source>Not found. Check form input</source>
+  <target>ไม่พบข้อมูล ตรวจสอบข้อมูลที่ป้อนอีกครั้ง</target>
+</trans-unit>
+<trans-unit id="s66896d25e6135cf7">
+  <source>Unable to retrieve data (Status code <x id="0" equiv-text="${resp.status}"/>)</source>
+  <target>ไม่สามารถเรียกข้อมูลได้ (Status code <x id="0" equiv-text="${resp.status}"/>)</target>
+</trans-unit>
+</body>
+</file>
+</xliff>

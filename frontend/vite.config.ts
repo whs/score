@@ -4,6 +4,7 @@ import license from 'rollup-plugin-license';
 import * as path from "node:path";
 
 export default {
+	appType: 'mpa',
 	esbuild: {
 		banner: '/*! licenses: vendor.LICENSE.txt */',
 		legalComments: 'none',
@@ -11,6 +12,7 @@ export default {
 	plugins: [
 		license({
 			thirdParty: {
+				includeSelf: true,
 				output: path.resolve(__dirname, 'dist/assets/vendor.LICENSE.txt'),
 			},
 		}),
