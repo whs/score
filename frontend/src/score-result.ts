@@ -1,16 +1,24 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { guard } from 'lit/directives/guard.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { ScoreStats, SubjectScore, UserScore } from './schema.ts';
+import {
+	ScoreStats,
+	ScoreSubjectStats,
+	SubjectScore,
+	UserScore,
+} from './schema.ts';
 import { until } from 'lit/directives/until.js';
 import { localized, msg } from '@lit/localize';
+import type { ChartData } from 'chart.js';
+import './score-chartjs.ts';
 
 @customElement('score-result')
 @localized()
 export class ScoreResult extends LitElement {
 	@property()
-	data: UserScore | undefined;
+	data: UserScore = { _name: '', _fname: '' };
 	@property()
 	stats: Promise<ScoreStats> | undefined;
 
@@ -70,7 +78,7 @@ export class ScoreResult extends LitElement {
 											${subject}
 										</div>
 									</td>
-									<td>${this.numberFormatter.format(score.score as number)}</td>
+									<td>${this.numberFormatter.format(score.score)}</td>
 									<td class="percent percent-${score.percent.toFixed(0)}">
 										${this.percentFormatter.format(score.percent / 100)}
 									</td>
@@ -160,13 +168,62 @@ export class ScoreResult extends LitElement {
 									</tr>
 								</tbody>
 							</table>
+							${guard(
+								[this.statsViewSubject, this.stats],
+								() =>
+									html`<score-chartjs
+										.data=${this.buildScoreStatsHistogram(
+											subjectStats,
+											(<SubjectScore>this.data[this.statsViewSubject!])
+												.score as number
+										)}
+										.config=${{
+											type: 'bar',
+											options: {
+												categoryPercentage: 1,
+												barPercentage: 1,
+												scales: {
+													x: {
+														bounds: 'data',
+														ticks: { maxRotation: 0 },
+														grid: { display: false },
+													},
+													y: {
+														beginAtZero: true,
+														ticks: { precision: 0 },
+													},
+												},
+											},
+										}}
+									>
+									</score-chartjs>`
+							)}
 						</div>`;
 					}),
 				null
 			)}
-			<div class="graph">
-				<canvas></canvas>
-			</div>
+			${!this.statsViewSubject
+				? guard(
+						[this.data],
+						() =>
+							html`<score-chartjs
+								.data=${this.buildScoreGraph()}
+								.config=${{
+									type: 'bar',
+									options: {
+										indexAxis: 'y',
+										scales: {
+											x: {
+												min: 0,
+												suggestedMax: 100,
+											},
+										},
+									},
+								}}
+							>
+							</score-chartjs>`
+					)
+				: null}
 		`;
 	}
 
@@ -178,6 +235,54 @@ export class ScoreResult extends LitElement {
 		return (e: MouseEvent) => {
 			e.preventDefault();
 			this.showStats(subject);
+		};
+	}
+
+	buildScoreGraph(): ChartData<'bar', { x: number; y: string }[]> {
+		let data = [];
+
+		for (let subject of Object.keys(this.data)) {
+			if (subject.startsWith('_')) {
+				continue;
+			}
+			let subjectScore = this.data[subject];
+			if (typeof subjectScore === 'string') {
+				continue;
+			}
+			if (typeof (subjectScore as any).percent === 'undefined') {
+				continue;
+			}
+			data.push({
+				x: (subjectScore as any).percent,
+				y: subject,
+			});
+		}
+
+		return {
+			datasets: [{ data }],
+		};
+	}
+
+	buildScoreStatsHistogram(
+		stats: ScoreSubjectStats,
+		myScore: number
+	): ChartData<'bar', { x: string; y: number }[]> {
+		let data = [];
+		for (let i = 0; i < stats.max; i++) {
+			data.push({ x: i.toString(), y: stats.histogram[i] || 0 });
+		}
+		return {
+			datasets: [
+				{
+					backgroundColor: (ctx) => {
+						if (ctx.dataIndex === myScore) {
+							return 'rgba(0, 0, 0, 0.4)';
+						}
+						return 'rgba(0, 0, 0, 0.1)';
+					},
+					data,
+				},
+			],
 		};
 	}
 
@@ -253,7 +358,8 @@ export class ScoreResult extends LitElement {
 			color: black;
 		}
 
-		.graph {
+		score-chartjs {
+			display: block;
 			width: 100%;
 			height: 200px;
 			margin-top: 10px;

@@ -30,7 +30,7 @@ export type SubjectScore =
 			score: number | string;
 	  }
 	| {
-			score: number | string;
+			score: number;
 			rank: number;
 			percent: number;
 			standard: number;
@@ -38,37 +38,37 @@ export type SubjectScore =
 
 export interface ScoreStats {
 	_float: string;
-	[subject: string]:
-		| string
-		| {
-				// Array of histogram buckets
-				histogram: number[];
-				// Full marks of this subject
-				max: number;
-				// Subject name
-				name: string;
-				// Number of people who has score
-				count: number;
-				// Highest score achieved
-				hiscore: number;
-				// Number of people who has the hiscore
-				hiscore_cnt: number;
-				// Lowest score achieved
-				lowscore: number;
-				// Number of people who has the lowest score achieved
-				lowscore_cnt: number;
-				// 2nd Lowest score achieved
-				lowscore2: number;
-				// Number of people who has the 2nd lowest score achieved
-				lowscore2_cnt: number;
+	[subject: string]: string | ScoreSubjectStats;
+}
 
-				// Mode (score that most people achieved)
-				mode: number;
-				// Number of people who has the mode score
-				mode_cnt: number;
-				// Average score
-				average: number;
-				// Standard Deviation
-				sd: number;
-		  };
+export interface ScoreSubjectStats {
+	// Array of histogram buckets
+	histogram: number[];
+	// Full marks of this subject
+	max: number;
+	// Subject name
+	name: string;
+	// Number of people who has score
+	count: number;
+	// Highest score achieved
+	hiscore: number;
+	// Number of people who has the hiscore
+	hiscore_cnt: number;
+	// Lowest score achieved
+	lowscore: number;
+	// Number of people who has the lowest score achieved
+	lowscore_cnt: number;
+	// 2nd Lowest score achieved
+	lowscore2: number;
+	// Number of people who has the 2nd lowest score achieved
+	lowscore2_cnt: number;
+
+	// Mode (score that most people achieved)
+	mode: number;
+	// Number of people who has the mode score
+	mode_cnt: number;
+	// Average score
+	average: number;
+	// Standard Deviation
+	sd: number;
 }
