@@ -1,0 +1,4 @@
+var/
+vendor/
+.devenv/
+.direnv/

@@ -1,0 +1,20 @@
+<IfModule mod_negotiation.c>
+    Options -MultiViews
+</IfModule>
+
+RewriteEngine On
+# Frontend routes
+RewriteRule "^$" frontend/index.html [L]
+RewriteRule "^frontend/" - [L]
+RewriteRule "^assets/(.*)" frontend/assets/$1 [L]
+
+# Data routes
+RewriteRule "^data/(.*)" - [L]
+
+# Symfony routes
+RewriteRule "^index.php$" - [L]
+RewriteCond %{REQUEST_URI}::$0 ^(/.+)/(.*)::\2$
+RewriteRule .* - [E=BASE:%1]
+RewriteRule ^ %{ENV:BASE}/index.php [L]
+# XXX: We rewrite EVERYTHING including file serving to index.php
+# This prevent accessing any files in the directory

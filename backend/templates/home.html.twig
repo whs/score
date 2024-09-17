@@ -1,0 +1,28 @@
+{% extends "base.html.twig" %}
+{% block body %}
+<div class="overflow-auto">
+	<table>
+		<thead>
+			<tr>
+				<th>ชื่อไฟล์</th>
+				<th>สถานะ</th>
+				<th>คำสั่ง</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for file in files %}
+			<tr>
+				<td>{{file.name}}</td>
+				<td>{{file.state}}</td>
+				<td></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+<h4>เพิ่มไฟล์</h4>
+<form>
+	<input type="hidden" name="_csrf_token" value="{{ csrf_token('add_file') }}">
+	<input type="submit" value="เพิ่ม">
+</form>
+{% endblock %}

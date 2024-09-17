@@ -1,10 +1,22 @@
 import type { UserConfig } from 'vite'
 import minifyHTML from 'rollup-plugin-minify-html-literals';
 import license from 'rollup-plugin-license';
+import symfony from 'vite-plugin-symfony';
 import * as path from "node:path";
 
 export default {
 	appType: 'mpa',
+	base: '',
+	build: {
+		rollupOptions: {
+			input: {
+				main: path.resolve(__dirname, 'index.html'),
+				adminCSS: './node_modules/@picocss/pico/css/pico.min.css',
+			}
+		},
+		outDir: 'dist',
+		manifest: true,
+	},
 	esbuild: {
 		banner: '/*! licenses: vendor.LICENSE.txt */',
 		legalComments: 'none',
@@ -16,6 +28,11 @@ export default {
 				output: path.resolve(__dirname, 'dist/assets/vendor.LICENSE.txt'),
 			},
 		}),
-		minifyHTML.default(), //ts-ignore https://github.com/asyncLiz/rollup-plugin-minify-html-literals/issues/24
+		// @ts-ignore https://github.com/asyncLiz/rollup-plugin-minify-html-literals/issues/24
+		minifyHTML.default(),
+		symfony(),
 	],
+	optimizeDeps: {
+		force: true,
+	},
 } satisfies UserConfig

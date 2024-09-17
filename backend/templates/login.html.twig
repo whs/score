@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+{% block body %}
+<form action="{{ path('login') }}" method="post">
+	{% if error %}
+	<article>{{ error.messageKey|trans(error.messageData, 'security') }}</article>
+	{% endif %}
+
+	<fieldset>
+		<label>
+			ชื่อผู้ใช้งาน
+			<input type="text" name="_username" value="{{last_username}}" required>
+		</label>
+		<label>
+			รหัสผ่าน
+			<input type="password" name="_password" required class="hxRequired">
+		</label>
+	</fieldset>
+
+	<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+	<button type="submit">เข้าสู่ระบบ</button>
+</form>
+{% endblock %}
