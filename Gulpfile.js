@@ -49,6 +49,7 @@ gulp.task('copy-frontend', function(){
 
 var backendList = [
 	'backend/**/*',
+	'backend/**/.htaccess',
 	'!backend/config.php',
 	'!backend/css/**/*',
 ];
