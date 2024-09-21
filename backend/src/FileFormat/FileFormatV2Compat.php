@@ -8,9 +8,13 @@ use Whs\Score\Model\File;
 class FileFormatV2Compat implements FileFormatWriter, FileFormatDeleter {
     protected File $file;
 
-    const STATS_FILE_NAME = 'stats.json';
+    protected const STATS_FILE_NAME = 'stats.json';
 
     public function __construct(protected FilesystemOperator $scoreStorage) {}
+
+    public static function format(): FileFormat {
+        return FileFormat::V2Compat;
+    }
 
     public function delete(File $file): void {
         $this->scoreStorage->deleteDirectory($file->getPublicId());

@@ -1,0 +1,8 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+  Whs\Score\:
+    resource: ../src/
+  Symfony\Component\Serializer\Normalizer\CustomNormalizer:
+    tags: [serializer.normalizer]

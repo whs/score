@@ -2,6 +2,7 @@
 
 namespace Whs\Score\FileFormat;
 
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Whs\Score\Model\File;
 
 /**
@@ -12,7 +13,13 @@ use Whs\Score\Model\File;
  * and all other methods are called in context of said input file.
  * A FileFormatWriter must not be re-used.
  */
+#[AutoconfigureTag('score.file_format_writer')]
 interface FileFormatWriter {
+    /**
+     * Return which file format enum this writer supports
+     */
+    public static function format(): FileFormat;
+
     /**
      * Create the base directory structure for a file
      */

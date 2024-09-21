@@ -2,11 +2,12 @@
 
 namespace Whs\Score\FileFormat;
 
-use League\Flysystem\FilesystemOperator;
-use Whs\Score\Model\File;
-
 class FileFormatV2PBKDF2 extends FileFormatV2Compat {
-    public $pbkdf2Iter = 10000;
+    public int $pbkdf2Iter = 10000;
+
+    public static function format(): FileFormat {
+        return FileFormat::V2_PBKDF2;
+    }
 
     public function getPbkdf2Iter(): int {
         return $this->pbkdf2Iter;

@@ -27,13 +27,6 @@ class Kernel extends BaseKernel implements CompilerPassInterface {
     protected function configureContainer(ContainerConfigurator $container): void {
         $container->import(__DIR__.'/config/**/*');
         $container->import('config.php');
-        $container->services()
-            ->set(\Symfony\Component\Serializer\Normalizer\CustomNormalizer::class)
-            ->tag('serializer.normalizer');
-        $container->services()
-            ->load('Whs\\Score\\', __DIR__ . '/src/*')
-            ->autowire()
-            ->autoconfigure();
     }
 
     public function process(ContainerBuilder $container): void {
