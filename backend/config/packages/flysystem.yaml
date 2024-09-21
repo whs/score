@@ -1,0 +1,10 @@
+flysystem:
+  storages:
+    internal.storage:
+      adapter: local
+      options:
+        directory: '%kernel.project_dir%/var/storage/internal'
+    score.storage:
+      adapter: local
+      options:
+        directory: '%kernel.project_dir%/data/'

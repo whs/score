@@ -9,18 +9,27 @@
 	{% block head %}{% endblock %}
 </head>
 <body>
-<header>
+<header class="container">
 	<div class="grid">
 		<h1>ระบบประกาศผลคะแนนสอบ</h1>
 		{% if app.user %}
-		<div>
+		<div style="text-align: right;">
 			{{app.user}} &middot;
-			<a href="{{url('_logout_main')}}">ออกจากระบบ</a>
+			<a href="{{url('_logout_main')}}?_csrf_token={{csrf_token('logout')}}">ออกจากระบบ</a>
 		</div>
 		{% endif %}
 	</div>
 </header>
 <main class="container">
+{% block flash %}
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <article class="{{label}}">
+            {{ message }}
+        </article>
+    {% endfor %}
+{% endfor %}
+{% endblock %}
 {% block body %}{% endblock %}
 </main>
 </body>

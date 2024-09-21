@@ -25,8 +25,11 @@ class Kernel extends BaseKernel implements CompilerPassInterface {
     }
 
     protected function configureContainer(ContainerConfigurator $container): void {
-        $container->import('config.base.php');
+        $container->import(__DIR__.'/config/**/*');
         $container->import('config.php');
+        $container->services()
+            ->set(\Symfony\Component\Serializer\Normalizer\CustomNormalizer::class)
+            ->tag('serializer.normalizer');
         $container->services()
             ->load('Whs\\Score\\', __DIR__ . '/src/*')
             ->autowire()
@@ -44,6 +47,9 @@ class Kernel extends BaseKernel implements CompilerPassInterface {
         // Our asset pipeline is relative - don't use any subpath here
         $routes->add('login', '/login')->controller(['\Whs\Score\Controller\LoginController', 'login']);
         $routes->add('home', '/admin')->controller(['\Whs\Score\Controller\ScoreController', 'main']);
+        $routes->add('create', '/admin@create')->methods(['POST'])->controller(['\Whs\Score\Controller\ScoreController', 'create']);
+        $routes->add('delete', '/admin@delete')->methods(['POST'])->controller(['\Whs\Score\Controller\ScoreController', 'create']);
+        $routes->add('upload', '/admin@upload')->methods(['POST'])->controller(['\Whs\Score\Controller\ScoreController', 'create']);
     }
 }
 

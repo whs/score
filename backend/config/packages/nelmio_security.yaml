@@ -1,0 +1,18 @@
+nelmio_security:
+  clickjacking:
+    paths:
+      '^/.*': DENY
+  external_redirects:
+    override: home
+  content_type:
+    nosniff: true
+  referrer_policy:
+    enabled: true
+    policies: [no-referrer, strict-origin-when-cross-origin]
+  csp:
+    enabled: true
+    enforce:
+      default-src: [self]
+      style-src: [self, unsafe-inline, https://fonts.googleapis.com]
+      font-src: [https://fonts.gstatic.com]
+      block-all-mixed-content: true

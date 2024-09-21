@@ -1,0 +1,3 @@
+pentatrion_vite:
+  public_directory: ''
+  build_directory: frontend

@@ -1,0 +1,21 @@
+security:
+  password_hashers:
+    Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: auto
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+    main:
+      provider: user_provider
+      login_throttling:
+        max_attempts: 5
+        interval: 15 minutes
+      form_login:
+        login_path: login
+        check_path: login
+        default_target_path: home
+        enable_csrf: true
+      logout:
+        path: /logout
+        enable_csrf: true
+        target: home

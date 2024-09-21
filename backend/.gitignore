@@ -2,3 +2,4 @@ var/
 vendor/
 .devenv/
 .direnv/
+data/
