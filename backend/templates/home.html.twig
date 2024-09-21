@@ -13,19 +13,24 @@
 			{% for file in files %}
 			<tr>
 				<td>{{file.name}}</td>
-				<td><span data-tooltip="รูปแบบไฟล์ {{file.format.name}}">{{file.state.name}}</span></td>
 				<td>
+					<span data-tooltip="รูปแบบไฟล์ {{file.format.name}}">{{file.state.name}}</span>
+				</td>
+				<td>
+					{% if file.state != constant('Created', file.state) %}
+					<a role="button" href="{{url('download')}}?id={{file.id}}" download>ดาวน์โหลดไฟล์รับเข้า</a>
+					{% endif %}
 					{% if file.state == constant('Created', file.state) %}
 					<form action="{{url('upload')}}" method="POST" enctype="multipart/form-data" class="grid">
-						<input type="hidden" name="id" value="{{file.id}}">
-						<input type="file" name="file">
-						<input type="hidden" name="_csrf_token" value="{{csrf_token('upload')}}">
+						<input type="hidden" name="file_upload[id]" value="{{file.id}}">
+						<input type="file" name="file_upload[file]" accept=".csv,text/csv" required>
+						<input type="hidden" name="file_upload[_token]" value="{{csrf_token('upload')}}">
 						<input type="submit" value="อัพโหลด">
 					</form>
 					{% endif %}
 					<form action="{{url('delete')}}" method="POST">
-						<input type="hidden" name="id" value="{{file.id}}">
-						<input type="hidden" name="_csrf_token" value="{{csrf_token('delete')}}">
+						<input type="hidden" name="file_delete[id]" value="{{file.id}}">
+						<input type="hidden" name="file_delete[_token]" value="{{csrf_token('delete')}}">
 						<input type="submit" value="ลบ" class="outline secondary">
 					</form>
 				</td>

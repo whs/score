@@ -15,7 +15,7 @@
 		{% if app.user %}
 		<div style="text-align: right;">
 			{{app.user}} &middot;
-			<a href="{{url('_logout_main')}}?_csrf_token={{csrf_token('logout')}}">ออกจากระบบ</a>
+			<a href="{{logout_path()}}">ออกจากระบบ</a>
 		</div>
 		{% endif %}
 	</div>

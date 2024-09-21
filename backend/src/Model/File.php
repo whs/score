@@ -2,6 +2,7 @@
 namespace Whs\Score\Model;
 
 use Whs\Score\FileFormat\FileFormat;
+use Whs\Score\FileFormat\FileFormatWriter;
 
 class File {
     private string $id;

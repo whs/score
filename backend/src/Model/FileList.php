@@ -23,6 +23,25 @@ class FileList implements NormalizableInterface, DenormalizableInterface {
         $this->files[] = $file;
     }
 
+    public function getFile(string $id): ?File {
+        foreach($this->files as $index => $file) {
+            if ($file->getId() == $id) {
+                return $file;
+            }
+        }
+        return null;
+    }
+
+    public function removeFile(string $id): bool {
+        foreach($this->files as $index => $file) {
+            if ($file->getId() == $id) {
+                unset($this->files[$index]);
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function toPublic(): array{
         $out = [];
 

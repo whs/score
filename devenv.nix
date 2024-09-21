@@ -8,8 +8,12 @@
 		package = pkgs.php82.buildEnv {
 			apxs2Support = true;
 			apacheHttpd = pkgs.apacheHttpd;
+			extraConfig = ''
+				file_uploads = On
+				upload_max_filesize = 10M
+				post_max_size = 10M
+			'';
 		};
-		extensions = [ "session" "ctype" "iconv" "pcre" "simplexml" "tokenizer" "dom" ];
 	};
 	env.PHPRC = "${config.languages.php.package}/lib/php.ini";
 	languages.javascript = {

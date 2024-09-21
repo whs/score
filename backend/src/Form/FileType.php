@@ -12,7 +12,7 @@ use Whs\Score\FileFormat\FileFormat;
 use Whs\Score\Model\File;
 
 class FileType extends AbstractType {
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder
             ->add('name', TextType::class)
             ->add('format', EnumType::class, [
@@ -23,7 +23,7 @@ class FileType extends AbstractType {
             ->add('save', SubmitType::class);
     }
 
-    public function configureOptions(OptionsResolver $resolver){
+    public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'data_class' => File::class,
         ]);
