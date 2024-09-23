@@ -117,7 +117,8 @@ class ScoreController extends AbstractController {
             $this->internalStorage->writeStream($file->getId() . '.csv', fopen($uploadedFile, 'rb'));
             $file->setState(FileState::Uploaded);
             $this->fileListRepo->save();
-            // TODO: redirect to the processing function
+
+            return $this->redirectToRoute('process', ['id' => $file->getId()]);
         } else {
             var_dump($request->files);
             $this->addFlash('error', 'กรอกข้อมูลไม่ถูกต้อง: ' . $this->formatFormError($form->getErrors(true)));
@@ -132,7 +133,13 @@ class ScoreController extends AbstractController {
             return new Response('Missing ID', 400);
         }
 
-        // TODO: Validate input. This is a vulnerability!
+        $this->fileListRepo->load();
+        $file = $this->fileListRepo->getFileList()->getFile($id);
+        if (!$file) {
+            return new Response('Missing file', 404);
+        }
+
+        // Safety: The file ID is listed in the repository, so it is trusted
         $filePath = $id . '.csv';
         $fileSize = $this->internalStorage->fileSize($filePath);
         $outputStream = $this->internalStorage->readStream($filePath);

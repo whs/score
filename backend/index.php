@@ -43,7 +43,8 @@ class Kernel extends BaseKernel implements CompilerPassInterface {
         $routes->add('create', '/admin@create')->methods(['POST'])->controller(['\Whs\Score\Controller\ScoreController', 'create']);
         $routes->add('delete', '/admin@delete')->methods(['POST'])->controller(['\Whs\Score\Controller\ScoreController', 'delete']);
         $routes->add('upload', '/admin@upload')->methods(['POST'])->controller(['\Whs\Score\Controller\ScoreController', 'upload']);
-        $routes->add('download', '/admin@download')->controller(['\Whs\Score\Controller\ScoreController', 'download']);
+        $routes->add('download', '/download')->controller(['\Whs\Score\Controller\ScoreController', 'download']);
+        $routes->add('process', '/process')->controller(['\Whs\Score\Controller\ScoreProcessingController', 'process']);
     }
 }
 

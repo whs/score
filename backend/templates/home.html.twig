@@ -20,6 +20,9 @@
 					{% if file.state != constant('Created', file.state) %}
 					<a role="button" href="{{url('download')}}?id={{file.id}}" download>ดาวน์โหลดไฟล์รับเข้า</a>
 					{% endif %}
+					{% if file.state in [constant('Uploaded', file.state), constant('Processing', file.state)] %}
+					<a role="button" href="{{url('process')}}?id={{file.id}}">ประมวลผลต่อ</a>
+					{% endif %}
 					{% if file.state == constant('Created', file.state) %}
 					<form action="{{url('upload')}}" method="POST" enctype="multipart/form-data" class="grid">
 						<input type="hidden" name="file_upload[id]" value="{{file.id}}">
