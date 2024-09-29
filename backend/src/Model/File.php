@@ -1,15 +1,15 @@
 <?php
 namespace Whs\Score\Model;
 
-use Whs\Score\FileFormat\FileFormat;
-use Whs\Score\FileFormat\FileFormatWriter;
+use Whs\Score\OutputFileFormat\OutputFileFormat;
+use Whs\Score\OutputFileFormat\OutputFileFormatWriter;
 
 class File {
     private string $id;
     private string $publicId;
     private string $name;
     private FileState $state;
-    private FileFormat $format;
+    private OutputFileFormat $format;
     private mixed $fileFormatData;
 
     public function __construct() {
@@ -67,12 +67,12 @@ class File {
         $this->state = $state;
     }
 
-    public function getFormat(): FileFormat
+    public function getFormat(): OutputFileFormat
     {
         return $this->format;
     }
 
-    public function setFormat(FileFormat $format): void
+    public function setFormat(OutputFileFormat $format): void
     {
         $this->format = $format;
     }

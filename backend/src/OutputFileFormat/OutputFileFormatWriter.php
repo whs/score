@@ -1,6 +1,6 @@
 <?php
 
-namespace Whs\Score\FileFormat;
+namespace Whs\Score\OutputFileFormat;
 
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Whs\Score\Model\File;
@@ -14,11 +14,11 @@ use Whs\Score\Model\File;
  * A FileFormatWriter must not be re-used.
  */
 #[AutoconfigureTag('score.file_format_writer')]
-interface FileFormatWriter {
+interface OutputFileFormatWriter {
     /**
      * Return which file format enum this writer supports
      */
-    public static function format(): FileFormat;
+    public static function format(): OutputFileFormat;
 
     /**
      * Create the base directory structure for a file

@@ -1,14 +1,14 @@
 <?php
 
-namespace Whs\Score\FileFormat;
+namespace Whs\Score\OutputFileFormat;
 
 use Whs\Score\Model\File;
 
-interface FileFormatDeleter {
+interface OutputFileFormatDeleter {
     /**
      * Return which file format enum this deleter supports
      */
-    public static function format(): FileFormat;
+    public static function format(): OutputFileFormat;
 
     /**
      * Delete all result files

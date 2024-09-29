@@ -1,19 +1,19 @@
 <?php
 
-namespace Whs\Score\FileFormat;
+namespace Whs\Score\OutputFileFormat;
 
 use League\Flysystem\FilesystemOperator;
 use Whs\Score\Model\File;
 
-class FileFormatV2Compat implements FileFormatWriter, FileFormatDeleter {
+class OutputOutputFileFormatV2Compat implements OutputFileFormatWriter, OutputFileFormatDeleter {
     protected File $file;
 
     protected const STATS_FILE_NAME = 'stats.json';
 
     public function __construct(protected FilesystemOperator $scoreStorage) {}
 
-    public static function format(): FileFormat {
-        return FileFormat::V2Compat;
+    public static function format(): OutputFileFormat {
+        return OutputFileFormat::V2Compat;
     }
 
     public function delete(File $file): void {

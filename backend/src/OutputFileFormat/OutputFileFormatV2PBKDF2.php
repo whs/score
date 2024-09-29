@@ -1,12 +1,12 @@
 <?php
 
-namespace Whs\Score\FileFormat;
+namespace Whs\Score\OutputFileFormat;
 
-class FileFormatV2PBKDF2 extends FileFormatV2Compat {
+class OutputFileFormatV2PBKDF2 extends OutputOutputFileFormatV2Compat {
     public int $pbkdf2Iter = 10000;
 
-    public static function format(): FileFormat {
-        return FileFormat::V2_PBKDF2;
+    public static function format(): OutputFileFormat {
+        return OutputFileFormat::V2_PBKDF2;
     }
 
     public function getPbkdf2Iter(): int {

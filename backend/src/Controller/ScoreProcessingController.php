@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Whs\Score\FileFormat\FileFormatFactory;
+use Whs\Score\OutputFileFormat\OutputFileFormatFactory;
 use Whs\Score\Model\File;
 use Whs\Score\Model\FileState;
 use Whs\Score\Repository\FileListRepository;
@@ -16,9 +16,9 @@ use Whs\Score\Repository\FileListRepository;
 class ScoreProcessingController extends AbstractController
 {
     public function __construct(
-        protected FileListRepository $fileListRepo,
-        protected FilesystemOperator $internalStorage,
-        private FileFormatFactory    $fileFormatFactory,
+        protected FileListRepository    $fileListRepo,
+        protected FilesystemOperator    $internalStorage,
+        private OutputFileFormatFactory $fileFormatFactory,
     ) {}
 
     public function process(Request $request): Response {

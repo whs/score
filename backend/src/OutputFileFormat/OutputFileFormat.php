@@ -1,8 +1,8 @@
 <?php
 
-namespace Whs\Score\FileFormat;
+namespace Whs\Score\OutputFileFormat;
 
-enum FileFormat: int {
+enum OutputFileFormat: int {
     /**
      * Score folder format compatible with both legacy frontend & current frontend
      * This is the least secure option

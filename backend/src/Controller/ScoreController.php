@@ -11,8 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Whs\Score\FileFormat\FileFormatDeleter;
-use Whs\Score\FileFormat\FileFormatFactory;
+use Whs\Score\OutputFileFormat\OutputFileFormatDeleter;
+use Whs\Score\OutputFileFormat\OutputFileFormatFactory;
 use Whs\Score\Form\FileDeleteType;
 use Whs\Score\Form\FileType;
 use Whs\Score\Form\FileUploadType;
@@ -23,9 +23,9 @@ use Whs\Score\Repository\FileListRepository;
 #[IsGranted('ROLE_ADMIN')]
 class ScoreController extends AbstractController {
     public function __construct(
-        protected FileListRepository $fileListRepo,
-        protected FilesystemOperator $internalStorage,
-        private FileFormatFactory $fileFormatFactory,
+        protected FileListRepository    $fileListRepo,
+        protected FilesystemOperator    $internalStorage,
+        private OutputFileFormatFactory $fileFormatFactory,
     ){}
 
     public function main(): Response {
@@ -74,7 +74,7 @@ class ScoreController extends AbstractController {
             }
 
             $writer = $this->fileFormatFactory->createFromFile($file);
-            if ($writer instanceof FileFormatDeleter) {
+            if ($writer instanceof OutputFileFormatDeleter) {
                 $writer->delete($file);
             }
             try {

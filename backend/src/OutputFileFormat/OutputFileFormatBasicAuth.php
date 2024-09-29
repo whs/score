@@ -1,10 +1,10 @@
 <?php
 
-namespace Whs\Score\FileFormat;
+namespace Whs\Score\OutputFileFormat;
 
-class FileFormatBasicAuth extends FileFormatV2Compat {
-    public static function format(): FileFormat {
-        return FileFormat::BasicAuth;
+class OutputFileFormatBasicAuth extends OutputOutputFileFormatV2Compat {
+    public static function format(): OutputFileFormat {
+        return OutputFileFormat::BasicAuth;
     }
 
     protected function getStudentFileName(string $id, string $username, #[\SensitiveParameter] string $password): string {

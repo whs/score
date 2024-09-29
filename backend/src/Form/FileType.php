@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Whs\Score\FileFormat\FileFormat;
+use Whs\Score\OutputFileFormat\OutputFileFormat;
 use Whs\Score\Model\File;
 
 class FileType extends AbstractType {
@@ -16,9 +16,9 @@ class FileType extends AbstractType {
         $builder
             ->add('name', TextType::class)
             ->add('format', EnumType::class, [
-                'class' => FileFormat::class,
+                'class' => OutputFileFormat::class,
                 'help' => 'BasicAuth ปลอดภัยที่สุด แต่บางเซิร์ฟเวอร์ไม่รองรับ, V2_PBKDF2 รองลงมา',
-                'data' => FileFormat::BasicAuth,
+                'data' => OutputFileFormat::BasicAuth,
             ])
             ->add('save', SubmitType::class);
     }
