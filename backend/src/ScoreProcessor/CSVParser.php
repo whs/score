@@ -12,6 +12,9 @@ use Whs\Score\Model\StudentInfo;
 class CSVParser {
     public function __construct(protected Reader $reader){}
 
+    /**
+     * @return Generator<StudentInfo>
+     */
     public function generate(): \Generator {
         foreach($this->reader as $line) {
             $student = new StudentInfo();

@@ -29,7 +29,10 @@ class Histogram implements NormalizableInterface, DenormalizableInterface {
 
     public function denormalize(DenormalizerInterface $denormalizer, float|int|bool|array|string $data, ?string $format = null, array $context = []): void
     {
-        $this->histogram = $denormalizer->denormalize($this->histogram, null, $format, $context);
+        if(!is_array($data)) {
+            throw new \Symfony\Component\Serializer\Exception\InvalidArgumentException("Requires array");
+        }
+        $this->histogram = $data;
     }
 
     public function normalize(NormalizerInterface $normalizer, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
@@ -38,17 +41,20 @@ class Histogram implements NormalizableInterface, DenormalizableInterface {
     }
 
     public function add(float $value) {
+        if($value < 0) {
+            throw new \ValueError("Value $value is under range");
+        }
         // The array index 0 is storing the bucket of values in the range [0.0 - 1.0)
         // However, all other calculation considered a bucket midpoint to be 0.0 not 0.5.
         // This make test with integer score appears correct, while decimal score will be rounded down
-        if(count($this->histogram) < $value){
-            throw new \ValueError("Value $value is over the histogram max value " . count($this->histogram));
+        if(count($this->histogram)-1 < $value){
+            throw new \ValueError("Value $value is over the histogram max value " . $this->fullScore());
         }
         $this->histogram[floor($value)]++;
     }
 
     public function fullScore(): int {
-        return count($this->histogram);
+        return count($this->histogram)-1;
     }
 
     /**

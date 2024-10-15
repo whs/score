@@ -6,7 +6,7 @@ use Whs\Score\Model\Histogram;
 use Whs\Score\Model\Stats;
 use Whs\Score\Model\StudentInfo;
 
-class HistogramBuilder {
+class StatsBuilder {
     public static function compute(iterable $input): Stats {
         $out = new Stats();
 
@@ -32,7 +32,7 @@ class HistogramBuilder {
     }
 
     public static function getFullScore(string $subject): int|null {
-        preg_match('/\([0-9.]+\)$/', $subject, $matches);
+        preg_match('/\\(([0-9]+)\\)$/', $subject, $matches);
         if(!$matches || !$matches[1]) {
             return null;
         }

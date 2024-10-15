@@ -6,7 +6,7 @@ use Whs\Score\Model\Histogram;
 
 class Stats
 {
-    protected array $subjects;
+    protected array $subjects = [];
 
     public function getSubjects(): array
     {
