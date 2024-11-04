@@ -254,14 +254,17 @@ export class WhsScore extends LitElement {
 			padding: 10px 0;
 		}
 
+		/* Animations are removed as lit doesn't reuse the dom */
+
 		.window.opaque {
 			background-color: #ecf0f5;
-			animation: slideright ease-out 500ms;
+			/*animation: slideright ease-out 500ms;*/
 		}
 
 		.window.translucent {
 			max-width: 100%;
-			animation: blurbg linear forwards 250ms;
+			/*animation: blurbg linear forwards 250ms;*/
+			backdrop-filter: blur(48px);
 		}
 
 		.window.noanim {

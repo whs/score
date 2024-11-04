@@ -113,6 +113,14 @@
   <source>Show Top Ten</source>
   <target>กดเพื่อดู Top Ten</target>
 </trans-unit>
+<trans-unit id="sc16e00a7a8b2fde2">
+  <source>Back</source>
+  <target>ย้อนกลับ</target>
+</trans-unit>
+<trans-unit id="s605c4bf929791311">
+  <source>See more</source>
+  <target>ดูเพิ่มเติม</target>
+</trans-unit>
 </body>
 </file>
 </xliff>

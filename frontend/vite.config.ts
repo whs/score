@@ -17,6 +17,12 @@ export default {
 		},
 		outDir: 'dist',
 		manifest: true,
+		assetsInlineLimit: (filePath, _content) => {
+			// Force the eastereggs to use data URL
+			if (filePath.match(/easteregg\/(.*?)\.webp$/)) {
+				return true;
+			}
+		},
 	},
 	esbuild: {
 		banner: '/*! licenses: vendor.LICENSE.txt */',

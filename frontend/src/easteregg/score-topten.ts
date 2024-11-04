@@ -1,6 +1,5 @@
 import { LitElement, css, html, unsafeCSS } from 'lit';
 import { customElement } from 'lit/decorators.js';
-// TODO: Import as data url
 import topten from './topten.webp';
 import flare from './flare.webp';
 

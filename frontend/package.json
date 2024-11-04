@@ -23,7 +23,8 @@
     "@picocss/pico": "^2.0.6",
     "chart.js": "^4.4.4",
     "lit": "^3.2.0",
-    "modern-normalize": "^3.0.1"
+    "modern-normalize": "^3.0.1",
+    "remixicon": "^4.5.0"
   },
   "devDependencies": {
     "@lit/localize-tools": "^0.8.0",

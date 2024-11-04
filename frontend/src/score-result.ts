@@ -8,7 +8,7 @@ import './score-subject.ts';
 import './score-round-button.ts';
 import ibmPlex from '@fontsource/ibm-plex-sans-thai/500.css?inline&lit';
 import ibmPlexLooped from '@fontsource/ibm-plex-sans-thai-looped/400.css?inline&lit';
-import icLogout from './icon/ic-logout.ts';
+import icLogout from 'remixicon/icons/System/logout-circle-r-line.svg';
 
 @customElement('score-result')
 @localized()
@@ -31,8 +31,8 @@ export class ScoreResult extends LitElement {
 			<nav>
 				<score-round-button
 					@click="${() => this.dispatchEvent(new CustomEvent('close'))}"
-					>${icLogout}</score-round-button
-				>
+					><img src="${icLogout}" alt="Logout"
+				/></score-round-button>
 			</nav>
 			<header>
 				<div class="greeting">${msg('Hello, 👋')}</div>

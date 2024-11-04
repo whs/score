@@ -5,7 +5,7 @@ import ibmPlex from '@fontsource/ibm-plex-sans-thai/500.css?inline&lit';
 import ibmPlexLooped from '@fontsource/ibm-plex-sans-thai-looped/400.css?inline&lit';
 import { ScoreSubjectStats, SubjectScore } from './schema.ts';
 import { msg, str } from '@lit/localize';
-import icRightUp from './icon/ic-right-up.ts';
+import icRightUp from 'remixicon/icons/Arrows/arrow-right-up-line.svg';
 
 @customElement('score-subject')
 export class ScoreSubject extends LitElement {
@@ -35,7 +35,11 @@ export class ScoreSubject extends LitElement {
 			return html`
 				<div class="subject">
 					<div class="subjectname">${this.subject}</div>
-					${this.clickable ? html`<div class="icons">${icRightUp}</div>` : ''}
+					${this.clickable
+						? html`<div class="icons">
+								<img src="${icRightUp}" alt="${msg('See more')}" />
+							</div>`
+						: ''}
 				</div>
 				${scoreValue}
 			`;
@@ -44,7 +48,11 @@ export class ScoreSubject extends LitElement {
 		return html`
 			<div class="subject">
 				<div class="subjectname">${this.subject}</div>
-				<div class="icons">${this.clickable && icRightUp}</div>
+				<div class="icons">
+					${this.clickable
+						? html`<img src="${icRightUp}" alt="${msg('See more')}" />`
+						: null}
+				</div>
 			</div>
 			<div class="bar">
 				<div
@@ -119,6 +127,11 @@ export class ScoreSubject extends LitElement {
 				font-family: 'IBM Plex Sans Thai', sans-serif;
 				font-weight: 500;
 				font-size: 16pt;
+			}
+
+			.icons img {
+				height: 24px;
+				width: 24px;
 			}
 
 			.bar {

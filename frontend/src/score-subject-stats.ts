@@ -1,4 +1,4 @@
-import { LitElement, css, html } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { guard } from 'lit/directives/guard.js';
 import { cache } from 'lit/directives/cache.js';
@@ -7,12 +7,12 @@ import { ScoreSubjectStats, SubjectScore } from './schema.ts';
 import type { ChartData } from 'chart.js';
 import './score-chartjs.ts';
 import './score-button.ts';
-import icBack from './icon/ic-back.ts';
 import { msg, str } from '@lit/localize';
-import icQuestion from './icon/ic-question.ts';
-import icTeam from './icon/ic-team.ts';
-import icJustify from './icon/ic-justify.ts';
-import icSd from './icon/ic-sd.ts';
+import icQuestion from 'remixicon/icons/System/question-line.svg';
+import icBack from 'remixicon/icons/Arrows/arrow-left-line.svg';
+import icTeam from 'remixicon/icons/User & Faces/team-fill.svg';
+import icAvg from 'remixicon/icons/Editor/align-center.svg';
+import icSd from 'remixicon/icons/Finance/xrp-fill.svg';
 
 @customElement('score-subject-stats')
 export class ScoreSubjectStatsComponent extends LitElement {
@@ -46,7 +46,9 @@ export class ScoreSubjectStatsComponent extends LitElement {
 		}
 
 		return html`<div class="fab-bar">
-				<div class="fab" @click=${this.onClose}>${icBack}</div>
+				<div class="fab" @click=${this.onClose}>
+					<img src="${icBack}" alt="${msg('Back')}" />
+				</div>
 			</div>
 			<div class="data">
 				<header>
@@ -95,19 +97,25 @@ export class ScoreSubjectStatsComponent extends LitElement {
 				</div>
 				<div class="flex">
 					<div class="box">
-						<div class="icon">${icTeam}</div>
+						<div class="icon">
+							<img src="${icTeam}" alt="${msg('Examinee')}" />
+						</div>
 						<div class="legend">${msg('Examinee')}</div>
 						<div class="stats">${this.numberFormatter.format(stats.count)}</div>
 					</div>
 					<div class="box">
-						<div class="icon">${icJustify}</div>
+						<div class="icon">
+							<img src="${icAvg}" alt="${msg('Average')}" />
+						</div>
 						<div class="legend">${msg('Average')}</div>
 						<div class="stats">
 							${this.numberFormatter.format(stats.average)}
 						</div>
 					</div>
 					<div class="box">
-						<div class="icon">${icSd}</div>
+						<div class="icon">
+							<img src="${icSd}" alt="${msg('Standard Deviation')}" />
+						</div>
 						<div class="legend" title="${msg('Standard Deviation')}">
 							${msg('S.D.')}
 						</div>
@@ -168,7 +176,11 @@ export class ScoreSubjectStatsComponent extends LitElement {
 									</div>`
 					)}
 					<score-button @click=${() => (this.showWhyMin2 = !this.showWhyMin2)}
-						>${icQuestion}
+						><img
+							src="${icQuestion}"
+							style="height: 1.2em; vertical-align: middle;"
+							alt="?"
+						/>
 						${msg('Why two lowest scores are reported')}</score-button
 					>
 				</div>
@@ -265,6 +277,7 @@ export class ScoreSubjectStatsComponent extends LitElement {
 				line-height: 24px;
 				box-sizing: border-box;
 				text-align: center;
+				cursor: pointer;
 			}
 
 			.data {
@@ -324,6 +337,10 @@ export class ScoreSubjectStatsComponent extends LitElement {
 
 			.icon {
 				margin-bottom: 8px;
+				height: 24px;
+			}
+			.icon img {
+				width: 24px;
 				height: 24px;
 			}
 
