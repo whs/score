@@ -7,12 +7,16 @@ import { ScoreSubjectStats, SubjectScore } from './schema.ts';
 import type { ChartData } from 'chart.js';
 import './score-chartjs.ts';
 import './score-button.ts';
+import './score-bar.ts';
 import { msg, str } from '@lit/localize';
 import icQuestion from 'remixicon/icons/System/question-line.svg';
 import icBack from 'remixicon/icons/Arrows/arrow-left-line.svg';
 import icTeam from 'remixicon/icons/User & Faces/team-fill.svg';
 import icAvg from 'remixicon/icons/Editor/align-center.svg';
 import icSd from 'remixicon/icons/Finance/xrp-fill.svg';
+import icArrowUp from 'remixicon/icons/Arrows/arrow-up-s-fill.svg';
+import ranks from './ranks';
+import { styleMap } from 'lit/directives/style-map.js';
 
 @customElement('score-subject-stats')
 export class ScoreSubjectStatsComponent extends LitElement {
@@ -61,12 +65,32 @@ export class ScoreSubjectStatsComponent extends LitElement {
 							/${this.numberFormatter.format(stats.max)}
 						</div>
 					</div>
+					<div class="bar">
+						<score-bar percent="${score.percent}"></score-bar>
+						<div
+							class="average"
+							style="${styleMap({
+								left: `${(stats.average / stats.max) * 100}%`,
+							})}"
+						>
+							<img src="${icArrowUp}" alt="^" />${msg('Average')}
+						</div>
+					</div>
 				</header>
 				<div class="box">
 					<div class="legend">${msg('Your rank is')}</div>
-					<div class="rank">${this.numberFormatter.format(score.rank)}</div>
+					<div class="stats rank">
+						${ranks[score.rank.toString()]
+							? html`<img
+									src="${ranks[score.rank.toString()]}"
+									alt="${this.numberFormatter.format(score.rank)}"
+								/>`
+							: this.numberFormatter.format(score.rank)}
+					</div>
 					${this.topten
-						? html`<score-button @click=${this.onTopTen}
+						? html`<score-button
+								style="margin-top: 8px;"
+								@click=${this.onTopTen}
 								>${msg('Show Top Ten')}</score-button
 							>`
 						: null}
@@ -287,6 +311,10 @@ export class ScoreSubjectStatsComponent extends LitElement {
 				font-family: 'IBM Plex Sans Thai', sans-serif;
 			}
 
+			header {
+				margin-bottom: 16px;
+			}
+
 			.subject {
 				font-size: 24pt;
 				font-weight: 500;
@@ -300,6 +328,31 @@ export class ScoreSubjectStatsComponent extends LitElement {
 				display: inline;
 				font-size: 16pt;
 				color: #656e7c;
+			}
+
+			.bar {
+				position: relative;
+				height: 72px;
+			}
+
+			.bar score-bar {
+				height: 32px;
+				border-radius: 12px;
+			}
+
+			.bar .average {
+				position: absolute;
+				top: 30px;
+				line-height: 20px;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				transform: translateX(-50%);
+			}
+
+			.bar .average img {
+				height: 24px;
+				display: block;
 			}
 
 			.flex {
@@ -333,6 +386,17 @@ export class ScoreSubjectStatsComponent extends LitElement {
 
 			.stats {
 				font-size: 24pt;
+			}
+
+			.rank {
+				line-height: 128px;
+				font-size: 64pt;
+			}
+
+			.rank img {
+				height: 128px;
+				display: block;
+				margin: auto;
 			}
 
 			.icon {

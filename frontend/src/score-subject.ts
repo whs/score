@@ -1,11 +1,12 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styleMap } from 'lit/directives/style-map.js';
 import ibmPlex from '@fontsource/ibm-plex-sans-thai/500.css?inline&lit';
 import ibmPlexLooped from '@fontsource/ibm-plex-sans-thai-looped/400.css?inline&lit';
 import { ScoreSubjectStats, SubjectScore } from './schema.ts';
 import { msg, str } from '@lit/localize';
+import ranks from './ranks';
 import icRightUp from 'remixicon/icons/Arrows/arrow-right-up-line.svg';
+import './score-bar.ts';
 
 @customElement('score-subject')
 export class ScoreSubject extends LitElement {
@@ -49,17 +50,18 @@ export class ScoreSubject extends LitElement {
 			<div class="subject">
 				<div class="subjectname">${this.subject}</div>
 				<div class="icons">
+					${ranks[score.rank.toString()]
+						? html`<img
+								src="${ranks[score.rank.toString()]}"
+								alt="${this.numberFormatter.format(score.rank)}"
+							/>`
+						: null}
 					${this.clickable
 						? html`<img src="${icRightUp}" alt="${msg('See more')}" />`
 						: null}
 				</div>
 			</div>
-			<div class="bar">
-				<div
-					class="completed completed-${this.getProgressBarBreakpoint()}"
-					style="${styleMap({ width: `${score.percent}%` })}"
-				></div>
-			</div>
+			<score-bar percent="${score.percent}"></score-bar>
 			<div class="legend">
 				<div class="legend-left">
 					${msg(
@@ -84,21 +86,6 @@ export class ScoreSubject extends LitElement {
 			return null;
 		}
 		return parseFloat(result[1]);
-	}
-
-	getProgressBarBreakpoint(): string {
-		if (typeof this.data !== 'object' || !('percent' in this.data)) {
-			return '';
-		}
-
-		const cssBarBreakpoints = [100, 70, 50, 25, 0];
-		for (let bp of cssBarBreakpoints) {
-			if (this.data.percent >= bp) {
-				return bp.toString();
-			}
-		}
-
-		return '0';
 	}
 
 	static styles = [
@@ -130,61 +117,8 @@ export class ScoreSubject extends LitElement {
 			}
 
 			.icons img {
-				height: 24px;
-				width: 24px;
-			}
-
-			.bar {
-				width: 100%;
-				height: 20px;
-				border-radius: 24px;
-				padding: 2px;
-				background: #f1f4f9;
-			}
-
-			.bar .completed {
-				border-radius: 24px;
-				background: linear-gradient(to right, #ed4f44, #ed8d44);
-				height: 100%;
-				animation: bar ease-out 1.5s;
-			}
-
-			.bar .completed-25 {
-				background: linear-gradient(to right, #ed8d44, #f0c019);
-			}
-			.bar .completed-50 {
-				background: linear-gradient(to right, #10dfb9, #10d8df);
-			}
-			.bar .completed-70 {
-				background: linear-gradient(to right, #9adf10, #10df87);
-			}
-			.bar .completed-100 {
-				background: linear-gradient(
-					to right,
-					#bf2ee6,
-					#1aaff0,
-					#0cd824,
-					#f0d71f,
-					#ec4a18
-				);
-				position: relative;
-			}
-			.bar .completed-100::after {
-				content: '';
-				position: absolute;
-				top: 0;
-				left: 0;
-				height: 20px;
-				width: 100%;
-				background: linear-gradient(
-					to right,
-					#bf2ee6,
-					#1aaff0,
-					#0cd824,
-					#f0d71f,
-					#ec4a18
-				);
-				filter: blur(8px);
+				height: 32px;
+				width: 32px;
 			}
 
 			.legend {
@@ -192,16 +126,6 @@ export class ScoreSubject extends LitElement {
 				color: #656e7c;
 				display: flex;
 				justify-content: space-between;
-			}
-
-			@keyframes bar {
-				from {
-					width: 0;
-				}
-				/* delay the start for a bit for the page transition */
-				${0.5 / 1.5}% {
-					width: 0;
-				}
 			}
 		`,
 	];

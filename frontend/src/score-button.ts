@@ -12,7 +12,7 @@ export class ScoreButton extends LitElement {
 		ibmPlex,
 		css`
 			:host {
-				display: block;
+				display: inline-block;
 				cursor: pointer;
 				padding: 6px 8px;
 				border-radius: 8px;
