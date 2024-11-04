@@ -100,7 +100,8 @@ export class ScoreForm extends LitElement {
 			display: block;
 			background: linear-gradient(180deg, #71c0ff, white 20%), white;
 			padding: 10px;
-			width: 400px;
+			width: 100%;
+			box-sizing: border-box;
 		}
 
 		input[type='text'],

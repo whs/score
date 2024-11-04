@@ -1,8 +1,9 @@
-import type { UserConfig } from 'vite'
+import type { UserConfig } from 'vite';
 import minifyHTML from 'rollup-plugin-minify-html-literals';
 import license from 'rollup-plugin-license';
 import symfony from 'vite-plugin-symfony';
-import * as path from "node:path";
+import postcssLit from 'rollup-plugin-postcss-lit';
+import * as path from 'node:path';
 
 export default {
 	appType: 'mpa',
@@ -12,7 +13,7 @@ export default {
 			input: {
 				main: path.resolve(__dirname, 'index.html'),
 				adminCSS: './node_modules/@picocss/pico/css/pico.min.css',
-			}
+			},
 		},
 		outDir: 'dist',
 		manifest: true,
@@ -31,8 +32,12 @@ export default {
 		// @ts-ignore https://github.com/asyncLiz/rollup-plugin-minify-html-literals/issues/24
 		minifyHTML.default(),
 		symfony(),
+		postcssLit(),
 	],
 	optimizeDeps: {
 		force: true,
 	},
-} satisfies UserConfig
+	server: {
+		host: '127.0.0.1',
+	},
+} satisfies UserConfig;

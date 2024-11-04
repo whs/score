@@ -4,12 +4,12 @@ import './score-form.ts';
 import { getFileNameV1, pbkdf2 } from './utils.ts';
 import { ScoreFormSubmitEvent } from './score-form.ts';
 import { ScoreStats, UserScore } from './schema.ts';
+import { until } from 'lit/directives/until.js';
+import { localized, msg, str } from '@lit/localize';
 import './score-loading-scrim.ts';
 import './score-error.ts';
 import './score-result.ts';
-import { until } from 'lit/directives/until.js';
-import { repeat } from 'lit/directives/repeat.js';
-import { localized, msg, str } from '@lit/localize';
+import './score-subject-stats.ts';
 
 interface OpenWindow {
 	fileId: string;
@@ -29,6 +29,9 @@ export class WhsScore extends LitElement {
 	@property()
 	passwordInputMode: string = 'numeric';
 
+	@property({ type: Boolean })
+	topten: boolean = false;
+
 	@state()
 	isSha1Supported = typeof window.crypto?.subtle?.decrypt === 'function';
 
@@ -38,7 +41,10 @@ export class WhsScore extends LitElement {
 		typeof window.crypto?.subtle?.importKey === 'function';
 
 	@state()
-	openScoreWindows: OpenWindow[] = [];
+	openScoreWindow: OpenWindow | null = null;
+
+	@state()
+	openStatsWindow: string | null = null;
 
 	private fileList: Promise<FileList> | undefined;
 
@@ -66,61 +72,120 @@ export class WhsScore extends LitElement {
 
 	render() {
 		return html`
-			${until(
-				Promise.allSettled(this.openScoreWindows).then(() => null),
-				html`<score-loading-scrim>${msg('Loading...')}</score-loading-scrim>`
-			)}
 			<div class="window-container">
-				<score-form
-					usernameinputmode="${this.usernameInputMode}"
-					passwordinputmode="${this.passwordInputMode}"
-					@submit=${this.onSubmit}
-					.fileList=${this.fileList}
-				>
-					<div slot="header">
-						<slot name="header"></slot>
-						${this.isBrowserSupported()
-							? null
-							: html`<score-error
-									>${msg(
-										'This browser is not supported. Use Firefox 130 or later'
-									)}</score-error
-								>`}
-						${this.openScoreWindows.length > 0
-							? until(
-									this.openScoreWindows[
-										this.openScoreWindows.length - 1
-									].data.then(
-										() => null,
-										(e: Error) => html`<score-error>${e.message}</score-error>`
-									)
-								)
-							: null}
+				<div class="window opaque noanim">
+					<div class="window-inner">
+						<score-form
+							usernameinputmode="${this.usernameInputMode}"
+							passwordinputmode="${this.passwordInputMode}"
+							@submit=${this.onSubmit}
+							.fileList=${this.fileList}
+						>
+							<div slot="header">
+								<slot name="header"></slot>
+								${this.isBrowserSupported()
+									? null
+									: html`<score-error
+											>${msg(
+												'This browser is not supported. Use Firefox 130 or later'
+											)}</score-error
+										>`}
+								${this.openScoreWindow
+									? until(
+											this.openScoreWindow.data.then(
+												() => null,
+												(e: Error) =>
+													html`<score-error>${e.message}</score-error>`
+											)
+										)
+									: null}
+							</div>
+							<slot name="username" slot="username">${msg('Student ID')}</slot>
+							<slot name="password" slot="password">${msg('Password')}</slot>
+							<slot name="beforefilelist" slot="beforefilelist"></slot>
+							<slot name="beforesubmit" slot="beforesubmit"></slot>
+							<slot name="footer" slot="footer"></slot>
+						</score-form>
 					</div>
-					<slot name="username" slot="username">${msg('Student ID')}</slot>
-					<slot name="password" slot="password">${msg('Password')}</slot>
-					<slot name="beforefilelist" slot="beforefilelist"></slot>
-					<slot name="beforesubmit" slot="beforesubmit"></slot>
-					<slot name="footer" slot="footer"></slot>
-				</score-form>
-				${repeat(this.openScoreWindows, (wnd) =>
-					until(
-						wnd.data.then(
-							(score) =>
-								html`<score-result .data=${score} .stats=${wnd.stats}>
-									<div name="beforescore" slot="beforescore">
-										<slot name="beforescore"></slot>
-										<slot name="beforescore-${wnd.fileId}"></slot>
-									</div>
-									<div name="afterscore" slot="afterscore">
-										<slot name="afterscore"></slot>
-										<slot name="afterscore-${wnd.fileId}"></slot>
-									</div>
-								</score-result>`
-						),
-						null
-					)
-				)}
+				</div>
+				${this.openScoreWindow
+					? until(
+							this.openScoreWindow.data.then(
+								(score) => {
+									let onClose = () => {
+										this.openScoreWindow = null;
+									};
+									let onStats = (e: CustomEvent) => {
+										this.openStatsWindow = e.detail;
+									};
+									return html`<div class="window opaque">
+										<div class="window-inner">
+											<score-result
+												.data=${score}
+												.stats=${this.openScoreWindow!.stats}
+												@close=${onClose}
+												@stats=${onStats}
+											>
+												<div name="beforescore" slot="beforescore">
+													<slot name="beforescore"></slot>
+													<slot
+														name="beforescore-${this.openScoreWindow!.fileId}"
+													></slot>
+												</div>
+												<div name="afterscore" slot="afterscore">
+													<slot name="afterscore"></slot>
+													<slot
+														name="afterscore-${this.openScoreWindow!.fileId}"
+													></slot>
+												</div>
+											</score-result>
+										</div>
+									</div>`;
+								},
+								() => null
+							),
+							html`<div class="window translucent">
+								<div class="window-inner">
+									<score-loading-scrim
+										>${msg('Loading...')}</score-loading-scrim
+									>
+								</div>
+							</div>`
+						)
+					: null}
+				${this.openScoreWindow && this.openStatsWindow
+					? until(
+							Promise.all([
+								this.openScoreWindow.data,
+								this.openScoreWindow.stats,
+							]).then(
+								([score, stats]) => {
+									let onClose = () => {
+										this.openStatsWindow = null;
+									};
+									return html`<div class="window translucent">
+										<div class="window-inner">
+											<score-subject-stats
+												subject="${this.openStatsWindow!}"
+												.score=${score[this.openStatsWindow!]}
+												.stats=${stats[this.openStatsWindow!]}
+												@close=${onClose}
+												.topten=${this.topten}
+											></score-subject-stats>
+										</div>
+									</div>`;
+								},
+								() => null
+							),
+							html`<div class="window translucent">
+								<div class="window-inner">
+									<score-loading-scrim
+										>${msg('Loading...')}</score-loading-scrim
+									>
+								</div>
+							</div>`
+						)
+					: null}
 			</div>
 		`;
 	}
@@ -161,29 +226,73 @@ export class WhsScore extends LitElement {
 			let resp = await fetch(`${this.apiBase}/${e.detail.file}/stats.json`);
 			return resp.json() as Promise<ScoreStats>;
 		})();
-		this.openScoreWindows.push({
+		this.openScoreWindow = {
 			fileId: e.detail.file,
 			username: e.detail.username,
 			data: downloadPromise,
 			stats: statsPromise,
-		});
+		};
 		this.requestUpdate();
 	}
 
 	static styles = css`
 		.window-container {
+			width: 100%;
+			height: 100%;
+			background-color: #ecf0f5;
+			display: grid;
+			box-sizing: border-box;
+		}
+
+		.window {
 			display: flex;
-			margin: 10px 0 0 10px;
-			flex-flow: row wrap;
+			width: 100%;
+			height: 100%;
+			grid-column: 1;
+			grid-row: 1;
+			justify-content: center;
+			padding: 10px 0;
 		}
 
-		.window-container > * {
-			margin-right: 10px;
-			margin-bottom: 10px;
+		.window.opaque {
+			background-color: #ecf0f5;
+			animation: slideright ease-out 500ms;
 		}
 
-		score-result {
-			width: 480px;
+		.window.translucent {
+			max-width: 100%;
+			animation: blurbg linear forwards 250ms;
+		}
+
+		.window.noanim {
+			animation: none;
+		}
+
+		.window-inner {
+			width: 100%;
+			max-width: 720px;
+		}
+
+		@keyframes slideright {
+			from {
+				transform: translateX(100%);
+			}
+
+			to {
+				transform: translateX(0);
+			}
+		}
+
+		@keyframes blurbg {
+			from {
+				backdrop-filter: blur(0px);
+				opacity: 0;
+			}
+
+			to {
+				backdrop-filter: blur(48px);
+				opacity: 1;
+			}
 		}
 	`;
 }

@@ -22,66 +22,6 @@
   <source>Show</source>
   <target>แสดง</target>
 </trans-unit>
-<trans-unit id="sbbc53e0e54d7946f">
-  <source>Subject</source>
-  <target>วิชา</target>
-</trans-unit>
-<trans-unit id="s7d684b6257284e55">
-  <source>Score</source>
-  <target>คะแนน</target>
-</trans-unit>
-<trans-unit id="saf63984c86017900">
-  <source>%</source>
-  <target>%</target>
-</trans-unit>
-<trans-unit id="saf63f74c86021a6d">
-  <source>z</source>
-  <target>z</target>
-</trans-unit>
-<trans-unit id="s9841212bd35bac27">
-  <source>Rank</source>
-  <target>อันดับที่</target>
-</trans-unit>
-<trans-unit id="s7ebf1d336b1c8af1">
-  <source>Click the subject names to view statistics</source>
-  <target>คลิกที่ชื่อวิชาเพื่อดูสถิติ</target>
-</trans-unit>
-<trans-unit id="s5e9ecdf1df38c3af">
-  <source>Highest</source>
-  <target>สูงสุด</target>
-</trans-unit>
-<trans-unit id="sbb4ed6daab9b9dfb">
-  <source>Lowest</source>
-  <target>ต่ำสุด</target>
-</trans-unit>
-<trans-unit id="s9d797a31ad307943">
-  <source>2nd Lowest</source>
-  <target>ต่ำสุดอันดับ 2</target>
-</trans-unit>
-<trans-unit id="s37cbecaec58e2192">
-  <source>Mode</source>
-  <target>ฐานนิยม</target>
-</trans-unit>
-<trans-unit id="s467b030b9a34b3c8">
-  <source>Average</source>
-  <target>เฉลี่ย</target>
-</trans-unit>
-<trans-unit id="s565d2923b21a7d2a">
-  <source>S.D.</source>
-  <target>S.D.</target>
-</trans-unit>
-<trans-unit id="s71a5c9f4b68ef4d4">
-  <source>Count</source>
-  <target>ผู้สอบ</target>
-</trans-unit>
-<trans-unit id="s9d3cc743fd463f86">
-  <source>By score</source>
-  <target>คะแนน</target>
-</trans-unit>
-<trans-unit id="sd70c44b5af704983">
-  <source>By count</source>
-  <target>จำนวนคน</target>
-</trans-unit>
 <trans-unit id="s3d3b53f5f9007f3b">
   <source>This browser is not supported. Use Firefox 130 or later</source>
   <target>ไม่รองรับเบราว์เซฮร์นี้ ใช้ Firefox 130 หรือใหม่กว่า</target>
@@ -97,6 +37,81 @@
 <trans-unit id="s66896d25e6135cf7">
   <source>Unable to retrieve data (Status code <x id="0" equiv-text="${resp.status}"/>)</source>
   <target>ไม่สามารถเรียกข้อมูลได้ (Status code <x id="0" equiv-text="${resp.status}"/>)</target>
+</trans-unit>
+<trans-unit id="s30422159030c99b7">
+  <source>Hello, 👋</source>
+  <target>สวัสดี, 👋</target>
+</trans-unit>
+<trans-unit id="s6bf25ac2b84409db">
+  <source>Score: <x id="0" equiv-text="${this.numberFormatter.format(score.score as number)}"/></source>
+  <target>คะแนน: <x id="0" equiv-text="${this.numberFormatter.format(this.data!.score as number)}"/></target>
+</trans-unit>
+<trans-unit id="sc51f77dbfcc5bae0">
+  <source>Your rank is</source>
+  <target>อันดับที่</target>
+</trans-unit>
+<trans-unit id="same-score-top">
+  <source>There are</source>
+  <target>มีเพื่อนอีก</target>
+  <note from="lit-localize">There are _ people who have the same score as you (first part)</note>
+</trans-unit>
+<trans-unit id="same-score-value">
+  <source><x id="0" equiv-text="${this.numberFormatter.format(stats.histogram[score.score])}"/> people</source>
+  <target><x id="0" equiv-text="${this.numberFormatter.format(stats.histogram[score.score])}"/> คน</target>
+  <note from="lit-localize">There are _ people who have the same score as you (value part)</note>
+</trans-unit>
+<trans-unit id="same-score-bottom">
+  <source>who have the same score as you</source>
+  <target>ได้คะแนนเท่าคุณ</target>
+  <note from="lit-localize">There are _ people who have the same score as you (second part)</note>
+</trans-unit>
+<trans-unit id="sb8910368fc7728b7">
+  <source>Examinee</source>
+  <target>ผู้เข้าสอบ</target>
+</trans-unit>
+<trans-unit id="s467b030b9a34b3c8">
+  <source>Average</source>
+  <target>เฉลี่ย</target>
+</trans-unit>
+<trans-unit id="s565d2923b21a7d2a">
+  <source>S.D.</source>
+  <target>S.D.</target>
+</trans-unit>
+<trans-unit id="sb31ebed13441acbe">
+  <source>Top Score</source>
+  <target>คะแนนสูงสุด</target>
+</trans-unit>
+<trans-unit id="s07384a11f05453a0">
+  <source>Count (person)</source>
+  <target>จำนวน (คน)</target>
+</trans-unit>
+<trans-unit id="sec491b206aff153f">
+  <source>Second Lowest Score</source>
+  <target>คะแนนเกือบต่ำสุด</target>
+</trans-unit>
+<trans-unit id="s068de045e33cf409">
+  <source>Lowest Score</source>
+  <target>คะแนนต่ำสุด</target>
+</trans-unit>
+<trans-unit id="s81de041cd2c15863">
+  <source>Standard Deviation</source>
+  <target>ส่วนเบี่ยงเบนมาตรฐาน</target>
+</trans-unit>
+<trans-unit id="s3d990e017667877b">
+  <source>Why two lowest scores are reported</source>
+  <target>ทำไมต้องมีคะแนนเกือบต่ำสุด</target>
+</trans-unit>
+<trans-unit id="sfab36ec533c56c61">
+  <source>Histogram</source>
+  <target>ฮิสโตรแกรม</target>
+</trans-unit>
+<trans-unit id="s9cba3028f5e39e12">
+  <source>Two lowest scores are reported because the lowest score can be 0 for people who are absent. The second lowest score should represent actually achieved score.</source>
+  <target>ผู้ขาดสอบอาจจะนับว่าสอบได้ 0 คะแนน คะแนนเกือบต่ำสุดจึงเป็นคะแนนที่มีผู้สอบได้จริง</target>
+</trans-unit>
+<trans-unit id="sbac6c7ea10bd4504">
+  <source>Show Top Ten</source>
+  <target>กดเพื่อดู Top Ten</target>
 </trans-unit>
 </body>
 </file>
