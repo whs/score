@@ -18,7 +18,7 @@ export default {
 		manifest: true,
 		assetsInlineLimit: (filePath, _content) => {
 			// Force the eastereggs to use data URL
-			if (filePath.match(/easteregg\/(.*?)\.webp$/)) {
+			if (filePath.match(/easteregg\/(.*?)\.(webp|mp4)$/)) {
 				return true;
 			}
 		},

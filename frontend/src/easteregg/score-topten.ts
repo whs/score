@@ -2,6 +2,7 @@ import { LitElement, css, html, unsafeCSS } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import topten from './topten.webp';
 import flare from './flare.webp';
+import bgm from './bgm.mp4';
 
 @customElement('score-topten')
 export class ScoreTopTen extends LitElement {
@@ -11,6 +12,7 @@ export class ScoreTopTen extends LitElement {
 			<div class="wrapper">
 				<img src="${topten}" alt="ไอศครีมท็อปเท็น" />
 			</div>
+			<audio autoplay loop src="${bgm}"></audio>
 		</div>`;
 	}
 
