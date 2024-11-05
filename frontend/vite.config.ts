@@ -2,7 +2,6 @@ import type { UserConfig } from 'vite';
 import minifyHTML from 'rollup-plugin-minify-html-literals';
 import license from 'rollup-plugin-license';
 import symfony from 'vite-plugin-symfony';
-import postcssLit from 'rollup-plugin-postcss-lit';
 import * as path from 'node:path';
 
 export default {
@@ -38,7 +37,6 @@ export default {
 		// @ts-ignore https://github.com/asyncLiz/rollup-plugin-minify-html-literals/issues/24
 		minifyHTML.default(),
 		symfony(),
-		postcssLit(),
 	],
 	optimizeDeps: {
 		force: true,

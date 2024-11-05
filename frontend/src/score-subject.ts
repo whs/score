@@ -1,7 +1,5 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import ibmPlex from '@fontsource/ibm-plex-sans-thai/500.css?inline&lit';
-import ibmPlexLooped from '@fontsource/ibm-plex-sans-thai-looped/400.css?inline&lit';
 import { ScoreSubjectStats, SubjectScore } from './schema.ts';
 import { msg, str } from '@lit/localize';
 import ranks from './ranks';
@@ -88,47 +86,43 @@ export class ScoreSubject extends LitElement {
 		return parseFloat(result[1]);
 	}
 
-	static styles = [
-		ibmPlex,
-		ibmPlexLooped,
-		css`
-			:host {
-				display: block;
-				border-radius: 24px;
-				background: white;
-				padding: 16px;
-				margin-bottom: 2px;
-				font-family: 'IBM Plex Sans Thai Looped', sans-serif;
-				font-weight: 400;
-				box-sizing: border-box;
-			}
+	static styles = css`
+		:host {
+			display: block;
+			border-radius: 24px;
+			background: white;
+			padding: 16px;
+			margin-bottom: 2px;
+			font-family: 'IBM Plex Sans Thai Looped', sans-serif;
+			font-weight: 400;
+			box-sizing: border-box;
+		}
 
-			.subject {
-				margin-bottom: 8px;
-				line-height: 32px;
-				display: flex;
-				justify-content: space-between;
-			}
+		.subject {
+			margin-bottom: 8px;
+			line-height: 32px;
+			display: flex;
+			justify-content: space-between;
+		}
 
-			.subjectname {
-				font-family: 'IBM Plex Sans Thai', sans-serif;
-				font-weight: 500;
-				font-size: 16pt;
-			}
+		.subjectname {
+			font-family: 'IBM Plex Sans Thai', sans-serif;
+			font-weight: 500;
+			font-size: 16pt;
+		}
 
-			.icons img {
-				height: 32px;
-				width: 32px;
-			}
+		.icons img {
+			height: 32px;
+			width: 32px;
+		}
 
-			.legend {
-				font-size: 10pt;
-				color: #656e7c;
-				display: flex;
-				justify-content: space-between;
-			}
-		`,
-	];
+		.legend {
+			font-size: 10pt;
+			color: #656e7c;
+			display: flex;
+			justify-content: space-between;
+		}
+	`;
 }
 
 declare global {

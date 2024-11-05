@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import './score-form.ts';
-import { getFileNameV1, pbkdf2 } from './utils.ts';
+import { getFileNameV1 } from './utils.ts';
 import { ScoreFormSubmitEvent } from './score-form.ts';
 import { ScoreStats, UserScore } from './schema.ts';
 import { until } from 'lit/directives/until.js';
@@ -10,6 +10,7 @@ import './score-loading-scrim.ts';
 import './score-error.ts';
 import './score-result.ts';
 import './score-subject-stats.ts';
+import './score-font.ts';
 
 interface OpenWindow {
 	fileId: string;
@@ -35,10 +36,10 @@ export class WhsScore extends LitElement {
 	@state()
 	isSha1Supported = typeof window.crypto?.subtle?.decrypt === 'function';
 
-	@state()
-	isPbkdf2Supported =
-		typeof window.crypto?.subtle?.deriveBits === 'function' &&
-		typeof window.crypto?.subtle?.importKey === 'function';
+	// @state()
+	// isPbkdf2Supported =
+	// 	typeof window.crypto?.subtle?.deriveBits === 'function' &&
+	// 	typeof window.crypto?.subtle?.importKey === 'function';
 
 	@state()
 	openScoreWindow: OpenWindow | null = null;
@@ -57,9 +58,9 @@ export class WhsScore extends LitElement {
 				.catch(() => (this.isSha1Supported = false));
 		}
 
-		if (this.isPbkdf2Supported) {
-			pbkdf2('', '', 1).catch(() => (this.isPbkdf2Supported = false));
-		}
+		// if (this.isPbkdf2Supported) {
+		// 	pbkdf2('', '', 1).catch(() => (this.isPbkdf2Supported = false));
+		// }
 	}
 
 	connectedCallback() {
@@ -72,6 +73,7 @@ export class WhsScore extends LitElement {
 
 	render() {
 		return html`
+			<score-font></score-font>
 			<div class="window-container">
 				<div class="window opaque noanim">
 					<div class="window-inner">
@@ -193,7 +195,8 @@ export class WhsScore extends LitElement {
 	isBrowserSupported(): boolean {
 		return (
 			this.isSha1Supported &&
-			this.isPbkdf2Supported &&
+			// We don't use PBKDF2 currently
+			// this.isPbkdf2Supported &&
 			typeof TextEncoder === 'function'
 		);
 	}

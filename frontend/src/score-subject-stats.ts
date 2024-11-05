@@ -2,7 +2,6 @@ import { css, html, LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { guard } from 'lit/directives/guard.js';
 import { cache } from 'lit/directives/cache.js';
-import ibmPlex from '@fontsource/ibm-plex-sans-thai/500.css?inline&lit';
 import { ScoreSubjectStats, SubjectScore } from './schema.ts';
 import type { ChartData } from 'chart.js';
 import './score-chartjs.ts';
@@ -280,145 +279,142 @@ export class ScoreSubjectStatsComponent extends LitElement {
 		};
 	}
 
-	static styles = [
-		ibmPlex,
-		css`
-			:host {
-				display: block;
-			}
+	static styles = css`
+		:host {
+			display: block;
+		}
 
-			.fab-bar {
-				margin: 16px;
-			}
+		.fab-bar {
+			margin: 16px;
+		}
 
-			.fab {
-				display: inline-block;
-				background: white;
-				border-radius: 24px;
-				padding: 16px;
-				width: 56px;
-				height: 56px;
-				line-height: 24px;
-				box-sizing: border-box;
-				text-align: center;
-				cursor: pointer;
-			}
+		.fab {
+			display: inline-block;
+			background: white;
+			border-radius: 24px;
+			padding: 16px;
+			width: 56px;
+			height: 56px;
+			line-height: 24px;
+			box-sizing: border-box;
+			text-align: center;
+			cursor: pointer;
+		}
 
-			.data {
-				background: white;
-				border-radius: 24px;
-				padding: 16px;
-				font-family: 'IBM Plex Sans Thai', sans-serif;
-			}
+		.data {
+			background: white;
+			border-radius: 24px;
+			padding: 16px;
+			font-family: 'IBM Plex Sans Thai', sans-serif;
+		}
 
-			header {
-				margin-bottom: 16px;
-			}
+		header {
+			margin-bottom: 16px;
+		}
 
-			.subject {
-				font-size: 24pt;
-				font-weight: 500;
-			}
+		.subject {
+			font-size: 24pt;
+			font-weight: 500;
+		}
 
-			.userscore {
-				display: inline;
-				font-size: 64pt;
-			}
-			.fullscore {
-				display: inline;
-				font-size: 16pt;
-				color: #656e7c;
-			}
+		.userscore {
+			display: inline;
+			font-size: 64pt;
+		}
+		.fullscore {
+			display: inline;
+			font-size: 16pt;
+			color: #656e7c;
+		}
 
-			.bar {
-				position: relative;
-				height: 72px;
-			}
+		.bar {
+			position: relative;
+			height: 72px;
+		}
 
-			.bar score-bar {
-				height: 32px;
-				border-radius: 12px;
-			}
+		.bar score-bar {
+			height: 32px;
+			border-radius: 12px;
+		}
 
-			.bar .average {
-				position: absolute;
-				top: 30px;
-				line-height: 20px;
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				transform: translateX(-50%);
-			}
+		.bar .average {
+			position: absolute;
+			top: 30px;
+			line-height: 20px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			transform: translateX(-50%);
+		}
 
-			.bar .average img {
-				height: 24px;
-				display: block;
-			}
+		.bar .average img {
+			height: 24px;
+			display: block;
+		}
 
-			.flex {
-				display: flex;
-			}
-			.flexitem {
-				flex: 1;
-			}
+		.flex {
+			display: flex;
+		}
+		.flexitem {
+			flex: 1;
+		}
 
-			.box {
-				border: #e0e0e0 solid 1px;
-				border-radius: 16px;
-				padding: 16px;
-				text-align: center;
-				margin-bottom: 16px;
-			}
+		.box {
+			border: #e0e0e0 solid 1px;
+			border-radius: 16px;
+			padding: 16px;
+			text-align: center;
+			margin-bottom: 16px;
+		}
 
-			.flex .box {
-				flex: 1;
-				margin-right: 16px;
-			}
+		.flex .box {
+			flex: 1;
+			margin-right: 16px;
+		}
 
-			.flex .box:last-child {
-				margin-right: 0;
-			}
+		.flex .box:last-child {
+			margin-right: 0;
+		}
 
-			.legend {
-				font-size: 16pt;
-				color: #656e7c;
-			}
+		.legend {
+			font-size: 16pt;
+			color: #656e7c;
+		}
 
-			.stats {
-				font-size: 24pt;
-			}
+		.stats {
+			font-size: 24pt;
+		}
 
-			.rank {
-				line-height: 128px;
-				font-size: 64pt;
-			}
+		.rank {
+			line-height: 128px;
+			font-size: 64pt;
+		}
 
-			.rank img {
-				height: 128px;
-				display: block;
-				margin: auto;
-			}
+		.rank img {
+			height: 128px;
+			display: block;
+			margin: auto;
+		}
 
-			.icon {
-				margin-bottom: 8px;
-				height: 24px;
-			}
-			.icon img {
-				width: 24px;
-				height: 24px;
-			}
+		.icon {
+			margin-bottom: 8px;
+			height: 24px;
+		}
+		.icon img {
+			width: 24px;
+			height: 24px;
+		}
 
-			.whymin2 {
-				font-size: 16pt;
-			}
+		.whymin2 {
+			font-size: 16pt;
+		}
 
-			score-chartjs {
-				display: block;
-				width: 100%;
-				height: 200px;
-			}
-		`,
-	];
+		score-chartjs {
+			display: block;
+			width: 100%;
+			height: 200px;
+		}
+	`;
 }
 
 declare global {

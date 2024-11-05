@@ -6,8 +6,6 @@ import { until } from 'lit/directives/until.js';
 import { localized, msg } from '@lit/localize';
 import './score-subject.ts';
 import './score-round-button.ts';
-import ibmPlex from '@fontsource/ibm-plex-sans-thai/500.css?inline&lit';
-import ibmPlexLooped from '@fontsource/ibm-plex-sans-thai-looped/400.css?inline&lit';
 import icLogout from 'remixicon/icons/System/logout-circle-r-line.svg';
 
 @customElement('score-result')
@@ -75,53 +73,49 @@ export class ScoreResult extends LitElement {
 		};
 	}
 
-	static styles = [
-		ibmPlex,
-		ibmPlexLooped,
-		css`
-			:host {
-				display: block;
-			}
+	static styles = css`
+		:host {
+			display: block;
+		}
 
-			nav {
-				display: flex;
-				justify-content: flex-end;
-				padding: 0 16px;
-			}
+		nav {
+			display: flex;
+			justify-content: flex-end;
+			padding: 0 16px;
+		}
 
-			header {
-				font-family: 'IBM Plex Sans Thai', sans-serif;
-				font-weight: 500;
-				padding: 0 16px 16px;
-			}
+		header {
+			font-family: 'IBM Plex Sans Thai', sans-serif;
+			font-weight: 500;
+			padding: 0 16px 16px;
+		}
 
-			.greeting {
-				font-size: 16pt;
-			}
+		.greeting {
+			font-size: 16pt;
+		}
 
-			.name {
-				font-size: 36pt;
-				margin-bottom: 16px;
-			}
+		.name {
+			font-size: 36pt;
+			margin-bottom: 16px;
+		}
 
-			.filename {
-				font-family: 'IBM Plex Sans Thai Looped', sans-serif;
-				font-weight: 400;
-				border: #d4dae3 solid 1px;
-				background: white;
-				box-shadow:
-					rgba(0, 0, 0, 0.12) 0 0 1px,
-					rgba(0, 0, 0, 0.06) 0 2px 4px;
-				padding: 12px 16px;
-				border-radius: 8px;
-				box-sizing: border-box;
-			}
+		.filename {
+			font-family: 'IBM Plex Sans Thai Looped', sans-serif;
+			font-weight: 400;
+			border: #d4dae3 solid 1px;
+			background: white;
+			box-shadow:
+				rgba(0, 0, 0, 0.12) 0 0 1px,
+				rgba(0, 0, 0, 0.06) 0 2px 4px;
+			padding: 12px 16px;
+			border-radius: 8px;
+			box-sizing: border-box;
+		}
 
-			.clickable {
-				cursor: pointer;
-			}
-		`,
-	];
+		.clickable {
+			cursor: pointer;
+		}
+	`;
 }
 
 declare global {
