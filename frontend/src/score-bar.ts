@@ -35,6 +35,7 @@ export class ScoreBar extends LitElement {
 			border-radius: 24px;
 			padding: 2px;
 			background: #f1f4f9;
+			box-sizing: border-box;
 		}
 
 		.completed {

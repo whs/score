@@ -162,42 +162,49 @@ export class ScoreSubjectStatsComponent extends LitElement {
 					</div>
 				</div>
 				<div class="box">
-					${cache(
-						this.showWhyMin2
-							? html`<p class="whymin2">
-									${msg(
-										'Two lowest scores are reported because the lowest score can be 0 for people who are absent. The second lowest score should represent actually achieved score.'
-									)}
-								</p>`
-							: html`<div class="flex" style="margin-bottom: 8px;">
-										<div class="flexitem">
-											<div class="legend">${msg('Second Lowest Score')}</div>
-											<div class="stats">
-												${this.numberFormatter.format(stats.lowscore2)}
-											</div>
-										</div>
-										<div class="flexitem">
-											<div class="legend">${msg('Count (person)')}</div>
-											<div class="stats">
-												${this.numberFormatter.format(stats.lowscore2_cnt)}
-											</div>
-										</div>
+					<div class="mingrid">
+						<div class="min">
+							<div class="flex" style="margin-bottom: 8px;">
+								<div class="flexitem">
+									<div class="legend">${msg('Second Lowest Score')}</div>
+									<div class="stats">
+										${this.numberFormatter.format(stats.lowscore2)}
 									</div>
-									<div class="flex" style="margin-bottom: 8px;">
-										<div class="flexitem">
-											<div class="legend">${msg('Lowest Score')}</div>
-											<div class="stats">
-												${this.numberFormatter.format(stats.lowscore)}
-											</div>
-										</div>
-										<div class="flexitem">
-											<div class="legend">${msg('Count (person)')}</div>
-											<div class="stats">
-												${this.numberFormatter.format(stats.lowscore_cnt)}
-											</div>
+								</div>
+								<div class="flexitem">
+									<div class="legend">${msg('Count (person)')}</div>
+									<div class="stats">
+										${this.numberFormatter.format(stats.lowscore2_cnt)}
+									</div>
+								</div>
+							</div>
+							<div class="flex" style="margin-bottom: 8px;">
+								<div class="flexitem">
+									<div class="legend">${msg('Lowest Score')}</div>
+									<div class="stats">
+										${this.numberFormatter.format(stats.lowscore)}
+									</div>
+								</div>
+								<div class="flexitem">
+									<div class="legend">${msg('Count (person)')}</div>
+									<div class="stats">
+										${this.numberFormatter.format(stats.lowscore_cnt)}
+									</div>
+								</div>
+							</div>
+						</div>
+						${cache(
+							this.showWhyMin2
+								? html`<div class="whymin2">
+										<div class="whymin2-inner">
+											${msg(
+												'Two lowest scores are reported because the lowest score can be 0 for people who are absent. The second lowest score should represent actually achieved score.'
+											)}
 										</div>
 									</div>`
-					)}
+								: null
+						)}
+					</div>
 					<score-button @click=${() => (this.showWhyMin2 = !this.showWhyMin2)}
 						><img
 							src="${icQuestion}"
@@ -409,14 +416,40 @@ export class ScoreSubjectStatsComponent extends LitElement {
 			height: 24px;
 		}
 
+		.mingrid {
+			display: grid;
+			grid-auto-rows: 1fr;
+		}
+
+		.min,
+		.whymin2 {
+			grid-column: 1;
+			grid-row: 1;
+		}
+
 		.whymin2 {
 			font-size: 16pt;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			animation: blurin ease-out 250ms forwards;
 		}
 
 		score-chartjs {
 			display: block;
 			width: 100%;
 			height: 200px;
+		}
+
+		@keyframes blurin {
+			from {
+				backdrop-filter: blur(0);
+				opacity: 0;
+			}
+			to {
+				backdrop-filter: blur(8px);
+				opacity: 1;
+			}
 		}
 	`;
 }
