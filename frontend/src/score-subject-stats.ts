@@ -4,7 +4,6 @@ import { guard } from 'lit/directives/guard.js';
 import { cache } from 'lit/directives/cache.js';
 import { ScoreSubjectStats, SubjectScore } from './schema.ts';
 import type { ChartData } from 'chart.js';
-import './score-chartjs.ts';
 import './score-button.ts';
 import './score-bar.ts';
 import { msg, str } from '@lit/localize';
@@ -16,6 +15,7 @@ import icSd from 'remixicon/icons/Finance/xrp-fill.svg';
 import icArrowUp from 'remixicon/icons/Arrows/arrow-up-s-fill.svg';
 import ranks from './ranks';
 import { styleMap } from 'lit/directives/style-map.js';
+import { until } from 'lit/directives/until.js';
 
 @customElement('score-subject-stats')
 export class ScoreSubjectStatsComponent extends LitElement {
@@ -209,31 +209,35 @@ export class ScoreSubjectStatsComponent extends LitElement {
 				</div>
 				<div class="box">
 					<div class="legend">${msg('Histogram')}</div>
-					${guard(
-						[stats, score],
-						() =>
-							html`<score-chartjs
-								.data=${this.buildScoreStatsHistogram()}
-								.config=${{
-									type: 'bar',
-									options: {
-										categoryPercentage: 1,
-										barPercentage: 1,
-										scales: {
-											x: {
-												bounds: 'data',
-												ticks: { maxRotation: 0 },
-												grid: { display: false },
+					${guard([stats, score], () =>
+						until(
+							import('./score-chartjs.ts').then(
+								() =>
+									html`<score-chartjs
+										.data=${this.buildScoreStatsHistogram()}
+										.config=${{
+											type: 'bar',
+											options: {
+												categoryPercentage: 1,
+												barPercentage: 1,
+												scales: {
+													x: {
+														bounds: 'data',
+														ticks: { maxRotation: 0 },
+														grid: { display: false },
+													},
+													y: {
+														beginAtZero: true,
+														ticks: { precision: 0 },
+													},
+												},
 											},
-											y: {
-												beginAtZero: true,
-												ticks: { precision: 0 },
-											},
-										},
-									},
-								}}
-							>
-							</score-chartjs>`
+										}}
+									>
+									</score-chartjs>`
+							),
+							html`${msg('Loading...')}`
+						)
 					)}
 				</div>
 			</div>`;
