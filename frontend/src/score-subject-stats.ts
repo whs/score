@@ -72,6 +72,7 @@ export class ScoreSubjectStatsComponent extends LitElement {
 								left: `${(stats.average / stats.max) * 100}%`,
 							})}"
 						>
+							<div class="tick"></div>
 							<img src="${icArrowUp}" alt="^" />${msg('Average')}
 						</div>
 					</div>
@@ -350,17 +351,28 @@ export class ScoreSubjectStatsComponent extends LitElement {
 
 		.bar .average {
 			position: absolute;
-			top: 30px;
-			line-height: 20px;
+			top: 0;
+			line-height: 12px;
+			font-size: 12px;
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
+			align-items: center;
 			transform: translateX(-50%);
+		}
+
+		.bar .tick {
+			display: block;
+			height: 32px;
+			width: 4px;
+			background: white;
 		}
 
 		.bar .average img {
 			height: 24px;
 			display: block;
+			margin-top: -2px;
+			margin-bottom: -2px;
 		}
 
 		.flex {
