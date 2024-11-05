@@ -108,7 +108,7 @@ export class ScoreSubject extends LitElement {
 		.subjectname {
 			font-family: 'IBM Plex Sans Thai', sans-serif;
 			font-weight: 500;
-			font-size: 16pt;
+			font-size: 16px;
 		}
 
 		.icons img {
@@ -117,7 +117,7 @@ export class ScoreSubject extends LitElement {
 		}
 
 		.legend {
-			font-size: 10pt;
+			font-size: 12px;
 			color: #656e7c;
 			display: flex;
 			justify-content: space-between;

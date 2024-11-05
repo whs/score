@@ -20,7 +20,7 @@ export class ScoreButton extends LitElement {
 				rgba(0, 0, 0, 0.06) 0 2px 4px;
 			font-family: 'IBM Plex Sans Thai', sans-serif;
 			font-weight: 700;
-			font-size: 12pt;
+			font-size: 12px;
 		}
 	`;
 }

@@ -324,17 +324,17 @@ export class ScoreSubjectStatsComponent extends LitElement {
 		}
 
 		.subject {
-			font-size: 24pt;
+			font-size: 24px;
 			font-weight: 500;
 		}
 
 		.userscore {
 			display: inline;
-			font-size: 64pt;
+			font-size: 64px;
 		}
 		.fullscore {
 			display: inline;
-			font-size: 16pt;
+			font-size: 16px;
 			color: #656e7c;
 		}
 
@@ -388,17 +388,17 @@ export class ScoreSubjectStatsComponent extends LitElement {
 		}
 
 		.legend {
-			font-size: 16pt;
+			font-size: 16px;
 			color: #656e7c;
 		}
 
 		.stats {
-			font-size: 24pt;
+			font-size: 24px;
 		}
 
 		.rank {
 			line-height: 128px;
-			font-size: 64pt;
+			font-size: 64px;
 		}
 
 		.rank img {
@@ -428,7 +428,7 @@ export class ScoreSubjectStatsComponent extends LitElement {
 		}
 
 		.whymin2 {
-			font-size: 16pt;
+			font-size: 16px;
 			display: flex;
 			justify-content: center;
 			align-items: center;

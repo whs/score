@@ -91,11 +91,11 @@ export class ScoreResult extends LitElement {
 		}
 
 		.greeting {
-			font-size: 16pt;
+			font-size: 16px;
 		}
 
 		.name {
-			font-size: 36pt;
+			font-size: 36px;
 			margin-bottom: 16px;
 		}
 
