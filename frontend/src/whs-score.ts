@@ -34,7 +34,8 @@ export class WhsScore extends LitElement {
 	topten: boolean = false;
 
 	@state()
-	isSha1Supported = typeof window.crypto?.subtle?.decrypt === 'function';
+	protected isSha1Supported =
+		typeof window.crypto?.subtle?.decrypt === 'function';
 
 	// @state()
 	// isPbkdf2Supported =
@@ -42,10 +43,10 @@ export class WhsScore extends LitElement {
 	// 	typeof window.crypto?.subtle?.importKey === 'function';
 
 	@state()
-	openScoreWindow: OpenWindow | null = null;
+	protected openScoreWindow: OpenWindow | null = null;
 
 	@state()
-	openStatsWindow: string | null = null;
+	protected openStatsWindow: string | null = null;
 
 	private fileList: Promise<FileList> | undefined;
 

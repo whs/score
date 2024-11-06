@@ -20,7 +20,7 @@ export class ScoreChartJs extends LitElement {
 	@property({ attribute: false })
 	data: ChartData = { datasets: [] };
 
-	chart: Chart | undefined;
+	protected chart: Chart | undefined;
 
 	protected createRenderRoot() {
 		// XXX: No shadow root

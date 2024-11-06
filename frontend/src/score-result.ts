@@ -16,14 +16,6 @@ export class ScoreResult extends LitElement {
 	@property()
 	stats: Promise<ScoreStats> | undefined;
 
-	numberFormatter = new Intl.NumberFormat(undefined, {
-		maximumFractionDigits: 4,
-	});
-	percentFormatter = new Intl.NumberFormat(undefined, {
-		style: 'percent',
-		minimumFractionDigits: 0,
-	});
-
 	render() {
 		return html`
 			<nav>

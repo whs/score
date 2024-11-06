@@ -73,7 +73,7 @@ export class ScoreSubject extends LitElement {
 		`;
 	}
 
-	getFullMark(): number | null {
+	private getFullMark(): number | null {
 		if (this.stats) {
 			return this.stats.max;
 		}

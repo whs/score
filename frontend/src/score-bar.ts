@@ -16,7 +16,7 @@ export class ScoreBar extends LitElement {
 		</div>`;
 	}
 
-	getProgressBarBreakpoint(): string {
+	private getProgressBarBreakpoint(): string {
 		const cssBarBreakpoints = [100, 70, 50, 25, 0];
 		for (let bp of cssBarBreakpoints) {
 			if (this.percent >= bp) {

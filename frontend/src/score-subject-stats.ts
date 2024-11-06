@@ -251,12 +251,12 @@ export class ScoreSubjectStatsComponent extends LitElement {
 			</div>`;
 	}
 
-	onClose = (e: MouseEvent) => {
+	private onClose = (e: MouseEvent) => {
 		e.preventDefault();
 		this.dispatchEvent(new CustomEvent('close'));
 	};
 
-	onTopTen = (e: MouseEvent) => {
+	private onTopTen = (e: MouseEvent) => {
 		e.preventDefault();
 		this.toptenLoad = import('./easteregg/score-topten.ts');
 		this.toptenLoad.then(() => {
@@ -271,7 +271,10 @@ export class ScoreSubjectStatsComponent extends LitElement {
 		});
 	};
 
-	buildScoreStatsHistogram(): ChartData<'bar', { x: string; y: number }[]> {
+	private buildScoreStatsHistogram(): ChartData<
+		'bar',
+		{ x: string; y: number }[]
+	> {
 		let data = [];
 		for (let i = 0; i <= this.stats!.max; i++) {
 			data.push({ x: i.toString(), y: this.stats!.histogram[i] || 0 });
