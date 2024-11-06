@@ -1,9 +1,9 @@
-export function toHex(ab: ArrayBuffer): string {
+/* @__PURE__ */ export function toHex(ab: ArrayBuffer): string {
 	let hashArray = Array.from(new Uint8Array(ab));
 	return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-async function getPasswordV1(
+/* @__PURE__ */ async function getPasswordV1(
 	fileId: string,
 	username: string,
 	password: string
@@ -19,7 +19,7 @@ async function getPasswordV1(
 /**
  * Get score filename compatible with the 2013 version of the software
  */
-export async function getFileNameV1(
+/* @__PURE__ */ export async function getFileNameV1(
 	fileId: string,
 	username: string,
 	password: string
@@ -27,7 +27,7 @@ export async function getFileNameV1(
 	return `${fileId}/u${username}_${await getPasswordV1(fileId, username, password)}.json`;
 }
 
-export async function pbkdf2(
+/* @__PURE__ */ export async function pbkdf2(
 	key: string,
 	salt: string,
 	iterations = 10_000,
@@ -54,7 +54,7 @@ export async function pbkdf2(
 	return toHex(bits);
 }
 
-async function getPasswordV2(
+/* @__PURE__ */ async function getPasswordV2(
 	fileId: string,
 	username: string,
 	password: string
@@ -68,7 +68,7 @@ async function getPasswordV2(
 /**
  * Get a modern cryptographic score filename
  */
-export async function getFileNameV2(
+/* @__PURE__ */ export async function getFileNameV2(
 	fileId: string,
 	username: string,
 	password: string

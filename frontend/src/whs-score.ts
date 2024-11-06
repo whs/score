@@ -1,16 +1,22 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import './score-form.ts';
-import { getFileNameV1 } from './utils.ts';
+import { getFileNameV1, pbkdf2 } from './utils.ts';
 import { ScoreFormSubmitEvent } from './score-form.ts';
 import { ScoreStats, UserScore } from './schema.ts';
 import { until } from 'lit/directives/until.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { localized, msg, str } from '@lit/localize';
+import './score-form.ts';
+import './score-wm.ts';
 import './score-loading-scrim.ts';
 import './score-error.ts';
 import './score-result.ts';
 import './score-subject-stats.ts';
 import './score-font.ts';
+import type { WindowManager } from './score-wm.ts';
+
+const ENABLE_V2 = true;
+const ENABLE_PBKDF = false;
 
 interface OpenWindow {
 	fileId: string;
@@ -33,35 +39,35 @@ export class WhsScore extends LitElement {
 	@property({ type: Boolean })
 	topten: boolean = false;
 
+	wmRef = createRef<WindowManager>();
+
 	@state()
 	protected isSha1Supported =
-		typeof window.crypto?.subtle?.decrypt === 'function';
-
-	// @state()
-	// isPbkdf2Supported =
-	// 	typeof window.crypto?.subtle?.deriveBits === 'function' &&
-	// 	typeof window.crypto?.subtle?.importKey === 'function';
+		ENABLE_V2 && typeof window.crypto?.subtle?.decrypt === 'function';
 
 	@state()
-	protected openScoreWindow: OpenWindow | null = null;
+	isPbkdf2Supported =
+		ENABLE_PBKDF &&
+		typeof window.crypto?.subtle?.deriveBits === 'function' &&
+		typeof window.crypto?.subtle?.importKey === 'function';
 
 	@state()
-	protected openStatsWindow: string | null = null;
+	protected isLoading: boolean = false;
 
 	private fileList: Promise<FileList> | undefined;
 
 	constructor() {
 		super();
 
-		if (this.isSha1Supported) {
+		if (ENABLE_V2 && this.isSha1Supported) {
 			window.crypto.subtle
 				.digest('SHA-1', new Uint8Array())
 				.catch(() => (this.isSha1Supported = false));
 		}
 
-		// if (this.isPbkdf2Supported) {
-		// 	pbkdf2('', '', 1).catch(() => (this.isPbkdf2Supported = false));
-		// }
+		if (ENABLE_PBKDF && this.isPbkdf2Supported) {
+			pbkdf2('', '', 1).catch(() => (this.isPbkdf2Supported = false));
+		}
 	}
 
 	connectedCallback() {
@@ -75,129 +81,94 @@ export class WhsScore extends LitElement {
 	render() {
 		return html`
 			<score-font></score-font>
-			<div class="window-container">
-				<div class="window opaque noanim">
-					<div class="window-inner">
-						<score-form
-							usernameinputmode="${this.usernameInputMode}"
-							passwordinputmode="${this.passwordInputMode}"
-							@submit=${this.onSubmit}
-							.fileList=${this.fileList}
-						>
-							<div slot="header">
-								<slot name="header"></slot>
-								${this.isBrowserSupported()
-									? null
-									: html`<score-error
-											>${msg(
-												'This browser is not supported. Use Firefox 130 or later'
-											)}</score-error
-										>`}
-								${this.openScoreWindow
-									? until(
-											this.openScoreWindow.data.then(
-												() => null,
-												(e: Error) =>
-													html`<score-error>${e.message}</score-error>`
-											)
-										)
-									: null}
-							</div>
-							<slot name="username" slot="username">${msg('Student ID')}</slot>
-							<slot name="password" slot="password">${msg('Password')}</slot>
-							<slot name="beforefilelist" slot="beforefilelist"></slot>
-							<slot name="beforesubmit" slot="beforesubmit"></slot>
-							<slot name="footer" slot="footer"></slot>
-						</score-form>
-					</div>
-				</div>
-				${this.openScoreWindow
-					? until(
-							this.openScoreWindow.data.then(
-								(score) => {
-									let onClose = () => {
-										this.openScoreWindow = null;
-									};
-									let onStats = (e: CustomEvent) => {
-										this.openStatsWindow = e.detail;
-									};
-									return html`<div class="window opaque">
-										<div class="window-inner">
-											<score-result
-												.data=${score}
-												.stats=${this.openScoreWindow!.stats}
-												@close=${onClose}
-												@stats=${onStats}
-											>
-												<div name="beforescore" slot="beforescore">
-													<slot name="beforescore"></slot>
-													<slot
-														name="beforescore-${this.openScoreWindow!.fileId}"
-													></slot>
-												</div>
-												<div name="afterscore" slot="afterscore">
-													<slot name="afterscore"></slot>
-													<slot
-														name="afterscore-${this.openScoreWindow!.fileId}"
-													></slot>
-												</div>
-											</score-result>
-										</div>
-									</div>`;
-								},
-								() => null
-							),
-							html`<div class="window translucent">
-								<div class="window-inner">
-									<score-loading-scrim
-										>${msg('Loading...')}</score-loading-scrim
-									>
-								</div>
-							</div>`
-						)
-					: null}
-				${this.openScoreWindow && this.openStatsWindow
-					? until(
-							Promise.all([
-								this.openScoreWindow.data,
-								this.openScoreWindow.stats,
-							]).then(
-								([score, stats]) => {
-									let onClose = () => {
-										this.openStatsWindow = null;
-									};
-									return html`<div class="window translucent">
-										<div class="window-inner">
-											<score-subject-stats
-												subject="${this.openStatsWindow!}"
-												.score=${score[this.openStatsWindow!]}
-												.stats=${stats[this.openStatsWindow!]}
-												@close=${onClose}
-												.topten=${this.topten}
-											></score-subject-stats>
-										</div>
-									</div>`;
-								},
-								() => null
-							),
-							html`<div class="window translucent">
-								<div class="window-inner">
-									<score-loading-scrim
-										>${msg('Loading...')}</score-loading-scrim
-									>
-								</div>
-							</div>`
-						)
-					: null}
-			</div>
+			${this.isLoading
+				? html`<score-loading-scrim>${msg('Loading...')}</score-loading-scrim>`
+				: null}
+			<score-wm ${ref(this.wmRef)}>
+				<score-window noanim>
+					<score-form
+						usernameinputmode="${this.usernameInputMode}"
+						passwordinputmode="${this.passwordInputMode}"
+						@submit=${this.onSubmit}
+						.fileList=${this.fileList}
+					>
+						<div slot="header">
+							<slot name="header"></slot>
+							${this.isBrowserSupported()
+								? null
+								: html`<score-error
+										>${msg(
+											'This browser is not supported. Use Firefox 130 or later'
+										)}</score-error
+									>`}
+						</div>
+						<slot name="username" slot="username">${msg('Student ID')}</slot>
+						<slot name="password" slot="password">${msg('Password')}</slot>
+						<slot name="beforefilelist" slot="beforefilelist"></slot>
+						<slot name="beforesubmit" slot="beforesubmit"></slot>
+						<slot name="footer" slot="footer"></slot>
+					</score-form>
+				</score-window>
+			</score-wm>
 		`;
+	}
+
+	protected renderScoreWindow(
+		fileId: string,
+		score: UserScore,
+		stats: Promise<ScoreStats>
+	) {
+		let onClose = () => {
+			this.wmRef.value?.pop();
+		};
+		let onStats = (e: CustomEvent) => {
+			stats.then((stats) => {
+				this.wmRef.value?.push(this.renderStatsWindow(score, stats, e.detail));
+			});
+		};
+
+		return html`<score-window>
+			<score-result
+				.data=${score}
+				.stats=${stats}
+				@close=${onClose}
+				@stats=${onStats}
+			>
+				<div slot="beforescore">
+					<slot name="beforescore"></slot>
+					<slot name="beforescore-${fileId}"></slot>
+				</div>
+				<div slot="afterscore">
+					<slot name="afterscore"></slot>
+					<slot name="afterscore-${fileId}"></slot>
+				</div>
+			</score-result>
+		</score-window>`;
+	}
+
+	protected renderStatsWindow(
+		score: UserScore,
+		stats: ScoreStats,
+		subject: string
+	) {
+		let onClose = () => {
+			this.wmRef.value?.pop();
+		};
+		return html`<score-window>
+			<score-subject-stats
+				subject="${subject}"
+				.score=${score[subject!]}
+				.stats=${stats[subject!]}
+				@close=${onClose}
+				.topten=${this.topten}
+			></score-subject-stats>
+		</score-window>`;
 	}
 
 	isBrowserSupported(): boolean {
 		return (
-			this.isSha1Supported &&
-			// We don't use PBKDF2 currently
-			// this.isPbkdf2Supported &&
+			(!ENABLE_V2 || this.isSha1Supported) &&
+			(!ENABLE_PBKDF || this.isPbkdf2Supported) &&
 			typeof TextEncoder === 'function'
 		);
 	}
@@ -230,78 +201,23 @@ export class WhsScore extends LitElement {
 			let resp = await fetch(`${this.apiBase}/${e.detail.file}/stats.json`);
 			return resp.json() as Promise<ScoreStats>;
 		})();
-		this.openScoreWindow = {
-			fileId: e.detail.file,
-			username: e.detail.username,
-			data: downloadPromise,
-			stats: statsPromise,
-		};
+
+		this.isLoading = true;
+
+		downloadPromise.then(
+			(userScore) => {
+				this.isLoading = false;
+				this.wmRef.value?.push(
+					this.renderScoreWindow(e.detail.file, userScore, statsPromise)
+				);
+			},
+			() => {
+				this.isLoading = false;
+			}
+		);
+
 		this.requestUpdate();
 	}
-
-	static styles = css`
-		.window-container {
-			width: 100%;
-			height: 100%;
-			background-color: #ecf0f5;
-			display: grid;
-			box-sizing: border-box;
-		}
-
-		.window {
-			display: flex;
-			width: 100%;
-			height: 100%;
-			grid-column: 1;
-			grid-row: 1;
-			justify-content: center;
-			padding: 10px 0;
-		}
-
-		/* Animations are removed as lit doesn't reuse the dom */
-
-		.window.opaque {
-			background-color: #ecf0f5;
-			/*animation: slideright ease-out 500ms;*/
-		}
-
-		.window.translucent {
-			max-width: 100%;
-			/*animation: blurbg linear forwards 250ms;*/
-			backdrop-filter: blur(48px);
-		}
-
-		.window.noanim {
-			animation: none;
-		}
-
-		.window-inner {
-			width: 100%;
-			max-width: 720px;
-		}
-
-		@keyframes slideright {
-			from {
-				transform: translateX(100%);
-			}
-
-			to {
-				transform: translateX(0);
-			}
-		}
-
-		@keyframes blurbg {
-			from {
-				backdrop-filter: blur(0px);
-				opacity: 0;
-			}
-
-			to {
-				backdrop-filter: blur(48px);
-				opacity: 1;
-			}
-		}
-	`;
 }
 
 declare global {
