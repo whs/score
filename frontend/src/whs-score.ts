@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, render } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { getFileNameV1, pbkdf2 } from './utils.ts';
 import { ScoreFormSubmitEvent } from './score-form.ts';
@@ -12,7 +12,7 @@ import './score-error.ts';
 import './score-result.ts';
 import './score-subject-stats.ts';
 import './score-font.ts';
-import type { WindowManager } from './score-wm.ts';
+import type { WindowManager, Window } from './score-wm.ts';
 
 const ENABLE_V2 = true;
 const ENABLE_PBKDF = false;
@@ -77,7 +77,7 @@ export class WhsScore extends LitElement {
 				? html`<score-loading-scrim>${msg('Loading...')}</score-loading-scrim>`
 				: null}
 			<score-wm ${ref(this.wmRef)}>
-				<score-window noanim>
+				<score-window>
 					<score-form
 						usernameinputmode="${this.usernameInputMode}"
 						passwordinputmode="${this.passwordInputMode}"
@@ -119,23 +119,28 @@ export class WhsScore extends LitElement {
 			});
 		};
 
-		return html`<score-window>
-			<score-result
-				.data=${score}
-				.stats=${stats}
-				@close=${onClose}
-				@stats=${onStats}
-			>
-				<div slot="beforescore">
-					<slot name="beforescore"></slot>
-					<slot name="beforescore-${fileId}"></slot>
-				</div>
-				<div slot="afterscore">
-					<slot name="afterscore"></slot>
-					<slot name="afterscore-${fileId}"></slot>
-				</div>
-			</score-result>
-		</score-window>`;
+		let fragment = document.createDocumentFragment();
+		render(
+			html`<score-window>
+				<score-result
+					.data=${score}
+					.stats=${stats}
+					@close=${onClose}
+					@stats=${onStats}
+				>
+					<div slot="beforescore">
+						<slot name="beforescore"></slot>
+						<slot name="beforescore-${fileId}"></slot>
+					</div>
+					<div slot="afterscore">
+						<slot name="afterscore"></slot>
+						<slot name="afterscore-${fileId}"></slot>
+					</div>
+				</score-result>
+			</score-window>`,
+			fragment
+		);
+		return fragment.firstElementChild as unknown as Window;
 	}
 
 	protected renderStatsWindow(
@@ -146,15 +151,20 @@ export class WhsScore extends LitElement {
 		let onClose = () => {
 			this.wmRef.value?.pop();
 		};
-		return html`<score-window>
-			<score-subject-stats
-				subject="${subject}"
-				.score=${score[subject!]}
-				.stats=${stats[subject!]}
-				@close=${onClose}
-				.topten=${this.topten}
-			></score-subject-stats>
-		</score-window>`;
+		let fragment = document.createDocumentFragment();
+		render(
+			html`<score-window>
+				<score-subject-stats
+					subject="${subject}"
+					.score=${score[subject!]}
+					.stats=${stats[subject!]}
+					@close=${onClose}
+					.topten=${this.topten}
+				></score-subject-stats>
+			</score-window>`,
+			fragment
+		);
+		return fragment.firstElementChild as unknown as Window;
 	}
 
 	isBrowserSupported(): boolean {
