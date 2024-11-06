@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { guard } from 'lit/directives/guard.js';
 import { cache } from 'lit/directives/cache.js';
@@ -37,9 +37,40 @@ export class ScoreSubjectStatsComponent extends LitElement {
 	@state()
 	toptenLoad: Promise<{}> | undefined;
 
+	chartPromise: Promise<TemplateResult> | undefined;
+
 	numberFormatter = new Intl.NumberFormat(undefined, {
 		maximumFractionDigits: 2,
 	});
+
+	connectedCallback() {
+		super.connectedCallback();
+		this.chartPromise = import('./score-chartjs.ts').then(
+			() =>
+				html`<score-chartjs
+					.data=${this.buildScoreStatsHistogram()}
+					.config=${{
+						type: 'bar',
+						options: {
+							categoryPercentage: 1,
+							barPercentage: 1,
+							scales: {
+								x: {
+									bounds: 'data',
+									ticks: { maxRotation: 0 },
+									grid: { display: false },
+								},
+								y: {
+									beginAtZero: true,
+									ticks: { precision: 0 },
+								},
+							},
+						},
+					}}
+				>
+				</score-chartjs>`
+		);
+	}
 
 	render() {
 		let stats = this.stats!;
@@ -218,34 +249,7 @@ export class ScoreSubjectStatsComponent extends LitElement {
 				<div class="box">
 					<div class="legend">${msg('Histogram')}</div>
 					${guard([stats, score], () =>
-						until(
-							import('./score-chartjs.ts').then(
-								() =>
-									html`<score-chartjs
-										.data=${this.buildScoreStatsHistogram()}
-										.config=${{
-											type: 'bar',
-											options: {
-												categoryPercentage: 1,
-												barPercentage: 1,
-												scales: {
-													x: {
-														bounds: 'data',
-														ticks: { maxRotation: 0 },
-														grid: { display: false },
-													},
-													y: {
-														beginAtZero: true,
-														ticks: { precision: 0 },
-													},
-												},
-											},
-										}}
-									>
-									</score-chartjs>`
-							),
-							html`${msg('Loading...')}`
-						)
+						until(this.chartPromise, html`${msg('Loading...')}`)
 					)}
 				</div>
 			</div>`;
