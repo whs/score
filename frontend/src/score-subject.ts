@@ -99,7 +99,6 @@ export class ScoreSubject extends LitElement {
 		}
 
 		.subject {
-			margin-bottom: 8px;
 			line-height: 32px;
 			display: flex;
 			justify-content: space-between;

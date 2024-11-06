@@ -121,6 +121,10 @@
   <source>See more</source>
   <target>ดูเพิ่มเติม</target>
 </trans-unit>
+<trans-unit id="s232bc3ab2914ea45">
+  <source>Most people</source>
+  <target>คนส่วนใหญ่</target>
+</trans-unit>
 </body>
 </file>
 </xliff>

@@ -7,10 +7,17 @@ import {
 	ChartConfiguration,
 	ChartData,
 } from 'chart.js';
+import AnnotationPlugin from 'chartjs-plugin-annotation';
 import { customElement, property } from 'lit/decorators.js';
 import { LitElement, PropertyValues } from 'lit';
 
-Chart.register(BarController, BarElement, CategoryScale, LinearScale);
+Chart.register(
+	BarController,
+	BarElement,
+	CategoryScale,
+	LinearScale,
+	AnnotationPlugin
+);
 
 @customElement('score-chartjs')
 export class ScoreChartJs extends LitElement {

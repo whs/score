@@ -65,6 +65,56 @@ export class ScoreSubjectStatsComponent extends LitElement {
 									ticks: { precision: 0 },
 								},
 							},
+							plugins: {
+								annotation: {
+									annotations: {
+										average: {
+											type: 'line',
+											xMin: this.stats!.average + 0.5,
+											xMax: this.stats!.average + 0.5,
+											borderColor: '#10df87',
+											borderDash: [5, 5],
+											label: {
+												content: msg('Average'),
+												display: true,
+												opacity: 0.5,
+												backgroundColor: 'transparent',
+												textStrokeColor: 'rgba(0,0,0,0.8)',
+												textStrokeWidth: 2,
+												rotation: 'auto',
+												position: '20%',
+												font: {
+													family: '"IBM Plex Sans Thai Looped", sans-serif',
+													weight: 400,
+													size: 12,
+												},
+											},
+										},
+										median: {
+											type: 'line',
+											xMin: this.percentile(50) + 0.5,
+											xMax: this.percentile(50) + 0.5,
+											borderColor: '#ed8d44',
+											borderDash: [5, 5],
+											label: {
+												content: msg('Most people'),
+												display: true,
+												opacity: 0.5,
+												backgroundColor: 'transparent',
+												textStrokeColor: 'rgba(0,0,0,0.8)',
+												textStrokeWidth: 2,
+												rotation: 'auto',
+												position: '20%',
+												font: {
+													family: '"IBM Plex Sans Thai Looped", sans-serif',
+													weight: 400,
+													size: 12,
+												},
+											},
+										},
+									},
+								},
+							},
 						},
 					}}
 				>
@@ -274,6 +324,22 @@ export class ScoreSubjectStatsComponent extends LitElement {
 			document.body.appendChild(child);
 		});
 	};
+
+	private percentile(p: number) {
+		// Unfortunately the V2 do not have percentile or median, so we need to calculate it locally
+
+		let histogram = this.stats!.histogram;
+		let target = Math.ceil(this.stats!.count * (p / 100));
+		let found = 0;
+		for (let i = 0; i < histogram.length; i++) {
+			found += histogram[i];
+			if (found >= target) {
+				return i;
+			}
+		}
+
+		return this.stats!.max;
+	}
 
 	private buildScoreStatsHistogram(): ChartData<
 		'bar',
