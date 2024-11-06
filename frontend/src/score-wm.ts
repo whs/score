@@ -111,7 +111,8 @@ export class WindowManager extends LitElement {
 		}
 
 		@media (prefers-reduced-motion) {
-			.in {
+			.in,
+			.out {
 				animation-duration: 0s;
 			}
 		}

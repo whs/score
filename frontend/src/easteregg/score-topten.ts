@@ -66,6 +66,15 @@ export class ScoreTopTen extends LitElement {
 			animation: zoomIn ease-in 2.5s;
 		}
 
+		@media (prefers-reduced-motion) {
+			.flare {
+				display: none;
+			}
+			img {
+				animation: fade linear 1s;
+			}
+		}
+
 		@keyframes blur {
 			to {
 				backdrop-filter: blur(48px);

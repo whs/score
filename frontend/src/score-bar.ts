@@ -99,6 +99,13 @@ export class ScoreBar extends LitElement {
 			animation: bgpos linear 2s infinite;
 		}
 
+		@media (prefers-reduced-motion) {
+			.completed-100,
+			.completed-100::after {
+				animation: none;
+			}
+		}
+
 		@keyframes bgpos {
 			to {
 				background-position: -200% 0;
