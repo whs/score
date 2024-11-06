@@ -10,16 +10,19 @@ export class ScoreLoadingScrim extends LitElement {
 	static styles = css`
 		:host {
 			display: flex;
+			position: fixed;
+			z-index: 100;
 			top: 0;
 			left: 0;
 			width: 100%;
 			height: 100%;
 			justify-content: center;
 			align-items: center;
-			color: black;
+			backdrop-filter: blur(48px);
 			font-size: 24pt;
 			font-family: 'IBM Plex Sans Thai', sans-serif;
 			font-weight: 500;
+			user-select: none;
 		}
 	`;
 }

@@ -3,7 +3,6 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { getFileNameV1, pbkdf2 } from './utils.ts';
 import { ScoreFormSubmitEvent } from './score-form.ts';
 import { ScoreStats, UserScore } from './schema.ts';
-import { until } from 'lit/directives/until.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { localized, msg, str } from '@lit/localize';
 import './score-form.ts';
@@ -17,13 +16,6 @@ import type { WindowManager } from './score-wm.ts';
 
 const ENABLE_V2 = true;
 const ENABLE_PBKDF = false;
-
-interface OpenWindow {
-	fileId: string;
-	username: string;
-	data: Promise<UserScore>;
-	stats: Promise<ScoreStats>;
-}
 
 @customElement('whs-score')
 @localized()
