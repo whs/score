@@ -26,6 +26,7 @@ export class ScoreTopTen extends LitElement {
 			height: 100vh;
 			overflow: hidden;
 			animation: blur ease-in 1s forwards;
+			z-index: 1000;
 		}
 
 		.inner {
