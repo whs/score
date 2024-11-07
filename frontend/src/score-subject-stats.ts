@@ -56,13 +56,20 @@ export class ScoreSubjectStatsComponent extends LitElement {
 							barPercentage: 1,
 							scales: {
 								x: {
+									type: 'linear',
 									bounds: 'data',
-									ticks: { maxRotation: 0 },
+									min: 0,
+									max: this.stats!.max,
+									beginAtZero: true,
+									offset: false,
+									ticks: { maxRotation: 0, precision: 0 },
 									grid: { display: false },
+									title: { text: msg('Score'), display: true },
 								},
 								y: {
 									beginAtZero: true,
 									ticks: { precision: 0 },
+									title: { text: msg('# of People'), display: true },
 								},
 							},
 							plugins: {
@@ -70,8 +77,8 @@ export class ScoreSubjectStatsComponent extends LitElement {
 									annotations: {
 										average: {
 											type: 'line',
-											xMin: this.stats!.average + 0.5,
-											xMax: this.stats!.average + 0.5,
+											scaleID: 'x',
+											value: this.stats!.average,
 											borderColor: '#10df87',
 											borderDash: [5, 5],
 											label: {
@@ -79,36 +86,14 @@ export class ScoreSubjectStatsComponent extends LitElement {
 												display: true,
 												opacity: 0.5,
 												backgroundColor: 'transparent',
-												textStrokeColor: 'rgba(0,0,0,0.8)',
-												textStrokeWidth: 2,
+												textStrokeColor: 'black',
+												textStrokeWidth: 1,
 												rotation: 'auto',
 												position: '20%',
 												font: {
-													family: '"IBM Plex Sans Thai Looped", sans-serif',
-													weight: 400,
-													size: 12,
-												},
-											},
-										},
-										median: {
-											type: 'line',
-											xMin: this.percentile(50) + 0.5,
-											xMax: this.percentile(50) + 0.5,
-											borderColor: '#ed8d44',
-											borderDash: [5, 5],
-											label: {
-												content: msg('Most people'),
-												display: true,
-												opacity: 0.5,
-												backgroundColor: 'transparent',
-												textStrokeColor: 'rgba(0,0,0,0.8)',
-												textStrokeWidth: 2,
-												rotation: 'auto',
-												position: '20%',
-												font: {
-													family: '"IBM Plex Sans Thai Looped", sans-serif',
-													weight: 400,
-													size: 12,
+													family: '"IBM Plex Sans Thai", sans-serif',
+													weight: 500,
+													size: 16,
 												},
 											},
 										},
@@ -325,29 +310,13 @@ export class ScoreSubjectStatsComponent extends LitElement {
 		});
 	};
 
-	private percentile(p: number) {
-		// Unfortunately the V2 do not have percentile or median, so we need to calculate it locally
-
-		let histogram = this.stats!.histogram;
-		let target = Math.ceil(this.stats!.count * (p / 100));
-		let found = 0;
-		for (let i = 0; i < histogram.length; i++) {
-			found += histogram[i];
-			if (found >= target) {
-				return i;
-			}
-		}
-
-		return this.stats!.max;
-	}
-
 	private buildScoreStatsHistogram(): ChartData<
 		'bar',
 		{ x: string; y: number }[]
 	> {
 		let data = [];
 		for (let i = 0; i <= this.stats!.max; i++) {
-			data.push({ x: i.toString(), y: this.stats!.histogram[i] || 0 });
+			data.push({ x: i, y: this.stats!.histogram[i] || 0 });
 		}
 		return {
 			datasets: [
@@ -523,7 +492,7 @@ export class ScoreSubjectStatsComponent extends LitElement {
 		score-chartjs {
 			display: block;
 			width: 100%;
-			height: 200px;
+			height: 300px;
 		}
 
 		@keyframes blurin {

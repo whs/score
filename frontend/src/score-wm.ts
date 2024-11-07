@@ -21,6 +21,7 @@ export class WindowManager extends LitElement {
 	protected createRenderRoot() {
 		let root = super.createRenderRoot();
 		root.addEventListener('animationend', this.onAnimationEnd);
+		root.addEventListener('animationcancel', this.onAnimationEnd);
 		return root;
 	}
 
@@ -35,6 +36,11 @@ export class WindowManager extends LitElement {
 	}
 
 	push(page: Window) {
+		if (this.animation !== Animation.NO) {
+			// Don't allow multiple navigation
+			return;
+		}
+
 		this.backstack.push(page);
 		if (this.backstack.length > 1) {
 			window.history.pushState(null, '');
