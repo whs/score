@@ -62,7 +62,7 @@ export class ScoreForm extends LitElement {
 							() =>
 								html`<score-error>${msg('Unable to load data')}</score-error>`
 						),
-						msg('Loading...')
+						html`<span>${msg('Loading...')}</span>`
 					)}
 				</div>
 				<slot name="beforesubmit"></slot>

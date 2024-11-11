@@ -76,11 +76,11 @@ export class WindowManager extends LitElement {
 				out = [this.backstack.length - 1];
 		}
 
-		return repeat(
+		return html`${repeat(
 			out,
 			(v) => v,
 			(v) => this.backstack[v]
-		);
+		)}`;
 	}
 
 	private onPopState = () => {

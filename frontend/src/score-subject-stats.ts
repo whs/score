@@ -312,7 +312,7 @@ export class ScoreSubjectStatsComponent extends LitElement {
 
 	private buildScoreStatsHistogram(): ChartData<
 		'bar',
-		{ x: string; y: number }[]
+		{ x: number; y: number }[]
 	> {
 		let data = [];
 		for (let i = 0; i <= this.stats!.max; i++) {

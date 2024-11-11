@@ -1,10 +1,10 @@
-import { LitElement, css } from 'lit';
+import { LitElement, css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
 @customElement('score-error')
 export class ScoreError extends LitElement {
 	render() {
-		return document.createElement('slot');
+		return html`<slot></slot>`;
 	}
 
 	static styles = css`
