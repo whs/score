@@ -17,6 +17,20 @@ import ranks from './ranks';
 import { styleMap } from 'lit/directives/style-map.js';
 import { until } from 'lit/directives/until.js';
 
+const averageBarSvg = html`<svg
+	width="20"
+	height="36"
+	viewBox="0 0 20 36"
+	fill="none"
+>
+	<path
+		fill-rule="evenodd"
+		clip-rule="evenodd"
+		d="M0 36H20C15.5817 36 12 32.4183 12 28V8C12 3.58172 15.5817 0 20 0H0C4.41828 0 8 3.58172 8 8V28C8 32.4183 4.41828 36 0 36Z"
+		fill="white"
+	/>
+</svg> `;
+
 @customElement('score-subject-stats')
 export class ScoreSubjectStatsComponent extends LitElement {
 	@property()
@@ -84,10 +98,8 @@ export class ScoreSubjectStatsComponent extends LitElement {
 											label: {
 												content: msg('Average'),
 												display: true,
-												opacity: 0.5,
 												backgroundColor: 'transparent',
-												textStrokeColor: 'black',
-												textStrokeWidth: 1,
+												color: 'rgba(0,0,0,0.5)',
 												rotation: 'auto',
 												position: '20%',
 												font: {
@@ -131,14 +143,14 @@ export class ScoreSubjectStatsComponent extends LitElement {
 						</div>
 					</div>
 					<div class="bar">
-						<score-bar percent="${score.percent}"></score-bar>
+						<score-bar percent="${score.percent}" noglow></score-bar>
 						<div
 							class="average"
 							style="${styleMap({
 								left: `${(stats.average / stats.max) * 100}%`,
 							})}"
 						>
-							<div class="tick"></div>
+							${averageBarSvg}
 							<img src="${icArrowUp}" alt="^" />${msg('Average')}
 						</div>
 					</div>
@@ -150,6 +162,7 @@ export class ScoreSubjectStatsComponent extends LitElement {
 							? html`<img
 									src="${ranks[score.rank.toString()]}"
 									alt="${this.numberFormatter.format(score.rank)}"
+									title="${this.numberFormatter.format(score.rank)}"
 								/>`
 							: this.numberFormatter.format(score.rank)}
 					</div>
@@ -387,7 +400,11 @@ export class ScoreSubjectStatsComponent extends LitElement {
 		}
 
 		.bar score-bar {
-			height: 32px;
+			height: 36px;
+			border-radius: 12px;
+		}
+
+		.bar score-bar::part(bar) {
 			border-radius: 12px;
 		}
 
@@ -403,11 +420,9 @@ export class ScoreSubjectStatsComponent extends LitElement {
 			transform: translateX(-50%);
 		}
 
-		.bar .tick {
+		.bar svg {
 			display: block;
-			height: 32px;
-			width: 4px;
-			background: white;
+			height: 36px;
 		}
 
 		.bar .average img {

@@ -7,10 +7,14 @@ export class ScoreBar extends LitElement {
 	@property({ type: Number })
 	percent: number = 0;
 
+	@property({ type: Boolean })
+	noGlow: boolean = false;
+
 	render() {
 		return html`
 			<div
-				class="completed completed-${this.getProgressBarBreakpoint()}"
+				class="completed completed-${this.getProgressBarBreakpoint()} ${this.noGlow ? 'noglow' : null}"
+				part="bar"
 				style="${styleMap({ width: `${this.percent}%` })}"
 			></div>
 		</div>`;
@@ -73,7 +77,7 @@ export class ScoreBar extends LitElement {
 			position: relative;
 			animation: bgpos linear 2s infinite;
 		}
-		.completed-100::after {
+		.completed-100:not(.noglow)::after {
 			content: '';
 			position: absolute;
 			top: 0;
