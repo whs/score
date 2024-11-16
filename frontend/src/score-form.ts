@@ -191,6 +191,12 @@ export class ScoreForm extends LitElement {
 			outline: #131313 solid 2px;
 		}
 
+		.files label:has(> :disabled) {
+			border: #00000026 solid 1px;
+			background: #00000008;
+			color: #00000026;
+		}
+
 		.files input[type='radio'] {
 			appearance: none;
 			background-color: white;
@@ -228,6 +234,11 @@ export class ScoreForm extends LitElement {
 
 		.files input[type='radio']:checked::before {
 			transform: scale(1);
+		}
+
+		.files input[type='radio']:disabled {
+			border: #00000026 solid 1px;
+			background: #00000008;
 		}
 	`;
 }
