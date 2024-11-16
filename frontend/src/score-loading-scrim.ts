@@ -19,7 +19,7 @@ export class ScoreLoadingScrim extends LitElement {
 			justify-content: center;
 			align-items: center;
 			backdrop-filter: blur(48px);
-			font-size: 24pt;
+			font-size: 24px;
 			font-family: 'IBM Plex Sans Thai', sans-serif;
 			font-weight: 500;
 			user-select: none;

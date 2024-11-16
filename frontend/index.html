@@ -13,50 +13,43 @@ https://github.com/whs/score24
     <style>
       body {
         background: #ecf0f5;
-        margin: 0;
-        line-height: 1.5;
       }
 
       .header {
-        display: flex;
+        text-align: center;
+        font-family: 'IBM Plex Sans Thai', sans-serif;
+        font-weight: 400;
+        margin-bottom: 24px;
+        font-size: 16px;
+        padding-top: 16px;
+      }
+
+      .logo {
         margin-bottom: 16px;
       }
 
-      .infotxt {
-        flex: 1;
-        padding-top: 10px;
-        font-family: thaisans, sans-serif;
-        margin-left: 10px;
-        font-size: 12pt;
-        font-weight: 100;
-        text-align: center;
-        text-shadow: white 0px 0px 10px;
-        line-height: 1.8em;
-      }
-
       .appname {
+        font-size: 24px;
         font-weight: 500;
-        font-size: 16pt;
       }
 
       .footer {
+        font-family: 'IBM Plex Sans Thai', sans-serif;
         text-align: center;
-        font-size: 10pt;
+        font-size: 16px;
+        color: #656E7C;
+        margin: 16px 8px 0 8px;
       }
     </style>
   </head>
   <body>
     <whs-score topten="true">
       <div slot="header" class="header">
-        <img src="/logo.gif">
-        <div class="infotxt">
-          <div class="appname">ระบบประกาศผลคะแนนสอบ</div>
-          <div class="sitename">โรงเรียนบดินทรเดชา (สิงห์ สิงหเสนี) ๒</div>
-        </div>
+        <img src="/logo.png" class="logo" height="115" alt="ตราพระเกี้ยว">
+        <div class="appname">ระบบประกาศผลคะแนนสอบ</div>
+        <div class="sitename">โรงเรียนบดินทรเดชา (สิงห์ สิงหเสนี) ๒</div>
       </div>
-      <!--<span slot="username">เลขประจำตัว</span>
-      <span slot="password">รหัสผ่าน</span>-->
-      <p class="footer" slot="footer">โดย งานทะเบียนวัดผล & งานสื่อนวัตกรรมและเทคโนโลยี</p>
+      <div class="footer" slot="footer">โดย งานทะเบียนวัดผล & งานสื่อนวัตกรรมและเทคโนโลยี</div>
     </whs-score>
   </body>
 </html>

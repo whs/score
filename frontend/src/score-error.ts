@@ -9,13 +9,17 @@ export class ScoreError extends LitElement {
 
 	static styles = css`
 		:host {
-			background: #c40009;
-			color: white;
-			padding: 5px;
-			font-size: 10pt;
+			background: white;
+			color: #c40009;
+			border: #c40009 solid 2px;
+			padding: 16px;
 			text-align: center;
-			border-radius: 5px;
+			border-radius: 8px;
 			display: block;
+			margin-bottom: 8px;
+			box-shadow:
+				#0000001f 0 0 1px,
+				#0000000f 0 2px 4px;
 		}
 	`;
 }

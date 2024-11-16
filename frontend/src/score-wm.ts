@@ -158,7 +158,6 @@ export class Window extends LitElement {
 			grid-column: 1;
 			grid-row: 1;
 			justify-content: center;
-			padding: 10px 0;
 			background-color: #ecf0f5;
 			z-index: 10;
 		}

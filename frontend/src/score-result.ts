@@ -73,7 +73,7 @@ export class ScoreResult extends LitElement {
 		nav {
 			display: flex;
 			justify-content: flex-end;
-			padding: 0 16px;
+			padding: 16px 16px 0 16px;
 		}
 
 		header {

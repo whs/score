@@ -1,4 +1,4 @@
-import { LitElement, html, render } from 'lit';
+import { LitElement, html, render, PropertyValues, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { getFileNameV1, pbkdf2 } from './utils.ts';
 import { ScoreFormSubmitEvent } from './score-form.ts';
@@ -46,6 +46,9 @@ export class WhsScore extends LitElement {
 	@state()
 	protected isLoading: boolean = false;
 
+	@state()
+	protected errorMessage: string | null = null;
+
 	private fileList: Promise<FileList> | undefined;
 
 	constructor() {
@@ -84,8 +87,9 @@ export class WhsScore extends LitElement {
 						@submit=${this.onSubmit}
 						.fileList=${this.fileList}
 					>
-						<div slot="header">
-							<slot name="header"></slot>
+						<slot name="header" slot="header"></slot>
+						<div slot="header-in">
+							<slot name="header-in" slot="header-in"></slot>
 							${this.isBrowserSupported()
 								? null
 								: html`<score-error
@@ -93,6 +97,9 @@ export class WhsScore extends LitElement {
 											'This browser is not supported. Use Firefox 130 or later'
 										)}</score-error
 									>`}
+							${this.errorMessage
+								? html`<score-error>${this.errorMessage}</score-error>`
+								: null}
 						</div>
 						<slot name="username" slot="username">${msg('Student ID')}</slot>
 						<slot name="password" slot="password">${msg('Password')}</slot>
@@ -174,6 +181,12 @@ export class WhsScore extends LitElement {
 			typeof TextEncoder === 'function'
 		);
 	}
+	protected updated(changed: PropertyValues) {
+		super.updated(changed);
+		if (changed.has('errorMessage') && this.errorMessage) {
+			this.scrollIntoView(true);
+		}
+	}
 
 	private onSubmit(e: CustomEvent<ScoreFormSubmitEvent>) {
 		e.preventDefault();
@@ -204,6 +217,7 @@ export class WhsScore extends LitElement {
 			return resp.json() as Promise<ScoreStats>;
 		})();
 
+		this.errorMessage = null;
 		this.isLoading = true;
 
 		downloadPromise.then(
@@ -213,13 +227,21 @@ export class WhsScore extends LitElement {
 					this.renderScoreWindow(e.detail.file, userScore, statsPromise)
 				);
 			},
-			() => {
+			(e: Error) => {
+				this.errorMessage = e.toString();
 				this.isLoading = false;
 			}
 		);
 
 		this.requestUpdate();
 	}
+
+	static styles = css`
+		:host {
+			display: block;
+			line-height: 1.4;
+		}
+	`;
 }
 
 declare global {
