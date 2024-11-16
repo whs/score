@@ -11,13 +11,14 @@ export class ScoreBar extends LitElement {
 	noGlow: boolean = false;
 
 	render() {
-		return html`
-			<div
-				class="completed completed-${this.getProgressBarBreakpoint()} ${this.noGlow ? 'noglow' : null}"
-				part="bar"
-				style="${styleMap({ width: `${this.percent}%` })}"
-			></div>
-		</div>`;
+		return html`<div
+			class="completed completed-${this.getProgressBarBreakpoint()} ${this
+				.noGlow
+				? 'noglow'
+				: null}"
+			part="bar"
+			style="${styleMap({ width: `${this.percent}%` })}"
+		></div>`;
 	}
 
 	private getProgressBarBreakpoint(): string {

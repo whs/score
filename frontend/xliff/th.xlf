@@ -129,6 +129,18 @@
   <source># of People</source>
   <target>จำนวนคน</target>
 </trans-unit>
+<trans-unit id="sefcfb3267b46e781">
+  <source>Rank <x id="0" equiv-text="${this.numberFormatter.format(score.rank)}"/></source>
+  <target>อันดับที่ <x id="0" equiv-text="${this.numberFormatter.format(score.rank)}"/></target>
+</trans-unit>
+<trans-unit id="s67749057edb2586b">
+  <source>Logout</source>
+  <target>ออกจากระบบ</target>
+</trans-unit>
+<trans-unit id="s6865ec9ad7261fc3">
+  <source>Full mark: <x id="0" equiv-text="${fullMarks}"/></source>
+  <target>คะแนนเต็ม: <x id="0" equiv-text="${fullMarks}"/></target>
+</trans-unit>
 </body>
 </file>
 </xliff>

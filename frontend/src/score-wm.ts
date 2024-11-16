@@ -46,6 +46,7 @@ export class WindowManager extends LitElement {
 			window.history.pushState(null, '');
 		}
 		page.classList.add('in');
+		page.ariaHidden = 'true';
 		this.animation = Animation.ENTER;
 		this.requestUpdate();
 	}
@@ -59,7 +60,9 @@ export class WindowManager extends LitElement {
 			// Express exit
 			this.backstack.pop();
 		}
-		this.backstack[this.backstack.length - 1].classList.add('out');
+		let exiting = this.backstack[this.backstack.length - 1];
+		exiting.classList.add('out');
+		exiting.ariaHidden = 'true';
 		this.animation = Animation.EXIT;
 
 		this.requestUpdate();
@@ -91,6 +94,7 @@ export class WindowManager extends LitElement {
 	private onAnimationEnd = () => {
 		switch (this.animation) {
 			case Animation.ENTER:
+				this.backstack[this.backstack.length - 1].ariaHidden = 'false';
 				this.backstack[this.backstack.length - 1].classList.remove('in');
 				break;
 			case Animation.EXIT:
@@ -172,5 +176,6 @@ export class Window extends LitElement {
 declare global {
 	interface HTMLElementTagNameMap {
 		'score-wm': WindowManager;
+		'score-window': Window;
 	}
 }

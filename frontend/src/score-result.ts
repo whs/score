@@ -21,7 +21,12 @@ export class ScoreResult extends LitElement {
 			<nav>
 				<score-round-button
 					@click="${() => this.dispatchEvent(new CustomEvent('close'))}"
-					><img src="${icLogout}" alt="Logout"
+					@keyup="${(e: KeyboardEvent) =>
+						['Enter', ' ', 'Spacebar'].includes(e.key) &&
+						this.dispatchEvent(new CustomEvent('close'))}"
+					tabindex="0"
+					role="button"
+					><img src="${icLogout}" alt="${msg('Logout')}"
 				/></score-round-button>
 			</nav>
 			<header>
@@ -30,36 +35,50 @@ export class ScoreResult extends LitElement {
 				<div class="filename">${this.data!._fname}</div>
 			</header>
 			<slot name="beforescore"></slot>
-			${repeat(
-				Object.keys(this.data!),
-				(key) => key,
-				(subject) => {
-					if (subject.startsWith('_')) {
-						return null;
+			<section role="list">
+				${repeat(
+					Object.keys(this.data!),
+					(key) => key,
+					(subject) => {
+						if (subject.startsWith('_')) {
+							return null;
+						}
+
+						let score = this.data![subject] as SubjectScore;
+						let isClickable = typeof score === 'object' && 'rank' in score;
+
+						return html`<score-subject
+							class="${isClickable ? 'clickable' : ''}"
+							subject="${subject}"
+							?clickable="${isClickable}"
+							.data="${score}"
+							.stats="${until(
+								this.stats?.then((stats) => stats[subject]),
+								null
+							)}"
+							@click="${isClickable
+								? this.showStatsHandler(subject)
+								: () => {}}"
+							@keyup="${isClickable
+								? this.showStatsHandler(subject)
+								: () => {}}"
+							tabindex="${isClickable ? 0 : null}"
+							role="listitem"
+						></score-subject>`;
 					}
-
-					let score = this.data![subject] as SubjectScore;
-					let isClickable = typeof score === 'object' && 'rank' in score;
-
-					return html`<score-subject
-						class="${isClickable ? 'clickable' : ''}"
-						subject="${subject}"
-						?clickable="${isClickable}"
-						.data="${score}"
-						.stats="${until(
-							this.stats?.then((stats) => stats[subject]),
-							null
-						)}"
-						@click="${isClickable ? this.showStatsHandler(subject) : () => {}}"
-					></score-subject>`;
-				}
-			)}
+				)}
+			</section>
 			<slot name="afterscore"></slot>
 		`;
 	}
 
 	private showStatsHandler(subject: string) {
-		return (e: MouseEvent) => {
+		return (e: MouseEvent | KeyboardEvent) => {
+			if ('key' in e) {
+				if (!['Enter', ' ', 'Spacebar'].includes(e.key)) {
+					return;
+				}
+			}
 			e.preventDefault();
 			this.dispatchEvent(new CustomEvent('stats', { detail: subject }));
 		};

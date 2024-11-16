@@ -51,22 +51,39 @@ export class ScoreSubject extends LitElement {
 					${ranks[score.rank.toString()]
 						? html`<img
 								src="${ranks[score.rank.toString()]}"
-								alt="${this.numberFormatter.format(score.rank)}"
+								alt="${msg(
+									str`Rank ${this.numberFormatter.format(score.rank)}`
+								)}"
 							/>`
 						: null}
 					${this.clickable
-						? html`<img src="${icRightUp}" alt="${msg('See more')}" />`
+						? html`<img
+								aria-hidden="true"
+								src="${icRightUp}"
+								alt="${msg('See more')}"
+							/>`
 						: null}
 				</div>
 			</div>
-			<score-bar percent="${score.percent}"></score-bar>
-			<div class="legend">
+			<score-bar
+				role="meter"
+				aria-label="${msg('Score')}"
+				aria-valuemin="0"
+				aria-valuemax="${fullMarks}"
+				aria-valuenow="${score.score}"
+				aria-describedby="legend"
+				percent="${score.percent}"
+			></score-bar>
+			<div class="legend" id="legend">
 				<div class="legend-left">
 					${msg(
 						str`Score: ${this.numberFormatter.format(score.score as number)}`
 					)}
 				</div>
-				<div class="legend-right">
+				<div
+					class="legend-right"
+					aria-label="${msg(str`Full mark: ${fullMarks}`)}"
+				>
 					${this.numberFormatter.format(fullMarks)}
 				</div>
 			</div>

@@ -65,7 +65,9 @@ export class ScoreForm extends LitElement {
 											</li>`
 									),
 								() =>
-									html`<score-error>${msg('Unable to load data')}</score-error>`
+									html`<score-error role="alert"
+										>${msg('Unable to load data')}</score-error
+									>`
 							),
 							html`<li><span>${msg('Loading...')}</span></li>`
 						)}

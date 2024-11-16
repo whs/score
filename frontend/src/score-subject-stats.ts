@@ -126,26 +126,49 @@ export class ScoreSubjectStatsComponent extends LitElement {
 			return null;
 		}
 
-		return html`<div class="fab-bar">
-				<div class="fab" @click=${this.onClose}>
+		return html`<nav class="fab-bar">
+				<div
+					class="fab"
+					role="button"
+					tabindex="0"
+					@click=${this.onClose}
+					@keyup=${this.onClose}
+				>
 					<img src="${icBack}" alt="${msg('Back')}" />
 				</div>
-			</div>
-			<div class="data">
+			</nav>
+			<main class="data">
 				<header>
 					<div class="subject">${this.subject}</div>
-					<div class="score">
-						<div class="userscore">
+					<div class="score" id="score">
+						<div
+							class="userscore"
+							aria-label="${msg(str`Score: ${score.score}`)}"
+						>
 							${this.numberFormatter.format(score.score)}
 						</div>
-						<div class="fullscore">
-							/${this.numberFormatter.format(stats.max)}
+						<div
+							class="fullscore"
+							aria-label="${msg(str`Full mark: ${stats.max}`)}"
+						>
+							<span aria-hidden="true">/</span>${this.numberFormatter.format(
+								stats.max
+							)}
 						</div>
 					</div>
-					<div class="bar">
-						<score-bar percent="${score.percent}" noglow></score-bar>
+					<div class="bar" aria-describedby="score">
+						<score-bar
+							role="meter"
+							aria-label="${msg('Score')}"
+							aria-valuemin="0"
+							aria-valuemax="${stats.max}"
+							aria-valuenow="${score.score}"
+							percent="${score.percent}"
+							noglow
+						></score-bar>
 						<div
 							class="average"
+							aria-hidden="true"
 							style="${styleMap({
 								left: `${(stats.average / stats.max) * 100}%`,
 							})}"
@@ -156,19 +179,23 @@ export class ScoreSubjectStatsComponent extends LitElement {
 					</div>
 				</header>
 				<div class="box">
-					<div class="legend">${msg('Your rank is')}</div>
+					<div class="legend" id="ranklabel">${msg('Your rank is')}</div>
 					<div class="stats rank">
 						${ranks[score.rank.toString()]
 							? html`<img
 									src="${ranks[score.rank.toString()]}"
 									alt="${this.numberFormatter.format(score.rank)}"
 									title="${this.numberFormatter.format(score.rank)}"
+									role="presentation"
+									aria-labelledby="ranklabel"
 								/>`
 							: this.numberFormatter.format(score.rank)}
 					</div>
 					${this.topten
 						? html`<score-button
 								style="margin-top: 8px;"
+								role="button"
+								tabindex="0"
 								@click=${this.onTopTen}
 								>${msg('Show Top Ten')}</score-button
 							>`
@@ -200,14 +227,14 @@ export class ScoreSubjectStatsComponent extends LitElement {
 				</div>
 				<div class="flex">
 					<div class="box">
-						<div class="icon">
+						<div class="icon" aria-hidden="true">
 							<img src="${icTeam}" alt="${msg('Examinee')}" />
 						</div>
 						<div class="legend">${msg('Examinee')}</div>
 						<div class="stats">${this.numberFormatter.format(stats.count)}</div>
 					</div>
 					<div class="box">
-						<div class="icon">
+						<div class="icon" aria-hidden="true">
 							<img src="${icAvg}" alt="${msg('Average')}" />
 						</div>
 						<div class="legend">${msg('Average')}</div>
@@ -216,7 +243,7 @@ export class ScoreSubjectStatsComponent extends LitElement {
 						</div>
 					</div>
 					<div class="box">
-						<div class="icon">
+						<div class="icon" aria-hidden="true">
 							<img src="${icSd}" alt="${msg('Standard Deviation')}" />
 						</div>
 						<div class="legend" title="${msg('Standard Deviation')}">
@@ -243,7 +270,7 @@ export class ScoreSubjectStatsComponent extends LitElement {
 				</div>
 				<div class="box">
 					<div class="mingrid">
-						<div class="min">
+						<div class="min" aria-hidden="${this.showWhyMin2}">
 							<div class="flex" style="margin-bottom: 8px;">
 								<div class="flexitem">
 									<div class="legend">${msg('Second Lowest Score')}</div>
@@ -275,7 +302,7 @@ export class ScoreSubjectStatsComponent extends LitElement {
 						</div>
 						${cache(
 							this.showWhyMin2
-								? html`<div class="whymin2">
+								? html`<div class="whymin2" role="alert">
 										<div class="whymin2-inner">
 											${msg(
 												'Two lowest scores are reported because the lowest score can be 0 for people who are absent. The second lowest score should represent actually achieved score.'
@@ -285,10 +312,17 @@ export class ScoreSubjectStatsComponent extends LitElement {
 								: null
 						)}
 					</div>
-					<score-button @click=${() => (this.showWhyMin2 = !this.showWhyMin2)}
+					<score-button
+						tabindex="0"
+						role="button"
+						@click=${() => (this.showWhyMin2 = !this.showWhyMin2)}
+						@keyup=${(e: KeyboardEvent) =>
+							['Enter', ' ', 'Spacebar'].includes(e.key) &&
+							(this.showWhyMin2 = !this.showWhyMin2)}
 						><img
 							src="${icQuestion}"
 							style="height: 1.2em; vertical-align: middle;"
+							aria-hidden="true"
 							alt="?"
 						/>
 						${msg('Why two lowest scores are reported')}</score-button
@@ -300,15 +334,25 @@ export class ScoreSubjectStatsComponent extends LitElement {
 						until(this.chartPromise, html`${msg('Loading...')}`)
 					)}
 				</div>
-			</div>`;
+			</main>`;
 	}
 
-	private onClose = (e: MouseEvent) => {
+	private onClose = (e: MouseEvent | KeyboardEvent) => {
+		if ('key' in e) {
+			if (!['Enter', ' ', 'Spacebar'].includes(e.key)) {
+				return;
+			}
+		}
 		e.preventDefault();
 		this.dispatchEvent(new CustomEvent('close'));
 	};
 
-	private onTopTen = (e: MouseEvent) => {
+	private onTopTen = (e: MouseEvent | KeyboardEvent) => {
+		if ('key' in e) {
+			if (!['Enter', ' ', 'Spacebar'].includes(e.key)) {
+				return;
+			}
+		}
 		e.preventDefault();
 		this.toptenLoad = import('./easteregg/score-topten.ts');
 		this.toptenLoad.then(() => {

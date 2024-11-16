@@ -77,7 +77,9 @@ export class WhsScore extends LitElement {
 		return html`
 			<score-font></score-font>
 			${this.isLoading
-				? html`<score-loading-scrim>${msg('Loading...')}</score-loading-scrim>`
+				? html`<score-loading-scrim role="status"
+						>${msg('Loading...')}</score-loading-scrim
+					>`
 				: null}
 			<score-wm ${ref(this.wmRef)}>
 				<score-window>
@@ -92,13 +94,15 @@ export class WhsScore extends LitElement {
 							<slot name="header-in" slot="header-in"></slot>
 							${this.isBrowserSupported()
 								? null
-								: html`<score-error
+								: html`<score-error role="alert"
 										>${msg(
 											'This browser is not supported. Use Firefox 130 or later'
 										)}</score-error
 									>`}
 							${this.errorMessage
-								? html`<score-error>${this.errorMessage}</score-error>`
+								? html`<score-error role="alert"
+										>${this.errorMessage}</score-error
+									>`
 								: null}
 						</div>
 						<slot name="username" slot="username">${msg('Student ID')}</slot>
