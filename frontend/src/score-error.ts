@@ -20,6 +20,9 @@ export class ScoreError extends LitElement {
 			box-shadow:
 				#0000001f 0 0 1px,
 				#0000000f 0 2px 4px;
+			font-family: 'IBM Plex Sans Thai', sans-serif;
+			font-size: 16px;
+			font-weight: 500;
 		}
 	`;
 }

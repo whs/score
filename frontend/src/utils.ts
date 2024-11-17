@@ -75,3 +75,7 @@
 ): Promise<string> {
 	return `${fileId}/u${username}_${await getPasswordV2(fileId, username, password)}.json`;
 }
+
+export function isActivateKeyboardEvent(e: Event | KeyboardEvent): boolean {
+	return 'key' in e && ['Enter', ' ', 'Spacebar'].includes(e.key);
+}

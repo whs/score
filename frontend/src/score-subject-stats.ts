@@ -16,6 +16,7 @@ import icArrowUp from 'remixicon/icons/Arrows/arrow-up-s-fill.svg';
 import ranks from './ranks';
 import { styleMap } from 'lit/directives/style-map.js';
 import { until } from 'lit/directives/until.js';
+import { isActivateKeyboardEvent } from './utils.ts';
 
 const averageBarSvg = html`<svg
 	width="20"
@@ -45,6 +46,9 @@ export class ScoreSubjectStatsComponent extends LitElement {
 	@property({ type: Boolean })
 	topten: boolean = false;
 
+	@property({ type: Boolean })
+	nohistogram: boolean = false;
+
 	@state()
 	showWhyMin2: boolean = false;
 
@@ -59,64 +63,66 @@ export class ScoreSubjectStatsComponent extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.chartPromise = import('./score-chartjs.ts').then(
-			() =>
-				html`<score-chartjs
-					.data=${this.buildScoreStatsHistogram()}
-					.config=${{
-						type: 'bar',
-						options: {
-							categoryPercentage: 1,
-							barPercentage: 1,
-							scales: {
-								x: {
-									type: 'linear',
-									bounds: 'data',
-									min: 0,
-									max: this.stats!.max,
-									beginAtZero: true,
-									offset: false,
-									ticks: { maxRotation: 0, precision: 0 },
-									grid: { display: false },
-									title: { text: msg('Score'), display: true },
-								},
-								y: {
-									beginAtZero: true,
-									ticks: { precision: 0 },
-									title: { text: msg('# of People'), display: true },
-								},
-							},
-							plugins: {
-								annotation: {
-									annotations: {
-										average: {
-											type: 'line',
-											scaleID: 'x',
-											value: this.stats!.average,
-											borderColor: '#10df87',
-											borderDash: [5, 5],
-											label: {
-												content: msg('Average'),
-												display: true,
-												backgroundColor: 'transparent',
-												color: 'rgba(0,0,0,0.5)',
-												rotation: 'auto',
-												position: '20%',
-												font: {
-													family: '"IBM Plex Sans Thai", sans-serif',
-													weight: 500,
-													size: 16,
+		this.chartPromise = this.nohistogram
+			? undefined
+			: import('./score-chartjs.ts').then(
+					() =>
+						html`<score-chartjs
+							.data=${this.buildScoreStatsHistogram()}
+							.config=${{
+								type: 'bar',
+								options: {
+									categoryPercentage: 1,
+									barPercentage: 1,
+									scales: {
+										x: {
+											type: 'linear',
+											bounds: 'data',
+											min: 0,
+											max: this.stats!.max,
+											beginAtZero: true,
+											offset: false,
+											ticks: { maxRotation: 0, precision: 0 },
+											grid: { display: false },
+											title: { text: msg('Score'), display: true },
+										},
+										y: {
+											beginAtZero: true,
+											ticks: { precision: 0 },
+											title: { text: msg('# of People'), display: true },
+										},
+									},
+									plugins: {
+										annotation: {
+											annotations: {
+												average: {
+													type: 'line',
+													scaleID: 'x',
+													value: this.stats!.average,
+													borderColor: '#10df87',
+													borderDash: [5, 5],
+													label: {
+														content: msg('Average'),
+														display: true,
+														backgroundColor: 'transparent',
+														color: 'rgba(0,0,0,0.5)',
+														rotation: 'auto',
+														position: '20%',
+														font: {
+															family: '"IBM Plex Sans Thai", sans-serif',
+															weight: 500,
+															size: 16,
+														},
+													},
 												},
 											},
 										},
 									},
 								},
-							},
-						},
-					}}
-				>
-				</score-chartjs>`
-		);
+							}}
+						>
+						</score-chartjs>`
+				);
 	}
 
 	render() {
@@ -125,6 +131,8 @@ export class ScoreSubjectStatsComponent extends LitElement {
 		if (!('percent' in score)) {
 			return null;
 		}
+
+		let needLowScore2 = stats.lowscore2 !== stats.lowscore;
 
 		return html`<nav class="fab-bar">
 				<div
@@ -210,7 +218,7 @@ export class ScoreSubjectStatsComponent extends LitElement {
 					</div>
 					<div class="stats">
 						${msg(
-							str`${this.numberFormatter.format(stats.histogram[score.score])} people`,
+							str`${this.numberFormatter.format(stats.histogram[score.score] - 1)} people`,
 							{
 								id: 'same-score-value',
 								// FIXME: Pluralization
@@ -271,20 +279,22 @@ export class ScoreSubjectStatsComponent extends LitElement {
 				<div class="box">
 					<div class="mingrid">
 						<div class="min" aria-hidden="${this.showWhyMin2}">
-							<div class="flex" style="margin-bottom: 8px;">
-								<div class="flexitem">
-									<div class="legend">${msg('Second Lowest Score')}</div>
-									<div class="stats">
-										${this.numberFormatter.format(stats.lowscore2)}
-									</div>
-								</div>
-								<div class="flexitem">
-									<div class="legend">${msg('Count (person)')}</div>
-									<div class="stats">
-										${this.numberFormatter.format(stats.lowscore2_cnt)}
-									</div>
-								</div>
-							</div>
+							${needLowScore2
+								? html`<div class="flex" style="margin-bottom: 8px;">
+										<div class="flexitem">
+											<div class="legend">${msg('Second Lowest Score')}</div>
+											<div class="stats">
+												${this.numberFormatter.format(stats.lowscore2)}
+											</div>
+										</div>
+										<div class="flexitem">
+											<div class="legend">${msg('Count (person)')}</div>
+											<div class="stats">
+												${this.numberFormatter.format(stats.lowscore2_cnt)}
+											</div>
+										</div>
+									</div>`
+								: null}
 							<div class="flex" style="margin-bottom: 8px;">
 								<div class="flexitem">
 									<div class="legend">${msg('Lowest Score')}</div>
@@ -312,34 +322,38 @@ export class ScoreSubjectStatsComponent extends LitElement {
 								: null
 						)}
 					</div>
-					<score-button
-						tabindex="0"
-						role="button"
-						@click=${() => (this.showWhyMin2 = !this.showWhyMin2)}
-						@keyup=${(e: KeyboardEvent) =>
-							['Enter', ' ', 'Spacebar'].includes(e.key) &&
-							(this.showWhyMin2 = !this.showWhyMin2)}
-						><img
-							src="${icQuestion}"
-							style="height: 1.2em; vertical-align: middle;"
-							aria-hidden="true"
-							alt="?"
-						/>
-						${msg('Why two lowest scores are reported')}</score-button
-					>
+					${needLowScore2
+						? html`<score-button
+								tabindex="0"
+								role="button"
+								@click=${() => (this.showWhyMin2 = !this.showWhyMin2)}
+								@keyup=${(e: KeyboardEvent) =>
+									isActivateKeyboardEvent(e) &&
+									(this.showWhyMin2 = !this.showWhyMin2)}
+								><img
+									src="${icQuestion}"
+									style="height: 1.2em; vertical-align: middle;"
+									aria-hidden="true"
+									alt="?"
+								/>
+								${msg('Why two lowest scores are reported')}</score-button
+							>`
+						: null}
 				</div>
-				<div class="box">
-					<div class="legend">${msg('Histogram')}</div>
-					${guard([stats, score], () =>
-						until(this.chartPromise, html`${msg('Loading...')}`)
-					)}
-				</div>
+				${!this.nohistogram
+					? html`<div class="box">
+							<div class="legend">${msg('Histogram')}</div>
+							${guard([stats, score], () =>
+								until(this.chartPromise, html`${msg('Loading...')}`)
+							)}
+						</div>`
+					: null}
 			</main>`;
 	}
 
 	private onClose = (e: MouseEvent | KeyboardEvent) => {
 		if ('key' in e) {
-			if (!['Enter', ' ', 'Spacebar'].includes(e.key)) {
+			if (!isActivateKeyboardEvent(e)) {
 				return;
 			}
 		}
@@ -349,7 +363,7 @@ export class ScoreSubjectStatsComponent extends LitElement {
 
 	private onTopTen = (e: MouseEvent | KeyboardEvent) => {
 		if ('key' in e) {
-			if (!['Enter', ' ', 'Spacebar'].includes(e.key)) {
+			if (!isActivateKeyboardEvent(e)) {
 				return;
 			}
 		}

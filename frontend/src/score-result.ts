@@ -7,6 +7,7 @@ import { localized, msg } from '@lit/localize';
 import './score-subject.ts';
 import './score-round-button.ts';
 import icLogout from 'remixicon/icons/System/logout-circle-r-line.svg';
+import { isActivateKeyboardEvent } from './utils.ts';
 
 @customElement('score-result')
 @localized()
@@ -22,11 +23,14 @@ export class ScoreResult extends LitElement {
 				<score-round-button
 					@click="${() => this.dispatchEvent(new CustomEvent('close'))}"
 					@keyup="${(e: KeyboardEvent) =>
-						['Enter', ' ', 'Spacebar'].includes(e.key) &&
+						isActivateKeyboardEvent(e) &&
 						this.dispatchEvent(new CustomEvent('close'))}"
 					tabindex="0"
 					role="button"
-					><img src="${icLogout}" alt="${msg('Logout')}"
+					><img
+						src="${icLogout}"
+						alt="${msg('Logout')}"
+						title="${msg('Logout')}"
 				/></score-round-button>
 			</nav>
 			<header>

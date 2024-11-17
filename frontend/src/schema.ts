@@ -37,7 +37,6 @@ export type SubjectScore =
 	  };
 
 export interface ScoreStats {
-	_float: string;
 	[subject: string]: string | ScoreSubjectStats;
 }
 

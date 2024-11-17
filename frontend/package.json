@@ -14,7 +14,9 @@
     "preview": "vite preview",
     "prettier": "prettier -w src",
     "locale-extract": "lit-localize extract",
-    "locale-build": "lit-localize build"
+    "locale-build": "lit-localize build",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@fontsource/ibm-plex-sans-thai": "^5.1.0",
@@ -28,9 +30,16 @@
   },
   "devDependencies": {
     "@lit/localize-tools": "^0.8.0",
+    "@storybook/addon-a11y": "^8.4.4",
+    "@storybook/addon-essentials": "^8.4.4",
+    "@storybook/blocks": "^8.4.4",
+    "@storybook/test": "^8.4.4",
+    "@storybook/web-components": "^8.4.4",
+    "@storybook/web-components-vite": "^8.4.4",
     "prettier": "^3.3.3",
     "rollup-plugin-license": "^3.5.2",
     "rollup-plugin-minify-html-literals": "^1.2.6",
+    "storybook": "^8.4.4",
     "typescript": "^5.5.4",
     "vite": "^5.4.6",
     "vite-plugin-symfony": "^7.0.4"
