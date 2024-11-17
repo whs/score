@@ -7,6 +7,33 @@ import { action } from '@storybook/addon-actions';
 const meta: Meta = {
 	title: 'score-form',
 	component: 'score-form',
+	args: {
+		usernameInputMode: 'numeric',
+		passwordInputMode: 'numeric',
+	},
+	argTypes: {
+		usernameInputMode: {
+			control: 'select',
+			description:
+				'Input mode of the username field. This affect on screen keyboards and do not actually block inputs from other types',
+			options: [
+				'none',
+				'text',
+				'decimal',
+				'numeric',
+				'tel',
+				'search',
+				'email',
+				'url',
+			],
+		},
+		passwordInputMode: {
+			control: 'select',
+			description:
+				'Input mode of the password field. This affect on screen keyboards and do not actually block inputs from other types',
+			options: ['none', 'text', 'decimal', 'numeric'],
+		},
+	},
 };
 
 export default meta;
@@ -31,13 +58,18 @@ const fileList: FileList = {
 };
 
 export const Default: Story = {
-	render: () =>
+	render: (args) =>
 		html`<score-form
+			usernameInputMode="${args.usernameInputMode}"
+			passwordInputMode="${args.passwordInputMode}"
 			.fileList="${Promise.resolve(fileList)}"
 			@submit="${action('submit')}"
 		></score-form>`,
 };
 
+/**
+ * Initially the file list may not be ready. This disable the form submission
+ */
 export const Loading: Story = {
 	render: () => html`<score-form></score-form>`,
 };
@@ -57,8 +89,10 @@ function slotExample(name: string) {
  * Note that by using slot, users must manually localize the overriden texts
  */
 export const Slots: Story = {
-	render: () =>
+	render: (args) =>
 		html`<score-form
+			usernameInputMode="${args.usernameInputMode}"
+			passwordInputMode="${args.passwordInputMode}"
 			.fileList="${Promise.resolve(fileList)}"
 			@submit="${action('submit')}"
 		>
