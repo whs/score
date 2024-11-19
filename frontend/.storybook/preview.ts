@@ -11,7 +11,7 @@ import { configureLocalization } from '@lit/localize';
 const { setLocale } = configureLocalization({
 	sourceLocale,
 	targetLocales,
-	loadLocale: async (locale) => import(`../src/generated/locales/${locale}`),
+	loadLocale: async (locale) => import(`../src/generated/locales/${locale}.ts`),
 });
 
 const preview: Preview = {

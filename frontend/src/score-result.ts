@@ -1,4 +1,4 @@
-import { LitElement, css, html } from 'lit';
+import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { ScoreStats, SubjectScore, UserScore } from './schema.ts';
@@ -45,7 +45,7 @@ export class ScoreResult extends LitElement {
 					(key) => key,
 					(subject) => {
 						if (subject.startsWith('_')) {
-							return null;
+							return nothing;
 						}
 
 						let score = this.data![subject] as SubjectScore;
