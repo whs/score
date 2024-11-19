@@ -22,7 +22,6 @@
     "@fontsource/ibm-plex-sans-thai": "^5.1.0",
     "@fontsource/ibm-plex-sans-thai-looped": "^5.1.0",
     "@lit/localize": "^0.12.2",
-    "@picocss/pico": "^2.0.6",
     "chart.js": "^4.4.4",
     "chartjs-plugin-annotation": "^3.1.0",
     "lit": "^3.2.0",
@@ -41,7 +40,6 @@
     "rollup-plugin-minify-html-literals": "^1.2.6",
     "storybook": "^8.4.4",
     "typescript": "^5.5.4",
-    "vite": "^5.4.6",
-    "vite-plugin-symfony": "^7.0.4"
+    "vite": "^5.4.6"
   }
 }
