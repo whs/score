@@ -58,7 +58,7 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
-function fakeDataFromArgs(args: Args, amount = 0): UserScore {
+export function fakeDataFromArgs(args: Args, amount = 0): UserScore {
 	const out: UserScore = {
 		_name: args.name,
 		_fname: args.fname,
@@ -85,7 +85,7 @@ function fakeDataFromArgs(args: Args, amount = 0): UserScore {
 	return out;
 }
 
-function fakeStatsFromArgs(args: Args): ScoreStats {
+export function fakeStatsFromArgs(args: Args): ScoreStats {
 	return {
 		[`${args.subject} (${args.fullScore})`]: {
 			histogram: [],
