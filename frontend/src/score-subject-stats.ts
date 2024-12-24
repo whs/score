@@ -492,6 +492,8 @@ export class ScoreSubjectStatsComponent extends LitElement {
 
 		.flex {
 			display: flex;
+			flex-wrap: wrap;
+			column-gap: 1rem;
 		}
 		.flexitem {
 			flex: 1;
@@ -506,12 +508,7 @@ export class ScoreSubjectStatsComponent extends LitElement {
 		}
 
 		.flex .box {
-			flex: 1;
-			margin-right: 16px;
-		}
-
-		.flex .box:last-child {
-			margin-right: 0;
+			flex-grow: 1;
 		}
 
 		.legend {

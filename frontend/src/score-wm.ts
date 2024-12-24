@@ -111,6 +111,7 @@ export class WindowManager extends LitElement {
 			background-color: #ecf0f5;
 			display: grid;
 			box-sizing: border-box;
+			overflow-x: hidden;	
 		}
 
 		.in {
