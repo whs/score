@@ -1,4 +1,4 @@
-import { LitElement, html, render, PropertyValues, css } from 'lit';
+import { css, html, LitElement, PropertyValues, render } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { getFileNameV1, pbkdf2 } from './utils.ts';
 import { ScoreFormSubmitEvent } from './score-form.ts';
@@ -12,7 +12,8 @@ import './score-error.ts';
 import './score-result.ts';
 import './score-subject-stats.ts';
 import './score-font.ts';
-import type { WindowManager, Window } from './score-wm.ts';
+import type { Window, WindowManager } from './score-wm.ts';
+import { TopTenMode } from './score-subject-stats.ts';
 
 const ENABLE_V2 = true;
 const ENABLE_PBKDF = false;
@@ -28,8 +29,8 @@ export class WhsScore extends LitElement {
 	@property()
 	passwordInputMode: string = 'numeric';
 
-	@property({ type: Boolean })
-	topten: boolean = false;
+	@property()
+	topten: TopTenMode = TopTenMode.TOP_TEN;
 
 	wmRef = createRef<WindowManager>();
 
@@ -77,9 +78,9 @@ export class WhsScore extends LitElement {
 		return html`
 			<score-font></score-font>
 			${this.isLoading
-				? html`<score-loading-scrim role="status"
-						>${msg('Loading...')}</score-loading-scrim
-					>`
+				? html` <score-loading-scrim role="status"
+						>${msg('Loading...')}
+					</score-loading-scrim>`
 				: null}
 			<score-wm ${ref(this.wmRef)}>
 				<score-window>
@@ -94,15 +95,15 @@ export class WhsScore extends LitElement {
 							<slot name="header-in" slot="header-in"></slot>
 							${this.isBrowserSupported()
 								? null
-								: html`<score-error role="alert"
+								: html` <score-error role="alert"
 										>${msg(
 											'This browser is not supported. Use Firefox 130 or later'
-										)}</score-error
-									>`}
+										)}
+									</score-error>`}
 							${this.errorMessage
-								? html`<score-error role="alert"
-										>${this.errorMessage}</score-error
-									>`
+								? html` <score-error role="alert"
+										>${this.errorMessage}
+									</score-error>`
 								: null}
 						</div>
 						<slot name="username" slot="username">${msg('Student ID')}</slot>
@@ -132,7 +133,7 @@ export class WhsScore extends LitElement {
 
 		let fragment = document.createDocumentFragment();
 		render(
-			html`<score-window>
+			html` <score-window>
 				<score-result
 					.data=${score}
 					.stats=${stats}
@@ -164,7 +165,7 @@ export class WhsScore extends LitElement {
 		};
 		let fragment = document.createDocumentFragment();
 		render(
-			html`<score-window>
+			html` <score-window>
 				<score-subject-stats
 					subject="${subject}"
 					.score=${score[subject!]}
@@ -185,6 +186,7 @@ export class WhsScore extends LitElement {
 			typeof TextEncoder === 'function'
 		);
 	}
+
 	protected updated(changed: PropertyValues) {
 		super.updated(changed);
 		if (changed.has('errorMessage') && this.errorMessage) {

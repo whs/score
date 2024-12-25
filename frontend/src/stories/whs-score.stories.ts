@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import '../whs-score.ts';
 import { styleMap } from 'lit/directives/style-map.js';
+import { TopTenMode } from '../score-subject-stats.ts';
 
 /**
  * whs-score is the entrypoint to the application. To use it, simply
@@ -14,13 +15,18 @@ const meta: Meta = {
 	title: 'whs-score',
 	component: 'whs-score',
 	args: {
-		topten: false,
+		topten: TopTenMode.TOP_TEN,
 		usernameInputMode: 'numeric',
 		passwordInputMode: 'numeric',
 	},
 	argTypes: {
 		topten: {
 			description: 'Activate Easter Egg',
+			control: {
+				type: 'select',
+				labels: Object.keys(TopTenMode),
+			},
+			options: Object.values(TopTenMode),
 		},
 		usernameInputMode: {
 			control: 'select',
@@ -49,7 +55,7 @@ const meta: Meta = {
 		html`<whs-score
 			usernameInputMode="${args.usernameInputMode}"
 			passwordInputMode="${args.passwordInputMode}"
-			?topten="${args.topten}"
+			.topten="${args.topten}"
 		></whs-score>`,
 };
 
@@ -107,7 +113,7 @@ export const WebPage: Story = {
 			<whs-score
 				usernameInputMode="${args.usernameInputMode}"
 				passwordInputMode="${args.passwordInputMode}"
-				?topten="${args.topten}"
+				.topten="${args.topten}"
 			></whs-score>
 		</div>
 		<p>Thank you for visiting</p>

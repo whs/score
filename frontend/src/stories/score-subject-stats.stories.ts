@@ -3,6 +3,7 @@ import { html } from 'lit';
 import '../score-subject-stats.ts';
 import { action } from '@storybook/addon-actions';
 import { ScoreSubjectStats, SubjectScore } from '../schema.ts';
+import { TopTenMode } from '../score-subject-stats.ts';
 
 const meta: Meta = {
 	title: 'score-subject-stats',
@@ -12,7 +13,7 @@ const meta: Meta = {
 		score: 10,
 		fullScore: 50,
 		rank: 1,
-		topten: false,
+		topten: TopTenMode.TOP_TEN,
 		standard: 1,
 		count: 1000,
 		hiscore: 50,
@@ -54,6 +55,11 @@ const meta: Meta = {
 		},
 		topten: {
 			description: 'Activate Easter Egg',
+			control: {
+				type: 'select',
+				labels: Object.keys(TopTenMode),
+			},
+			options: Object.values(TopTenMode),
 		},
 		count: {
 			description: 'No. of examinee',
@@ -170,11 +176,11 @@ function fakeStatsFromArgs(args: Args): ScoreSubjectStats {
 
 export const Default: Story = {
 	render: (args) =>
-		html`<score-subject-stats
+		html` <score-subject-stats
 			subject="${args.subject}"
 			.score="${fakeDataFromArgs(args)}"
 			.stats="${fakeStatsFromArgs(args)}"
-			?topten="${args.topten}"
+			.topten="${args.topten}"
 			@close="${action('close')}"
 		></score-subject-stats>`,
 };
@@ -184,11 +190,11 @@ export const Default: Story = {
  */
 export const NoHistogram: Story = {
 	render: (args) =>
-		html`<score-subject-stats
+		html` <score-subject-stats
 			subject="${args.subject}"
 			.score="${fakeDataFromArgs(args)}"
 			.stats="${fakeStatsFromArgs(args)}"
-			?topten="${args.topten}"
+			.topten="${args.topten}"
 			nohistogram
 			@close="${action('close')}"
 		></score-subject-stats>`,

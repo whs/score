@@ -18,19 +18,22 @@ import { styleMap } from 'lit/directives/style-map.js';
 import { until } from 'lit/directives/until.js';
 import { isActivateKeyboardEvent } from './utils.ts';
 
-const averageBarSvg = html`<svg
-	width="20"
-	height="36"
-	viewBox="0 0 20 36"
-	fill="none"
->
-	<path
-		fill-rule="evenodd"
-		clip-rule="evenodd"
-		d="M0 36H20C15.5817 36 12 32.4183 12 28V8C12 3.58172 15.5817 0 20 0H0C4.41828 0 8 3.58172 8 8V28C8 32.4183 4.41828 36 0 36Z"
-		fill="white"
-	/>
-</svg> `;
+export enum TopTenMode {
+	OFF = 0,
+	ON = 1,
+	TOP_TEN = 2,
+}
+
+const averageBarSvg = html`
+	<svg width="20" height="36" viewBox="0 0 20 36" fill="none">
+		<path
+			fill-rule="evenodd"
+			clip-rule="evenodd"
+			d="M0 36H20C15.5817 36 12 32.4183 12 28V8C12 3.58172 15.5817 0 20 0H0C4.41828 0 8 3.58172 8 8V28C8 32.4183 4.41828 36 0 36Z"
+			fill="white"
+		/>
+	</svg>
+`;
 
 @customElement('score-subject-stats')
 export class ScoreSubjectStatsComponent extends LitElement {
@@ -43,8 +46,8 @@ export class ScoreSubjectStatsComponent extends LitElement {
 	@property()
 	stats: ScoreSubjectStats | undefined;
 
-	@property({ type: Boolean })
-	topten: boolean = false;
+	@property()
+	topten: TopTenMode = TopTenMode.TOP_TEN;
 
 	@property({ type: Boolean })
 	nohistogram: boolean = false;
@@ -67,7 +70,7 @@ export class ScoreSubjectStatsComponent extends LitElement {
 			? undefined
 			: import('./score-chartjs.ts').then(
 					() =>
-						html`<score-chartjs
+						html` <score-chartjs
 							.data=${this.buildScoreStatsHistogram()}
 							.config=${{
 								type: 'bar',
@@ -134,7 +137,7 @@ export class ScoreSubjectStatsComponent extends LitElement {
 
 		let needLowScore2 = stats.lowscore2 !== stats.lowscore;
 
-		return html`<nav class="fab-bar">
+		return html` <nav class="fab-bar">
 				<div
 					class="fab"
 					role="button"
@@ -199,14 +202,14 @@ export class ScoreSubjectStatsComponent extends LitElement {
 								/>`
 							: this.numberFormatter.format(score.rank)}
 					</div>
-					${this.topten
-						? html`<score-button
+					${this.showTopTen()
+						? html` <score-button
 								style="margin-top: 8px;"
 								role="button"
 								tabindex="0"
 								@click=${this.onTopTen}
-								>${msg('Show Top Ten')}</score-button
-							>`
+								>${msg('Show Top Ten')}
+							</score-button>`
 						: null}
 				</div>
 				<div class="box">
@@ -280,7 +283,7 @@ export class ScoreSubjectStatsComponent extends LitElement {
 					<div class="mingrid">
 						<div class="min" aria-hidden="${this.showWhyMin2}">
 							${needLowScore2
-								? html`<div class="flex" style="margin-bottom: 8px;">
+								? html` <div class="flex" style="margin-bottom: 8px;">
 										<div class="flexitem">
 											<div class="legend">${msg('Second Lowest Score')}</div>
 											<div class="stats">
@@ -312,7 +315,7 @@ export class ScoreSubjectStatsComponent extends LitElement {
 						</div>
 						${cache(
 							this.showWhyMin2
-								? html`<div class="whymin2" role="alert">
+								? html` <div class="whymin2" role="alert">
 										<div class="whymin2-inner">
 											${msg(
 												'Two lowest scores are reported because the lowest score can be 0 for people who are absent. The second lowest score should represent actually achieved score.'
@@ -323,7 +326,7 @@ export class ScoreSubjectStatsComponent extends LitElement {
 						)}
 					</div>
 					${needLowScore2
-						? html`<score-button
+						? html` <score-button
 								tabindex="0"
 								role="button"
 								@click=${() => (this.showWhyMin2 = !this.showWhyMin2)}
@@ -336,12 +339,12 @@ export class ScoreSubjectStatsComponent extends LitElement {
 									aria-hidden="true"
 									alt="?"
 								/>
-								${msg('Why two lowest scores are reported')}</score-button
-							>`
+								${msg('Why two lowest scores are reported')}
+							</score-button>`
 						: null}
 				</div>
 				${!this.nohistogram
-					? html`<div class="box">
+					? html` <div class="box">
 							<div class="legend">${msg('Histogram')}</div>
 							${guard([stats, score], () =>
 								until(this.chartPromise, html`${msg('Loading...')}`)
@@ -380,6 +383,19 @@ export class ScoreSubjectStatsComponent extends LitElement {
 			document.body.appendChild(child);
 		});
 	};
+
+	private showTopTen(): boolean {
+		if (this.topten === TopTenMode.ON) {
+			return true;
+		} else if (this.topten === TopTenMode.OFF) {
+			return false;
+		} else {
+            if (!this.score || !('rank' in this.score)) {
+                return false;
+            }
+			return this.score.rank <= 10;
+		}
+	}
 
 	private buildScoreStatsHistogram(): ChartData<
 		'bar',
