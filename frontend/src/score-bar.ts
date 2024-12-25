@@ -1,6 +1,7 @@
-import { LitElement, css, html } from 'lit';
+import { LitElement, css, html, nothing, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import nyanCat from './easteregg/nyan.gif';
 
 @customElement('score-bar')
 export class ScoreBar extends LitElement {
@@ -18,7 +19,30 @@ export class ScoreBar extends LitElement {
 				: null}"
 			part="bar"
 			style="${styleMap({ width: `${this.percent}%` })}"
-		></div>`;
+		>
+			${this.percent === 100
+				? html`<div class="fragments">
+						${this.frag(window.innerWidth / 60)}
+						<div class="catfrag"></div>
+					</div>`
+				: nothing}
+			${this.percent === 100
+				? html`<img
+						class="nyancat"
+						src="${nyanCat}"
+						alt="Nyan cat"
+						aria-hidden="true"
+					/>`
+				: nothing}
+		</div>`;
+	}
+
+	private frag(n: number): TemplateResult[] {
+		let out = [];
+		for (let i = 0; i < n; i++) {
+			out.push(html`<div class="frag"></div>`);
+		}
+		return out;
 	}
 
 	private getProgressBarBreakpoint(): string {
@@ -47,7 +71,6 @@ export class ScoreBar extends LitElement {
 			border-radius: 24px;
 			background: linear-gradient(to right, #ed4f44, #ed8d44);
 			height: 100%;
-			/*animation: bar ease-out 1.5s;*/
 		}
 
 		.completed-25 {
@@ -60,70 +83,83 @@ export class ScoreBar extends LitElement {
 			background: linear-gradient(to right, #9adf10, #10df87);
 		}
 		.completed-100 {
-			background: linear-gradient(
-					to right,
-					rgba(255, 0, 0, 1) 0%,
-					rgba(255, 154, 0, 1) 10%,
-					rgba(208, 222, 33, 1) 20%,
-					rgba(79, 220, 74, 1) 30%,
-					rgba(63, 218, 216, 1) 40%,
-					rgba(47, 201, 226, 1) 50%,
-					rgba(28, 127, 238, 1) 60%,
-					rgba(95, 21, 242, 1) 70%,
-					rgba(186, 12, 248, 1) 80%,
-					rgba(251, 7, 217, 1) 90%,
-					rgba(255, 0, 0, 1) 100%
-				)
-				0 0/200% 100%;
+			background: none;
 			position: relative;
-			animation: bgpos linear 2s infinite;
+
+			--nyan-speed: 300ms;
 		}
-		.completed-100:not(.noglow)::after {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			height: 100%;
+
+		.completed-100 .fragments {
 			width: 100%;
+			height: 100%;
+			display: flex;
+			align-content: flexstart;
+		}
+		.completed-100 .nyancat {
+			position: absolute;
+			height: 200%;
+			top: -40%;
+			right: 0;
+			image-rendering: pixelated;
+			z-index: 5;
+		}
+
+		.completed-100 .catfrag {
+			/* set this to image size of nyan.gif */
+			aspect-ratio: 264 / 160;
+		}
+
+		.completed-100 .frag {
 			background: linear-gradient(
-					to right,
-					rgba(255, 0, 0, 1) 0%,
-					rgba(255, 154, 0, 1) 10%,
-					rgba(208, 222, 33, 1) 20%,
-					rgba(79, 220, 74, 1) 30%,
-					rgba(63, 218, 216, 1) 40%,
-					rgba(47, 201, 226, 1) 50%,
-					rgba(28, 127, 238, 1) 60%,
-					rgba(95, 21, 242, 1) 70%,
-					rgba(186, 12, 248, 1) 80%,
-					rgba(251, 7, 217, 1) 90%,
-					rgba(255, 0, 0, 1) 100%
-				)
-				0 0/200% 100%;
-			filter: blur(8px);
-			animation: bgpos linear 2s infinite;
+				to bottom,
+				#d91a12 0%,
+				#d91a12 15%,
+				#e13300 15%,
+				#ff7f14 16%,
+				#f2ab03 32%,
+				#ebc000 32%,
+				#fade00 33%,
+				#efff03 48%,
+				#56fc02 49%,
+				#52ff01 66%,
+				#4ade7e 67%,
+				#3baaf2 67%,
+				#3baaf2 84%,
+				#7337f7 84%,
+				#6b40f2 100%
+			);
+			flex: 1;
+			animation: nyan linear var(--nyan-speed) infinite;
+		}
+		.completed-100.noglow .frag {
+			height: calc(100% - 2px);
+		}
+
+		.completed-100 .frag:nth-child(even) {
+			animation-delay: calc(var(--nyan-speed) * -1 / 2);
 		}
 
 		@media (prefers-reduced-motion) {
-			.completed-100,
-			.completed-100::after {
+			.frag {
 				animation: none;
 			}
-		}
-
-		@keyframes bgpos {
-			to {
-				background-position: -200% 0;
+			.completed-100 .frag:nth-child(even) {
+				transform: translateY(4px);
 			}
 		}
 
-		@keyframes bar {
-			from {
-				width: 0;
+		@keyframes nyan {
+			0% {
+				transform: translateY(0);
 			}
-			/* delay the start for a bit for the page transition */
-			${0.5 / 1.5}% {
-				width: 0;
+			49.999% {
+				transform: translateY(0);
+			}
+			50% {
+				transform: translateY(4px);
+			}
+			99.999% {
+				transform: translateY(4px);
 			}
 		}
 	`;

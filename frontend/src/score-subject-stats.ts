@@ -390,9 +390,9 @@ export class ScoreSubjectStatsComponent extends LitElement {
 		} else if (this.topten === TopTenMode.OFF) {
 			return false;
 		} else {
-            if (!this.score || !('rank' in this.score)) {
-                return false;
-            }
+			if (!this.score || !('rank' in this.score)) {
+				return false;
+			}
 			return this.score.rank <= 10;
 		}
 	}
