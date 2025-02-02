@@ -100,7 +100,7 @@ export const Slot: Story = {
 export const WebPage: Story = {
 	render: (args) => html`
 		<h1>School website</h1>
-		<p>Students can view their score in this widget. This is not an frame</p>
+		<p>Students can view their score in this widget. This is not an iframe</p>
 		<div
 			id="widget"
 			style="${styleMap({
