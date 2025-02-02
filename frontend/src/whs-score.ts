@@ -32,6 +32,12 @@ export class WhsScore extends LitElement {
 	@property()
 	topten: TopTenMode = TopTenMode.TOP_TEN;
 
+	@property({ type: Boolean })
+	allowHtml: boolean = false;
+
+	@property({ type: Boolean })
+	autoLink: boolean = false;
+
 	wmRef = createRef<WindowManager>();
 
 	@state()
@@ -133,12 +139,14 @@ export class WhsScore extends LitElement {
 
 		let fragment = document.createDocumentFragment();
 		render(
-			html` <score-window>
+			html`<score-window>
 				<score-result
 					.data=${score}
 					.stats=${stats}
 					@close=${onClose}
 					@stats=${onStats}
+					?allowhtml="${this.allowHtml}"
+					?autolink="${this.autoLink}"
 				>
 					<div slot="beforescore">
 						<slot name="beforescore"></slot>

@@ -18,6 +18,8 @@ const meta: Meta = {
 		topten: TopTenMode.TOP_TEN,
 		usernameInputMode: 'numeric',
 		passwordInputMode: 'numeric',
+		allowHtml: false,
+		autoLink: false,
 	},
 	argTypes: {
 		topten: {
@@ -49,6 +51,14 @@ const meta: Meta = {
 				'Input mode of the password field. This affect on screen keyboards and do not actually block inputs from other types',
 			options: ['none', 'text', 'decimal', 'numeric'],
 		},
+		allowHtml: {
+			description:
+				"Allow HTML in string result. This option doesn't work with autoLink",
+		},
+		autoLink: {
+			description:
+				"Auto link in string result. This option doesn't work with allowHtml",
+		},
 	},
 
 	render: (args) =>
@@ -56,6 +66,8 @@ const meta: Meta = {
 			usernameInputMode="${args.usernameInputMode}"
 			passwordInputMode="${args.passwordInputMode}"
 			.topten="${args.topten}"
+			?allowhtml="${args.allowHtml}"
+			?autolink="${args.autoLink}"
 		></whs-score>`,
 };
 

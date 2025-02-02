@@ -14,8 +14,15 @@ import { isActivateKeyboardEvent } from './utils.ts';
 export class ScoreResult extends LitElement {
 	@property()
 	data: UserScore = { _name: '', _fname: '' };
+
 	@property()
 	stats: Promise<ScoreStats> | undefined;
+
+	@property({ type: Boolean })
+	allowHtml: boolean = false;
+
+	@property({ type: Boolean })
+	autoLink: boolean = false;
 
 	render() {
 		return html`
@@ -68,6 +75,8 @@ export class ScoreResult extends LitElement {
 								: () => {}}"
 							tabindex="${isClickable ? 0 : null}"
 							role="listitem"
+							?allowhtml="${this.allowHtml}"
+							?autolink="${this.autoLink}"
 						></score-subject>`;
 					}
 				)}

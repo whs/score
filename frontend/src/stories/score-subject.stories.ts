@@ -13,6 +13,8 @@ const meta: Meta = {
 		percent: 80,
 		standard: 1,
 		clickable: true,
+		allowHtml: false,
+		autoLink: false,
 	},
 	argTypes: {
 		subject: {
@@ -43,6 +45,14 @@ const meta: Meta = {
 				max: 100,
 			},
 		},
+		allowHtml: {
+			description:
+				"Allow HTML in string result. This option doesn't work with autoLink",
+		},
+		autoLink: {
+			description:
+				"Auto link in string result. This option doesn't work with allowHtml",
+		},
 	},
 };
 
@@ -62,7 +72,7 @@ export const Score: Story = {
 			?clickable="${args.clickable}"
 		></score-subject>`,
 	parameters: {
-		controls: { exclude: ['freetext'] },
+		controls: { exclude: ['freetext', 'allowHtml', 'autoLink'] },
 	},
 };
 
@@ -82,6 +92,71 @@ export const Freetext: Story = {
 		clickable: false,
 	},
 	parameters: {
-		controls: { include: ['locale', 'subject', 'freetext', 'clickable'] },
+		controls: {
+			include: [
+				'locale',
+				'subject',
+				'freetext',
+				'clickable',
+				'allowHtml',
+				'autoLink',
+			],
+		},
+	},
+};
+
+export const AllowHTML: Story = {
+	render: (args) =>
+		html`<score-subject
+			subject="${args.subject}"
+			.data="${{ score: args.freetext }}"
+			?clickable="${args.clickable}"
+			?allowhtml="${args.allowHtml}"
+			?autolink="${args.autoLink}"
+		></score-subject>`,
+	args: {
+		clickable: false,
+		freetext: '<strong>Example</strong>',
+		allowHtml: true,
+	},
+	parameters: {
+		controls: {
+			include: [
+				'locale',
+				'subject',
+				'freetext',
+				'clickable',
+				'allowHtml',
+				'autoLink',
+			],
+		},
+	},
+};
+
+export const AutoLink: Story = {
+	render: (args) =>
+		html`<score-subject
+			subject="${args.subject}"
+			.data="${{ score: args.freetext }}"
+			?clickable="${args.clickable}"
+			?allowhtml="${args.allowHtml}"
+			?autolink="${args.autoLink}"
+		></score-subject>`,
+	args: {
+		clickable: false,
+		freetext: 'ทดสอบ https://www.example.com ทดสอบ',
+		autoLink: true,
+	},
+	parameters: {
+		controls: {
+			include: [
+				'locale',
+				'subject',
+				'freetext',
+				'clickable',
+				'allowHtml',
+				'autoLink',
+			],
+		},
 	},
 };

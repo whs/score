@@ -15,7 +15,9 @@ const meta: Meta = {
 		fullScore: 50,
 		rank: 1,
 		standard: 1,
-		fixedString: 'Arbitrary string',
+		fixedString: 'Arbitrary <strong>string</strong> https://www.example.com',
+		allowHtml: false,
+		autoLink: false,
 	},
 	argTypes: {
 		name: {
@@ -51,6 +53,14 @@ const meta: Meta = {
 				min: 0,
 				step: 0.01,
 			},
+		},
+		allowHtml: {
+			description:
+				"Allow HTML in string result. This option doesn't work with autoLink",
+		},
+		autoLink: {
+			description:
+				"Auto link in string result. This option doesn't work with allowHtml",
 		},
 	},
 };
@@ -113,6 +123,8 @@ export const Default: Story = {
 			.stats="${Promise.resolve(fakeStatsFromArgs(args))}"
 			@close="${action('close')}"
 			@stats="${action('stats')}"
+			?allowhtml="${args.allowHtml}"
+			?autolink="${args.autoLink}"
 		></score-result>`,
 };
 
@@ -126,6 +138,8 @@ export const LoadingStats: Story = {
 			.data="${fakeDataFromArgs(args)}"
 			@close="${action('close')}"
 			@stats="${action('stats')}"
+			?allowhtml="${args.allowHtml}"
+			?autolink="${args.autoLink}"
 		></score-result>`,
 };
 
@@ -150,6 +164,8 @@ export const Slot: Story = {
 			.stats="${Promise.resolve(fakeStatsFromArgs(args))}"
 			@close="${action('close')}"
 			@stats="${action('stats')}"
+			?allowhtml="${args.allowHtml}"
+			?autolink="${args.autoLink}"
 		>
 			${slotExample('beforescore')} ${slotExample('afterscore')}
 		</score-result>`,

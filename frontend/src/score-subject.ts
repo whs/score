@@ -1,10 +1,12 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { ScoreSubjectStats, SubjectScore } from './schema.ts';
 import { msg, str } from '@lit/localize';
 import ranks from './ranks';
 import icRightUp from 'remixicon/icons/Arrows/arrow-right-up-line.svg';
 import './score-bar.ts';
+import './score-auto-link.ts';
 
 @customElement('score-subject')
 export class ScoreSubject extends LitElement {
@@ -20,6 +22,12 @@ export class ScoreSubject extends LitElement {
 	@property({ type: Boolean })
 	clickable: boolean = false;
 
+	@property({ type: Boolean })
+	allowHtml: boolean = false;
+
+	@property({ type: Boolean })
+	autoLink: boolean = false;
+
 	numberFormatter = new Intl.NumberFormat(undefined, {
 		maximumFractionDigits: 4,
 	});
@@ -30,7 +38,15 @@ export class ScoreSubject extends LitElement {
 		let fullMarks = this.getFullMark();
 
 		if (fullMarks === null || !('percent' in score)) {
-			let scoreValue = typeof score === 'object' ? score.score : score;
+			// Stringly result
+			let scoreValue: unknown = typeof score === 'object' ? score.score : score;
+
+			if (typeof scoreValue === 'string' && this.allowHtml) {
+				scoreValue = unsafeHTML(scoreValue);
+			} else if (this.autoLink) {
+				scoreValue = html`<score-auto-link>${scoreValue}</score-auto-link>`;
+			}
+
 			return html`
 				<div class="subject">
 					<div class="subjectname">${this.subject}</div>
