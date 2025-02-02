@@ -39,7 +39,7 @@ export class ScoreAutoLink extends LitElement {
 		let out = [];
 		for (let match of linker.match(textContent) || []) {
 			out.push(textContent.slice(lastIndex, match.index));
-			out.push(html`<a href="${match.url}">${match.text}</a>`);
+			out.push(html`<a href="${match.url}" target="_blank">${match.text}</a>`);
 			lastIndex = match.lastIndex;
 		}
 		out.push(textContent.slice(lastIndex));
